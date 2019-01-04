@@ -93,7 +93,7 @@
   },
   "systemd": {
     "units": {
-      "${name}": "systemd/*"
+      "${name}": "systemd/${name}*"
     }
   }
 }
