@@ -1,0 +1,7 @@
+[Socket]
+ListenStream=3101
+BindIPv6Only=both
+MaxConnections=4
+
+[Install]
+RequiredBy={{name}}.service
