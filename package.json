@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "module": "src/hook-ci.mjs",
+  "module": "src/hook-ci-cli.mjs",
   "description": "github hook for npm-template-sync",
   "keywords": [
     "npm",
@@ -24,8 +24,8 @@
   },
   "scripts": {
     "cover": "c8 --temp-directory build/coverage ava && c8 report -r lcov --temp-directory build/coverage",
-    "docs": "documentation readme src/hook-ci.mjs --section=API",
-    "lint": "documentation lint src/hook-ci.mjs",
+    "docs": "documentation readme src/hook-ci-cli.mjs --section=API",
+    "lint": "documentation lint src/hook-ci-cli.mjs",
     "package": "npm-pkgbuild pkgbuild pacman makepkg",
     "posttest": "npm run prepare && markdown-doctest",
     "prepare": "rollup -c",

@@ -8,7 +8,7 @@ import pkg from "./package.json";
 export default [
   ...Object.keys(pkg.bin || {}).map(name => {
     return {
-      input: `src/${name}-cli.js`,
+      input: `src/${name}-cli.mjs`,
       output: {
         file: pkg.bin[name],
         format: "cjs",
@@ -18,6 +18,7 @@ export default [
       },
       plugins: [
         commonjs(),
+        resolve(),
         json({
           include: "package.json",
           preferConst: true,
@@ -27,14 +28,5 @@ export default [
         executable()
       ]
     };
-  }),
-  {
-    input: pkg.module,
-    output: {
-      file: pkg.main,
-      format: "cjs",
-      interop: false
-    },
-    plugins: [resolve(), commonjs(), cleanup()]
-  }
+  })
 ];

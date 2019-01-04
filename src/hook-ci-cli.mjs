@@ -1,9 +1,9 @@
 import {} from "systemd";
-
+//import micro from "micro";
+const notify = require("sd-notify");
 const micro = require("micro");
 const createHandler = require("github-webhook-handler");
 
-let notify;
 let port = "systemd";
 
 if (process.env.PORT !== undefined) {
@@ -13,10 +13,7 @@ if (process.env.PORT !== undefined) {
   }
 }
 
-try {
-  notify = require("sd-notify");
-  notify.sendStatus("starting up");
-} catch (e) {}
+notify.sendStatus("starting up");
 
 const handler = createHandler({
   path: "/webhook",
@@ -62,6 +59,4 @@ const server = micro(async (req, res) => {
 
 server.listen(port);
 
-if (notify !== undefined) {
-  notify.ready();
-}
+notify.ready();
