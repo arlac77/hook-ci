@@ -2,9 +2,10 @@ node_modules
 build
 coverage
 dist
-bin
 *.log
 *.dump
 .DS_Store
 .test
 .tmp
+
+bin
