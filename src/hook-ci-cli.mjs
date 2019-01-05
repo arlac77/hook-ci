@@ -65,7 +65,7 @@ server.listen(port);
 notify.ready();
 
 
-aync function startJob(url)
+async function startJob(url)
 {
   const wd = "/tmp/00000001";
 
