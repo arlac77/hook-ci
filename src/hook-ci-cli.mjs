@@ -1,4 +1,6 @@
 import {} from "systemd";
+import execa from "execa";
+
 //import micro from "micro";
 const notify = require("sd-notify");
 const micro = require("micro");
@@ -39,6 +41,7 @@ handler.on("push", async event => {
   );
 
   try {
+    startJob(event.payload.repository.url);
   } catch (e) {
     console.error(e);
   }
@@ -60,3 +63,14 @@ const server = micro(async (req, res) => {
 server.listen(port);
 
 notify.ready();
+
+
+aync function startJob(url)
+{
+  const wd = "/tmp/00000001";
+
+  await execa("git", [ "clone" , url, wd]);
+  await execa("npm", [ "install" ], { cwd: wd });
+  await execa("npm", [ "test" ], { cwd: wd });
+  await execa("npm", [ "run", "package" ], { cwd: wd });
+}
