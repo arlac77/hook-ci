@@ -1,5 +1,6 @@
 import {} from "systemd";
 import execa from "execa";
+const Queue = require('bull');
 
 //import micro from "micro";
 const notify = require("sd-notify");
@@ -65,8 +66,13 @@ server.listen(port);
 notify.ready();
 
 
+const requestQueue = new Queue('pust-requests', 'redis://127.0.0.1:6379');
+
 async function startJob(url)
 {
+  requestQueue.add({url });
+
+
   const wd = "/tmp/00000001";
 
   await execa("git", [ "clone" , url, wd]);

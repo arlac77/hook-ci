@@ -32,6 +32,7 @@
     "test": "ava"
   },
   "dependencies": {
+    "bull": "^3.5.2",
     "execa": "^1.0.0",
     "github-webhook-handler": "^0.7.0",
     "micro": "^9.3.3",
