@@ -5,7 +5,7 @@
     "access": "public"
   },
   "module": "src/hook-ci-cli.mjs",
-  "description": "github hook for npm-template-sync",
+  "description": "simple ci to be triggered by git hooks",
   "keywords": [
     "npm",
     "template",
