@@ -7,6 +7,9 @@ const notify = require("sd-notify");
 const micro = require("micro");
 const createHandler = require("github-webhook-handler");
 
+
+const = dataDir = "/var/lib/hook-ci";
+
 let port = "systemd";
 
 if (process.env.PORT !== undefined) {
@@ -42,7 +45,7 @@ handler.on("push", async event => {
   );
 
   try {
-    startJob(event.payload.repository.url);
+    startJob(event.payload);
   } catch (e) {
     console.error(e);
   }
@@ -66,14 +69,25 @@ server.listen(port);
 notify.ready();
 
 
-const requestQueue = new Queue('pust-requests', 'redis://127.0.0.1:6379');
+const requestQueue = new Queue('post-requests', 'redis://127.0.0.1:6379');
 
-async function startJob(url)
+requestQueue.process(async (job, data) => {
+  console.log('post-requests process');
+  return 77;
+});
+
+requestQueue.on('completed', (job, result) => {
+  console.log(`post-requests completed with result ${result}`);
+})
+
+
+async function startJob(request)
 {
-  requestQueue.add({url });
+  requestQueue.add(request);
 
+  const url = request.repository.url;
 
-  const wd = "/tmp/00000001";
+  const wd = join(dataDir,"00000001");
 
   await execa("git", [ "clone" , url, wd]);
   await execa("npm", [ "install" ], { cwd: wd });
