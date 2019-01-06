@@ -8,7 +8,7 @@ const micro = require("micro");
 const createHandler = require("github-webhook-handler");
 
 
-const = dataDir = "/var/lib/hook-ci";
+const dataDir = "/var/lib/hook-ci";
 
 let port = "systemd";
 
