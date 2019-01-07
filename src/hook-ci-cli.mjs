@@ -81,12 +81,29 @@ server.listen(port);
 
 notify.ready();
 
-async function startJob(request) {
-  const url = request.repository.url;
-  const wd = join(dataDir, request.head_commit.id);
+async function startJob(job) {
+  const url = job.data.repository.url;
+  console.log('start: ', url);
+  const wd = join(dataDir, job.data.head_commit.id);
 
-  await execa("git", ["clone", url, wd]);
-  await execa("npm", ["install"], { cwd: wd });
-  await execa("npm", ["test"], { cwd: wd });
-  await execa("npm", ["run", "package"], { cwd: wd });
+  let proc;
+  proc = execa("git", ["clone", url, wd]);
+  proc.stdout.pipe(process.stdout);
+  proc.stderr.pipe(process.stderr);
+  await proc;
+
+  proc = execa("npm", ["install"], { cwd: wd });
+  proc.stdout.pipe(process.stdout);
+  proc.stderr.pipe(process.stderr);
+  await proc;
+
+  proc = execa("npm", ["test"], { cwd: wd });
+  proc.stdout.pipe(process.stdout);
+  proc.stderr.pipe(process.stderr);
+  await proc;
+
+  proc = execa("npm", ["run", "package"], { cwd: wd });
+  proc.stdout.pipe(process.stdout);
+  proc.stderr.pipe(process.stderr);
+  await proc;
 }
