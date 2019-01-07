@@ -74,7 +74,7 @@ notify.ready();
 const requestQueue = new Queue('post-requests', 'redis://127.0.0.1:6379');
 
 requestQueue.process(async (job, data) => {
-  console.log('post-requests process');
+  console.log('post-requests process', job);
   return 77;
 });
 
@@ -89,7 +89,7 @@ async function startJob(request)
 
   const url = request.repository.url;
 
-  const wd = join(dataDir,"00000001");
+  const wd = join(dataDir,head_commit.id);
 
   await execa("git", [ "clone" , url, wd]);
   await execa("npm", [ "install" ], { cwd: wd });
