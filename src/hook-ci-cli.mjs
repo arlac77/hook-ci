@@ -2,15 +2,26 @@ import {} from "systemd";
 import execa from "execa";
 import { join } from "path";
 
-const Queue = require('bull');
+const Queue = require("bull");
 
 //import micro from "micro";
 const notify = require("sd-notify");
 const micro = require("micro");
 const createHandler = require("github-webhook-handler");
 
-
 const dataDir = "/var/lib/hook-ci";
+
+const requestQueue = new Queue("post-requests", "redis://127.0.0.1:6379");
+
+requestQueue.process(async (job, data) => {
+  console.log("post-requests process", job);
+  startJob(job);
+  return 77;
+});
+
+requestQueue.on("completed", (job, result) => {
+  console.log(`post-requests completed with result ${result}`);
+});
 
 let port = "systemd";
 
@@ -40,14 +51,14 @@ handler.on("ping", async event => {
 });
 
 handler.on("push", async event => {
-  console.log(
-    "Received a push event for %s to %s",
-    event.payload.repository.full_name,
-    event.payload.ref
-  );
-
   try {
-    startJob(event.payload);
+    console.log(
+      "Received a push event for %s to %s",
+      event.payload.repository.full_name,
+      event.payload.ref
+    );
+
+    requestQueue.add(event.payload);
   } catch (e) {
     console.error(e);
   }
@@ -70,29 +81,12 @@ server.listen(port);
 
 notify.ready();
 
-
-const requestQueue = new Queue('post-requests', 'redis://127.0.0.1:6379');
-
-requestQueue.process(async (job, data) => {
-  console.log('post-requests process', job);
-  return 77;
-});
-
-requestQueue.on('completed', (job, result) => {
-  console.log(`post-requests completed with result ${result}`);
-})
-
-
-async function startJob(request)
-{
-  requestQueue.add(request);
-
+async function startJob(request) {
   const url = request.repository.url;
+  const wd = join(dataDir, request.head_commit.id);
 
-  const wd = join(dataDir,head_commit.id);
-
-  await execa("git", [ "clone" , url, wd]);
-  await execa("npm", [ "install" ], { cwd: wd });
-  await execa("npm", [ "test" ], { cwd: wd });
-  await execa("npm", [ "run", "package" ], { cwd: wd });
+  await execa("git", ["clone", url, wd]);
+  await execa("npm", ["install"], { cwd: wd });
+  await execa("npm", ["test"], { cwd: wd });
+  await execa("npm", ["run", "package"], { cwd: wd });
 }
