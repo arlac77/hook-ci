@@ -26,6 +26,16 @@ export default [
         }),
         cleanup(),
         executable()
+      ],
+      external: [
+        "fs",
+        "path",
+        "net",
+        "util",
+        "events",
+        "stream",
+        "child_process",
+        "assert"
       ]
     };
   })
