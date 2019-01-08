@@ -52,6 +52,9 @@ handler.on("ping", async event => {
     "Received a ping event for %s",
     event.payload.repository.full_name
   );
+
+  const counts = await requestQueue.getJobCounts();
+  console.log(counts);
 });
 
 handler.on("push", async event => {
