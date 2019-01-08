@@ -13,10 +13,14 @@ const dataDir = "/var/lib/hook-ci";
 
 const requestQueue = new Queue("post-requests", "redis://127.0.0.1:6379");
 
-requestQueue.process(async (job, data) => {
+requestQueue.process(async (job, done) => {
   console.log("post-requests process", job);
-  startJob(job);
-  return 77;
+  try {
+    await startJob(job);
+    done();
+  } catch (e) {
+    done(e);
+  }
 });
 
 requestQueue.on("completed", (job, result) => {
@@ -83,8 +87,10 @@ notify.ready();
 
 async function startJob(job) {
   const url = job.data.repository.url;
-  console.log('start: ', url);
+  console.log("start: ", url);
   const wd = join(dataDir, job.data.head_commit.id);
+
+  job.progress(1);
 
   let proc;
   proc = execa("git", ["clone", url, wd]);
@@ -92,18 +98,26 @@ async function startJob(job) {
   proc.stderr.pipe(process.stderr);
   await proc;
 
+  job.progress(10);
+
   proc = execa("npm", ["install"], { cwd: wd });
   proc.stdout.pipe(process.stdout);
   proc.stderr.pipe(process.stderr);
   await proc;
+
+  job.progress(30);
 
   proc = execa("npm", ["test"], { cwd: wd });
   proc.stdout.pipe(process.stdout);
   proc.stderr.pipe(process.stderr);
   await proc;
 
+  job.progress(40);
+
   proc = execa("npm", ["run", "package"], { cwd: wd });
   proc.stdout.pipe(process.stdout);
   proc.stderr.pipe(process.stderr);
   await proc;
+
+  job.progress(100);
 }
