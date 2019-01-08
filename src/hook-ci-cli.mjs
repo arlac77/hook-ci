@@ -119,5 +119,16 @@ async function startJob(job) {
   proc.stderr.pipe(process.stderr);
   await proc;
 
+  job.progress(50);
+
+  proc = execa.shell(
+    "cp",
+    ["build/*.pkg.xz", "/data/binaries/arch-linux/packages/"],
+    { cwd: wd }
+  );
+  proc.stdout.pipe(process.stdout);
+  proc.stderr.pipe(process.stderr);
+  await proc;
+
   job.progress(100);
 }
