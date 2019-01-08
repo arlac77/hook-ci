@@ -1,5 +1,5 @@
 import test from "ava";
-import {} from "../src/hook-ci";
+import {} from "../src/hook-ci-cli";
 
 const got = require("got");
 const { signer } = require("x-hub-signature");
