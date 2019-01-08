@@ -93,7 +93,7 @@ async function startJob(job) {
   job.progress(1);
 
   let proc;
-  proc = execa("git", ["clone", url, wd]);
+  proc = execa("git", ["clone", "--depth", "50", url, wd]);
   proc.stdout.pipe(process.stdout);
   proc.stderr.pipe(process.stderr);
   await proc;
