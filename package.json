@@ -92,7 +92,8 @@
     "groups": "webhook",
     "install": "pacman/install.sh",
     "depends": {
-      "redis": ">=5.0.3"
+      "redis": ">=5.0.3",
+      "systemd": ">=240.0"
     },
     "installdir": "/services/${name}"
   },
