@@ -1,6 +1,7 @@
 import {} from "systemd";
 import execa from "execa";
 import { join } from "path";
+import { createWriteStream } from "fs";
 
 const Queue = require("bull");
 
@@ -89,6 +90,8 @@ server.listen(port);
 notify.ready();
 
 async function startJob(job) {
+  const utf8Encoding = { encoding: "utf8" };
+
   const url = job.data.repository.url;
   console.log("start: ", url);
   const wd = join(dataDir, job.data.head_commit.id);
@@ -104,15 +107,23 @@ async function startJob(job) {
   job.progress(10);
 
   proc = execa("npm", ["install"], { cwd: wd });
-  proc.stdout.pipe(process.stdout);
-  proc.stderr.pipe(process.stderr);
+  proc.stdout.pipe(
+    createWriteStream(join(wd, "install.stdout.log"), utf8Encoding)
+  );
+  proc.stderr.pipe(
+    createWriteStream(join(wd, "install.stderr.log"), utf8Encoding)
+  );
   await proc;
 
   job.progress(30);
 
   proc = execa("npm", ["test"], { cwd: wd });
-  proc.stdout.pipe(process.stdout);
-  proc.stderr.pipe(process.stderr);
+  proc.stdout.pipe(
+    createWriteStream(join(wd, "test.stdout.log"), utf8Encoding)
+  );
+  proc.stderr.pipe(
+    createWriteStream(join(wd, "test.stderr.log"), utf8Encoding)
+  );
   await proc;
 
   job.progress(40);
