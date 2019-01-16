@@ -129,8 +129,12 @@ async function startJob(job) {
   job.progress(40);
 
   proc = execa("npm", ["run", "package"], { cwd: wd });
-  proc.stdout.pipe(process.stdout);
-  proc.stderr.pipe(process.stderr);
+  proc.stdout.pipe(
+    createWriteStream(join(wd, "package.stdout.log"), utf8Encoding)
+  );
+  proc.stderr.pipe(
+    createWriteStream(join(wd, "package.stderr.log"), utf8Encoding)
+  );
   await proc;
 
   job.progress(50);
