@@ -13,13 +13,16 @@ test("request", async t => {
   const sign = signer({ algorithm: "sha1", secret });
   const signature = sign(new Buffer("random-signature-body"));
 
-  const response = await got.post(`http://localhost:3100/webhook`, {
-    headers: {
-      "x-hub-signature": signature,
-      "x-github-event": "push",
-      "x-github-delivery": "77"
+  const response = await got.post(
+    `http://localhost:{process.env.PORT}/webhook`,
+    {
+      headers: {
+        "x-hub-signature": signature,
+        "x-github-event": "push",
+        "x-github-delivery": "77"
+      }
     }
-  });
+  );
 
   console.log(response.body);
 
