@@ -126,7 +126,7 @@ async function startJob(job) {
   );
   await proc;
 
-  job.progress(40);
+  job.progress(80);
 
   proc = execa("npm", ["run", "package"], { cwd: wd });
   proc.stdout.pipe(
@@ -135,17 +135,6 @@ async function startJob(job) {
   proc.stderr.pipe(
     createWriteStream(join(wd, "package.stderr.log"), utf8Encoding)
   );
-  await proc;
-
-  job.progress(50);
-
-  proc = execa.shell(
-    "cp",
-    ["build/*.pkg.xz", "/data/binaries/arch-linux/packages/"],
-    { cwd: wd }
-  );
-  proc.stdout.pipe(process.stdout);
-  proc.stderr.pipe(process.stderr);
   await proc;
 
   job.progress(100);
