@@ -1,6 +1,6 @@
 
 pre_install() {
-	useradd -U -l -M -r -c "{{description}}" {{name}}
+	useradd -U -l -M -r -s /usr/bin/nologin -d /var/lib/{{name}} -c "{{description}}" {{name}}
 }
 
 post_install() {
