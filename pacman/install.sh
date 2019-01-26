@@ -1,7 +1,6 @@
 
 pre_install() {
-	groupadd {{name}}
-	useradd -m -g {{name}} {{name}}
+	useradd -U -l -M -r -g {{name}} -c "{{description}}" {{name}}
 }
 
 post_install() {
@@ -26,4 +25,11 @@ pre_remove() {
 	systemctl disable {{name}}.socket
 	systemctl stop {{name}}
 	systemctl disable {{name}}
+}
+
+
+post_remove() {
+	systemctl daemon-reload
+	userdel {{name}}
+	groupdel {{name}}
 }
