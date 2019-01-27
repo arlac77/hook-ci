@@ -3,7 +3,7 @@ import execa from "execa";
 import { join } from "path";
 import { createWriteStream } from "fs";
 
-const Queue = require("bull");
+import Queue from "bull";
 
 //import micro from "micro";
 const notify = require("sd-notify");

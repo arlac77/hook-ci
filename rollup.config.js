@@ -44,7 +44,9 @@ const external = [
   "util",
   "v8",
   "vm",
-  "zlib"
+  "zlib",
+
+  "bull"
 ];
 
 export default Object.keys(pkg.bin || {}).map(name => {
