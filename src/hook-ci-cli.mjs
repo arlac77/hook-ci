@@ -5,9 +5,8 @@ import { createWriteStream } from "fs";
 
 import Queue from "bull";
 
-//import micro from "micro";
+import micro from "micro";
 const notify = require("sd-notify");
-const micro = require("micro");
 const createHandler = require("github-webhook-handler");
 
 const dataDir = "/var/lib/hook-ci";
