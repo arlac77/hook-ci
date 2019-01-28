@@ -27,7 +27,6 @@ pre_remove() {
 	systemctl disable {{name}}
 }
 
-
 post_remove() {
 	systemctl daemon-reload
 	userdel {{name}}
