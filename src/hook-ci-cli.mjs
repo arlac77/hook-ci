@@ -2,12 +2,9 @@ import {} from "systemd";
 import execa from "execa";
 import { join } from "path";
 import { createWriteStream } from "fs";
-
 import Queue from "bull";
-
 import micro from "micro";
-const notify = require("sd-notify");
-const createHandler = require("github-webhook-handler");
+import createHandler from "github-webhook-handler";
 
 const dataDir = "/var/lib/hook-ci";
 
@@ -35,8 +32,6 @@ if (process.env.PORT !== undefined) {
     port = process.env.PORT;
   }
 }
-
-notify.sendStatus("starting up");
 
 const handler = createHandler({
   path: "/webhook",
@@ -85,8 +80,6 @@ const server = micro(async (req, res) => {
 });
 
 server.listen(port);
-
-notify.ready();
 
 async function startJob(job) {
   const utf8Encoding = { encoding: "utf8" };

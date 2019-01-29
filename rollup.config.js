@@ -63,7 +63,6 @@ export default Object.keys(pkg.bin || {}).map(name => {
       commonjs(),
       resolve(),
       json({
-        include: "package.json",
         preferConst: true,
         compact: true
       }),

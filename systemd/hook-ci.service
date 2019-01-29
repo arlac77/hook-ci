@@ -3,7 +3,7 @@ Description={{description}}
 After=network-online.target
 
 [Service]
-Type=notify
+Type=exec
 
 ExecStart={{installdir}}/bin/{{name}}
 TimeoutStartSec=20

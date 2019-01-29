@@ -36,7 +36,6 @@
     "execa": "^1.0.0",
     "github-webhook-handler": "^0.7.0",
     "micro": "^9.3.3",
-    "sd-notify": "^2.5.1",
     "systemd": "^0.3.1"
   },
   "devDependencies": {
