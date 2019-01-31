@@ -26,7 +26,7 @@
     "cover": "c8 --temp-directory build/coverage ava && c8 report -r lcov --temp-directory build/coverage",
     "docs": "documentation readme src/hook-ci-cli.mjs --section=API",
     "lint": "documentation lint src/hook-ci-cli.mjs",
-    "package": "npm-pkgbuild --target /data/binaries/arch-linux/packages pkgbuild pacman makepkg",
+    "package": "npm-pkgbuild  --npm-dist --npm-modules -t /data/binaries/arch-linux/packages pkgbuild pacman makepkg",
     "posttest": "npm run prepare && markdown-doctest",
     "prepare": "rollup -c",
     "test": "ava"
@@ -45,7 +45,7 @@
     "esm": "^3.2.0",
     "got": "^9.6.0",
     "markdown-doctest": "^0.9.1",
-    "npm-pkgbuild": "^4.2.10",
+    "npm-pkgbuild": "^5.0.0",
     "rollup": "^1.1.2",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-commonjs": "^9.2.0",
