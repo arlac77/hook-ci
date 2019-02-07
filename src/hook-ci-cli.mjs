@@ -9,14 +9,34 @@ import createHandler from "github-webhook-handler";
 const dataDir = "/var/lib/hook-ci";
 
 const requestQueue = new Queue("post-requests", "redis://127.0.0.1:6379");
+const cleanupQueue = new Queue("cleanup", "redis://127.0.0.1:6379");
+const errorQueue = new Queue("error", "redis://127.0.0.1:6379");
+
+cleanupQueue.process(async (job, done) => {
+  console.log("cleanup process", job);
+
+  const wd = join(dataDir, job.data.head_commit.id);
+
+  console.log(`rm -rf ${wd}`, job);
+
+  proc = await execa("rm", ["-rf", wd], { cwd: wd });
+
+  done();
+});
+
+errorQueue.process(async (job, done) => {
+  console.log("error process", job);
+  done();
+});
 
 requestQueue.process(async (job, done) => {
   console.log("post-requests process", job);
   try {
-    await startJob(job);
-    done();
+    done(null, await startJob(job));
+    cleanupQueue.add(job);
   } catch (e) {
     done(e);
+    errorQueue.add(job);
   }
 });
 
