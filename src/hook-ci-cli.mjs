@@ -1,10 +1,11 @@
 import {} from "systemd";
 import execa from "execa";
-import { join } from "path";
+import { join, dirname } from "path";
 import { createWriteStream } from "fs";
 import Queue from "bull";
 import micro from "micro";
 import createHandler from "github-webhook-handler";
+import globby from "globby";
 
 const dataDir = "/var/lib/hook-ci";
 
@@ -116,9 +117,18 @@ async function startJob(job) {
   proc.stderr.pipe(process.stderr);
   await proc;
 
+  for (const pkg in await globby(["**/package.json"])) {
+    console.log("PACKAGE", pkg, dirname(pkg));
+    await runNpm(job, wd, dirname(pkg));
+  }
+}
+
+async function runNpm(job, wd, dir) {
+  const pkgDir = join(wd,dir);
+
   job.progress(10);
 
-  proc = execa("npm", ["install"], { cwd: wd });
+  proc = execa("npm", ["install"], { cwd: pkgDir });
   proc.stdout.pipe(
     createWriteStream(join(wd, "install.stdout.log"), utf8Encoding)
   );
@@ -129,7 +139,7 @@ async function startJob(job) {
 
   job.progress(30);
 
-  proc = execa("npm", ["test"], { cwd: wd });
+  proc = execa("npm", ["test"], { cwd: pkgDir });
   proc.stdout.pipe(
     createWriteStream(join(wd, "test.stdout.log"), utf8Encoding)
   );
@@ -140,7 +150,7 @@ async function startJob(job) {
 
   job.progress(80);
 
-  proc = execa("npm", ["run", "package"], { cwd: wd });
+  proc = execa("npm", ["run", "package"], { cwd: pkgDir });
   proc.stdout.pipe(
     createWriteStream(join(wd, "package.stdout.log"), utf8Encoding)
   );
