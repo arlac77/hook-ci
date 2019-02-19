@@ -128,7 +128,7 @@ async function runNpm(job, wd, dir) {
 
   job.progress(10);
 
-  proc = execa("npm", ["install"], { cwd: pkgDir });
+  let proc = execa("npm", ["install"], { cwd: pkgDir });
   proc.stdout.pipe(
     createWriteStream(join(wd, "install.stdout.log"), utf8Encoding)
   );
