@@ -117,14 +117,14 @@ async function startJob(job) {
   proc.stderr.pipe(process.stderr);
   await proc;
 
-  for (const pkg in await globby(["**/package.json"])) {
+  for (const pkg in await globby(["**/package.json"], { cwd: wd })) {
     console.log("PACKAGE", pkg, dirname(pkg));
     await runNpm(job, wd, dirname(pkg));
   }
 }
 
 async function runNpm(job, wd, dir) {
-  const pkgDir = join(wd,dir);
+  const pkgDir = join(wd, dir);
 
   job.progress(10);
 
