@@ -102,8 +102,9 @@ const server = micro(async (req, res) => {
 
 server.listen(port);
 
+const utf8Encoding = { encoding: "utf8" };
+
 async function startJob(job) {
-  const utf8Encoding = { encoding: "utf8" };
 
   const url = job.data.repository.url;
   console.log("start: ", url);
