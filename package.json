@@ -35,6 +35,7 @@
     "bull": "^3.6.0",
     "execa": "^1.0.0",
     "github-webhook-handler": "^0.7.0",
+    "globby": "^9.0.0",
     "micro": "^9.3.3",
     "systemd": "^0.3.1"
   },
@@ -45,7 +46,7 @@
     "esm": "^3.2.5",
     "got": "^9.6.0",
     "markdown-doctest": "^0.9.1",
-    "npm-pkgbuild": "^5.0.0",
+    "npm-pkgbuild": "^5.0.3",
     "rollup": "^1.2.2",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-commonjs": "^9.2.0",
