@@ -15,13 +15,13 @@ const errorQueue = new Queue("error", "redis://127.0.0.1:6379");
 
 cleanupQueue.process(async (job, done) => {
   console.log("cleanup process", job);
+  if(job.data.after) {
+    const wd = join(dataDir, job.data.after);
 
-  const wd = join(dataDir, job.data.head_commit.id);
+    console.log(`rm -rf ${wd}`, job);
 
-  console.log(`rm -rf ${wd}`, job);
-
-  proc = await execa("rm", ["-rf", wd], { cwd: wd });
-
+    const proc = await execa("rm", ["-rf", wd], { cwd: wd });
+  }
   done();
 });
 
