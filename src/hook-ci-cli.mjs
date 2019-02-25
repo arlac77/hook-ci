@@ -6,6 +6,8 @@ import Queue from "bull";
 import micro from "micro";
 import createHandler from "github-webhook-handler";
 import globby from "globby";
+import { utf8Encoding } from "./util";
+import { runNpm } from "./npm";
 
 const dataDir = "/var/lib/hook-ci";
 
@@ -15,7 +17,7 @@ const errorQueue = new Queue("error", "redis://127.0.0.1:6379");
 
 cleanupQueue.process(async (job, done) => {
   console.log("cleanup process", job);
-  if(job.data.after) {
+  if (job.data.after) {
     const wd = join(dataDir, job.data.after);
 
     console.log(`rm -rf ${wd}`, job);
@@ -102,10 +104,7 @@ const server = micro(async (req, res) => {
 
 server.listen(port);
 
-const utf8Encoding = { encoding: "utf8" };
-
 async function startJob(job) {
-
   const url = job.data.repository.url;
   console.log("start: ", url);
   const wd = join(dataDir, job.data.head_commit.id);
@@ -122,43 +121,4 @@ async function startJob(job) {
     console.log("PACKAGE", pkg, dirname(pkg));
     await runNpm(job, wd, dirname(pkg));
   }
-}
-
-async function runNpm(job, wd, dir) {
-  const pkgDir = join(wd, dir);
-
-  job.progress(10);
-
-  let proc = execa("npm", ["install"], { cwd: pkgDir });
-  proc.stdout.pipe(
-    createWriteStream(join(wd, "install.stdout.log"), utf8Encoding)
-  );
-  proc.stderr.pipe(
-    createWriteStream(join(wd, "install.stderr.log"), utf8Encoding)
-  );
-  await proc;
-
-  job.progress(30);
-
-  proc = execa("npm", ["test"], { cwd: pkgDir });
-  proc.stdout.pipe(
-    createWriteStream(join(wd, "test.stdout.log"), utf8Encoding)
-  );
-  proc.stderr.pipe(
-    createWriteStream(join(wd, "test.stderr.log"), utf8Encoding)
-  );
-  await proc;
-
-  job.progress(80);
-
-  proc = execa("npm", ["run", "package"], { cwd: pkgDir });
-  proc.stdout.pipe(
-    createWriteStream(join(wd, "package.stdout.log"), utf8Encoding)
-  );
-  proc.stderr.pipe(
-    createWriteStream(join(wd, "package.stderr.log"), utf8Encoding)
-  );
-  await proc;
-
-  job.progress(100);
 }
