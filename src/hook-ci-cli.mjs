@@ -4,16 +4,17 @@ import { join, dirname } from "path";
 import { createWriteStream } from "fs";
 import Queue from "bull";
 import micro from "micro";
-import createHandler from "github-webhook-handler";
 import globby from "globby";
 import { utf8Encoding } from "./util";
 import { runNpm } from "./npm";
+import { createHookHandler } from "./hook-handler";
 
 const dataDir = "/var/lib/hook-ci";
+const REDIS_URL = process.env.REDIS_URL || "redis://127.0.0.1:6379";
 
-const requestQueue = new Queue("post-requests", "redis://127.0.0.1:6379");
-const cleanupQueue = new Queue("cleanup", "redis://127.0.0.1:6379");
-const errorQueue = new Queue("error", "redis://127.0.0.1:6379");
+const requestQueue = new Queue("post-requests", REDIS_URL);
+const cleanupQueue = new Queue("cleanup", REDIS_URL);
+const errorQueue = new Queue("error", REDIS_URL);
 
 cleanupQueue.process(async (job, done) => {
   console.log("cleanup process", job);
@@ -56,38 +57,7 @@ if (process.env.PORT !== undefined) {
   }
 }
 
-const handler = createHandler({
-  path: "/webhook",
-  secret: process.env.WEBHOOK_SECRET
-});
-
-handler.on("error", err => {
-  console.error("Error:", err.message);
-});
-
-handler.on("ping", async event => {
-  console.log(
-    "Received a ping event for %s",
-    event.payload.repository.full_name
-  );
-
-  const counts = await requestQueue.getJobCounts();
-  console.log(counts);
-});
-
-handler.on("push", async event => {
-  try {
-    console.log(
-      "Received a push event for %s to %s",
-      event.payload.repository.full_name,
-      event.payload.ref
-    );
-
-    requestQueue.add(event.payload);
-  } catch (e) {
-    console.error(e);
-  }
-});
+const handler = createHookHandler(requestQueue);
 
 const server = micro(async (req, res) => {
   handler(req, res, err => {
