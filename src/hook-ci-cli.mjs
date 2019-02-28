@@ -16,7 +16,14 @@ const requestQueue = new Queue("post-requests", REDIS_URL);
 const cleanupQueue = new Queue("cleanup", REDIS_URL);
 const errorQueue = new Queue("error", REDIS_URL);
 
+requestQueue.on('cleaned', function (job, type) {
+  console.log('Cleaned %s %s jobs', job.length, type);
+});
+
 cleanupQueue.process(async (job, done) => {
+  requestQueue.clean(5000);
+  //queue.clean(10000, 'failed');
+
   console.log("cleanup process", job);
   if (job.data.after) {
     const wd = join(dataDir, job.data.after);
