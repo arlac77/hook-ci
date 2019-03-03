@@ -35,7 +35,7 @@
     "bull": "^3.6.0",
     "execa": "^1.0.0",
     "github-webhook-handler": "^0.7.0",
-    "globby": "^9.0.0",
+    "globby": "^9.1.0",
     "micro": "^9.3.3",
     "systemd": "^0.3.1"
   },
