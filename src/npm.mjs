@@ -8,7 +8,7 @@ export async function runNpm(job, wd, dir) {
 
   async function e(scriptName) {
     const wellKnownScripts = new Set(["install", "test", "publish"]);
-    args = wellKnownScripts.has(scriptName)
+    const args = wellKnownScripts.has(scriptName)
       ? [scriptName]
       : ["run", scriptName];
     const proc = execa("npm", [scriptName], { cwd: pkgDir });
