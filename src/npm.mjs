@@ -1,4 +1,7 @@
 import { utf8Encoding } from "./util";
+import { join } from "path";
+import { createWriteStream } from "fs";
+import execa from "execa";
 
 export async function runNpm(job, wd, dir) {
   const pkgDir = join(wd, dir);

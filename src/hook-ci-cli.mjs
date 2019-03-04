@@ -1,7 +1,6 @@
 import {} from "systemd";
 import execa from "execa";
 import { join, dirname } from "path";
-import { createWriteStream } from "fs";
 import Queue from "bull";
 import micro from "micro";
 import globby from "globby";
@@ -16,8 +15,8 @@ const requestQueue = new Queue("post-requests", REDIS_URL);
 const cleanupQueue = new Queue("cleanup", REDIS_URL);
 const errorQueue = new Queue("error", REDIS_URL);
 
-requestQueue.on('cleaned', function (job, type) {
-  console.log('Cleaned %s %s jobs', job.length, type);
+requestQueue.on("cleaned", function(job, type) {
+  console.log("Cleaned %s %s jobs", job.length, type);
 });
 
 cleanupQueue.process(async (job, done) => {
