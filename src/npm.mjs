@@ -12,7 +12,10 @@ export async function runNpm(job, wd, dir) {
     const args = wellKnownScripts.has(scriptName)
       ? [scriptName]
       : ["run", scriptName];
-    const proc = execa("npm", [scriptName], { cwd: pkgDir });
+
+    console.log(`npm ${args.join(" ")}`);
+
+    const proc = execa("npm", args, { cwd: pkgDir });
     proc.stdout.pipe(
       createWriteStream(join(wd, `${scriptName}.stdout.log`), utf8Encoding)
     );
