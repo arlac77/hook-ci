@@ -17,6 +17,7 @@ pre_upgrade() {
 
 post_upgrade() {
 	systemctl daemon-reload
+	systemctl start {{name}}
 	systemctl start {{name}}.socket
 }
 
