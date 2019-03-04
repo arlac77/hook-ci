@@ -15,7 +15,7 @@ const requestQueue = new Queue("post-requests", REDIS_URL);
 const cleanupQueue = new Queue("cleanup", REDIS_URL);
 const errorQueue = new Queue("error", REDIS_URL);
 
-requestQueue.on("cleaned", function(job, type) {
+requestQueue.on("cleaned", (job, type) => {
   console.log("Cleaned %s %s jobs", job.length, type);
 });
 
