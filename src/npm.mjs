@@ -3,11 +3,12 @@ import { join } from "path";
 import { createWriteStream } from "fs";
 import execa from "execa";
 
+const wellKnownScripts = new Set(["install", "test", "publish"]);
+
 export async function runNpm(job, wd, dir) {
   const pkgDir = join(wd, dir);
 
   async function e(scriptName) {
-    const wellKnownScripts = new Set(["install", "test", "publish"]);
     const args = wellKnownScripts.has(scriptName)
       ? [scriptName]
       : ["run", scriptName];

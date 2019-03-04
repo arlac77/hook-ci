@@ -17,7 +17,7 @@ export function createHookHandler(requestQueue) {
     );
 
     const counts = await requestQueue.getJobCounts();
-    console.log(counts);
+    console.log("COUNTS", counts);
   });
 
   handler.on("push", async event => {
