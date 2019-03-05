@@ -16,7 +16,7 @@ const cleanupQueue = new Queue("cleanup", REDIS_URL);
 const errorQueue = new Queue("error", REDIS_URL);
 
 requestQueue.on("cleaned", (job, type) => {
-  console.log("Cleaned %s %s jobs", job.length, type);
+  console.log("requestQueue cleaned %s %s jobs", job.length, type);
 });
 
 cleanupQueue.process(async job => {
@@ -53,7 +53,7 @@ requestQueue.process(async job => {
 });
 
 requestQueue.on("completed", (job, result) => {
-  console.log(`requestQueue completed with result ${result}`);
+  console.log("requestQueue completed", result);
 });
 
 let port = "systemd";
