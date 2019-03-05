@@ -19,11 +19,14 @@ requestQueue.on("cleaned", (job, type) => {
   console.log("Cleaned %s %s jobs", job.length, type);
 });
 
-cleanupQueue.process(async (job, done) => {
+cleanupQueue.process(async job => {
+  console.log("cleanupQueue process");
+
   requestQueue.clean(5000);
   //queue.clean(10000, 'failed');
 
-  console.log("cleanup process");
+  console.log("cleanupQueue after:", job.data.after);
+
   if (job.data.after) {
     const wd = join(dataDir, job.data.after);
 
@@ -31,27 +34,26 @@ cleanupQueue.process(async (job, done) => {
 
     const proc = await execa("rm", ["-rf", wd], { cwd: wd });
   }
-  done();
 });
 
-errorQueue.process(async (job, done) => {
-  console.log("error process");
-  done();
+errorQueue.process(async job => {
+  console.log("errorQueue process");
 });
 
-requestQueue.process(async (job, done) => {
-  console.log("post-requests process");
+requestQueue.process(async job => {
+  console.log("requestQueue process");
   try {
-    done(null, await startJob(job));
+    const result = await startJob(job);
     cleanupQueue.add(job);
+    return result;
   } catch (e) {
-    done(e);
     errorQueue.add(job);
+    throw e;
   }
 });
 
 requestQueue.on("completed", (job, result) => {
-  console.log(`post-requests completed with result ${result}`);
+  console.log(`requestQueue completed with result ${result}`);
 });
 
 let port = "systemd";
@@ -87,14 +89,19 @@ async function startJob(job) {
 
   job.progress(1);
 
-  let proc;
-  proc = execa("git", ["clone", "--depth", "50", url, wd]);
+  const proc = execa("git", ["clone", "--depth", "10", url, wd]);
   proc.stdout.pipe(process.stdout);
   proc.stderr.pipe(process.stderr);
   await proc;
 
   for (const pkg of await globby(["**/package.json"], { cwd: wd })) {
-    console.log("PACKAGE", pkg, dirname(pkg));
+    console.log("PACKAGE.JSON", pkg, dirname(pkg));
     await runNpm(job, wd, dirname(pkg));
   }
+
+  return {
+    url,
+    wd,
+    arch: process.arch
+  };
 }
