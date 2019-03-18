@@ -25,7 +25,7 @@ cleanupQueue.process(async job => {
   requestQueue.clean(5000);
   //queue.clean(10000, 'failed');
 
-  console.log("cleanupQueue", job.data.after);
+  console.log("cleanupQueue", job.data.data);
 
   if (job.data.after) {
     const wd = join(dataDir, job.data.after);
