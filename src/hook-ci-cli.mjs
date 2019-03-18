@@ -20,7 +20,7 @@ requestQueue.on("cleaned", (job, type) => {
 });
 
 cleanupQueue.process(async job => {
-  console.log("cleanupQueue process");
+  //console.log("cleanupQueue process");
 
   requestQueue.clean(5000);
   //queue.clean(10000, 'failed');
@@ -32,12 +32,13 @@ cleanupQueue.process(async job => {
 
     console.log(`rm -rf ${wd}`);
 
-    const proc = await execa("rm", ["-rf", wd], { cwd: wd });
+    const proc = await execa("rm", ["-rf", wd]);
   }
 });
 
 errorQueue.process(async job => {
   console.log("errorQueue process");
+  console.log("errorQueue", job.data.data.after);
 });
 
 requestQueue.process(async job => {
