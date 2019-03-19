@@ -20,8 +20,6 @@ requestQueue.on("cleaned", (job, type) => {
 });
 
 cleanupQueue.process(async job => {
-  //console.log("cleanupQueue process");
-
   requestQueue.clean(5000);
   //queue.clean(10000, 'failed');
 
@@ -42,7 +40,6 @@ errorQueue.process(async job => {
 });
 
 requestQueue.process(async job => {
-  console.log("requestQueue process");
   try {
     const result = await startJob(job);
     cleanupQueue.add(job);
