@@ -23,10 +23,10 @@ cleanupQueue.process(async job => {
   requestQueue.clean(5000);
   //queue.clean(10000, 'failed');
 
-  console.log("cleanupQueue", job.data.data.after);
+  console.log("cleanupQueue", job.data.after);
 
-  if (job.data.data.after) {
-    const wd = join(dataDir, job.data.data.after);
+  if (job.data.after) {
+    const wd = join(dataDir, job.data.after);
 
     console.log(`rm -rf ${wd}`);
 
@@ -35,16 +35,16 @@ cleanupQueue.process(async job => {
 });
 
 errorQueue.process(async job => {
-  console.log("errorQueue", job.data);
+  console.log("errorQueue", job);
 });
 
 requestQueue.process(async job => {
   try {
     const result = await startJob(job);
-    cleanupQueue.add(job);
+    cleanupQueue.add(job.data);
     return result;
   } catch (e) {
-    errorQueue.add(job);
+    errorQueue.add({ error: e, data: job.data });
     throw e;
   }
 });
