@@ -44,7 +44,7 @@ requestQueue.process(async job => {
     cleanupQueue.add(job.data);
     return result;
   } catch (e) {
-    errorQueue.add({ error: e, data: job.data });
+    errorQueue.add({ error: e });
     throw e;
   }
 });
