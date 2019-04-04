@@ -35,7 +35,7 @@ cleanupQueue.process(async job => {
 });
 
 errorQueue.process(async job => {
-  console.log("errorQueue", job);
+  console.log("errorQueue", job.data.error);
 });
 
 requestQueue.process(async job => {
