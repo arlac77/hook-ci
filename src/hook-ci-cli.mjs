@@ -4,9 +4,33 @@ import { join, dirname } from "path";
 import Queue from "bull";
 import micro from "micro";
 import globby from "globby";
+import { version, description } from "../package.json";
 import { utf8Encoding } from "./util";
 import { runNpm } from "./npm";
 import { createHookHandler } from "./hook-handler";
+import program from "commander";
+
+program
+  .version(version)
+  .description(description)
+  .option("-c, --config <dir>", "use config directory")
+  .action(async () => {
+    const configDir = process.env.CONFIGURATION_DIRECTORY || program.config;
+
+    const config = await expand(configDir ? "${include('config.json')}" : {}, {
+      constants: {
+        basedir: configDir || process.cwd(),
+        installdir: resolve(__dirname, "..")
+      },
+      default: {
+        workspace: { dir: "/tmp" },
+        redis: { url: "${merge(%REDIS_URL%,'redis://127.0.0.1:6379')}" }
+      }
+    });
+
+    console.log(config);
+  })
+  .parse(process.argv);
 
 const dataDir = "/var/lib/hook-ci";
 const REDIS_URL = process.env.REDIS_URL || "redis://127.0.0.1:6379";

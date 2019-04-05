@@ -33,6 +33,8 @@
   },
   "dependencies": {
     "bull": "^3.6.0",
+    "commander": "^2.20.0",
+    "config-expander": "^10.1.0",
     "execa": "^1.0.0",
     "github-webhook-handler": "^0.7.0",
     "globby": "^9.1.0",
