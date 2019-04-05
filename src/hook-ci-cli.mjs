@@ -9,6 +9,7 @@ import { utf8Encoding } from "./util";
 import { runNpm } from "./npm";
 import { createHookHandler } from "./hook-handler";
 import program from "commander";
+import { expand } from "config-expander";
 
 program
   .version(version)
@@ -23,8 +24,8 @@ program
         installdir: resolve(__dirname, "..")
       },
       default: {
-        workspace: { dir: "/tmp" },
-        redis: { url: "${merge(%REDIS_URL%,'redis://127.0.0.1:6379')}" }
+        workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp')}" },
+        redis: { url: "${first(env.REDIS_URL,'redis://127.0.0.1:6379')}" }
       }
     });
 
