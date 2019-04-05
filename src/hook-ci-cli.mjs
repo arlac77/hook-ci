@@ -7,6 +7,7 @@ import globby from "globby";
 import { version, description } from "../package.json";
 import { utf8Encoding } from "./util";
 import { runNpm } from "./npm";
+import { pkgbuild } from "./pkgbuild";
 import { createHookHandler } from "./hook-handler";
 import program from "commander";
 import { expand } from "config-expander";
@@ -119,6 +120,11 @@ async function startJob(job) {
   for (const pkg of await globby(["**/package.json"], { cwd: wd })) {
     console.log("PACKAGE.JSON", pkg, dirname(pkg));
     await runNpm(job, wd, dirname(pkg));
+  }
+
+  for (const pkg of await globby(["**/PKGBUILD"], { cwd: wd })) {
+    console.log("PKGBUILD", pkg, dirname(pkg));
+    await pkgbuild(job, wd, dirname(pkg));
   }
 
   return {
