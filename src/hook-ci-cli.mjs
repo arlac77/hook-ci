@@ -1,6 +1,6 @@
 import {} from "systemd";
 import execa from "execa";
-import { join, dirname } from "path";
+import { join, dirname, resolve } from "path";
 import Queue from "bull";
 import micro from "micro";
 import globby from "globby";
