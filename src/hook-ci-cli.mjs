@@ -25,6 +25,11 @@ program
         installdir: resolve(__dirname, "..")
       },
       default: {
+        git: {
+          clone: {
+            depth: 10
+          }
+        }
         workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp')}" },
         redis: { url: "${first(env.REDIS_URL,'redis://127.0.0.1:6379')}" }
       }
