@@ -22,9 +22,6 @@
   "bin": {
     "hook-ci": "bin/hook-ci"
   },
-  "files": [
-    "bin"
-  ],
   "scripts": {
     "cover": "c8 --temp-directory build/coverage ava && c8 report -r lcov --temp-directory build/coverage",
     "docs": "documentation readme src/hook-ci-cli.mjs --section=API",
@@ -52,12 +49,12 @@
     "got": "^9.6.0",
     "markdown-doctest": "^0.9.1",
     "npm-pkgbuild": "^5.2.0",
-    "rollup": "^1.9.0",
+    "rollup": "^1.9.1",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-commonjs": "^9.3.4",
     "rollup-plugin-executable": "^1.4.5",
     "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^4.2.1",
+    "rollup-plugin-node-resolve": "^4.2.2",
     "semantic-release": "^15.13.8",
     "x-hub-signature": "^1.2.0"
   },
@@ -68,6 +65,9 @@
     "type": "git",
     "url": "https://github.com/arlac77/hook-ci.git"
   },
+  "files": [
+    "bin"
+  ],
   "bugs": {
     "url": "https://github.com/arlac77/hook-ci/issues"
   },
