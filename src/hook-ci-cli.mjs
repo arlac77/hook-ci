@@ -1,4 +1,4 @@
-import {} from "systemd";
+//import {} from "systemd";
 import execa from "execa";
 import { join, dirname, resolve } from "path";
 import Queue from "bull";
@@ -40,6 +40,7 @@ program
 
     console.log(config);
 
+    try {
     const requestQueue = new Queue("post-requests", config.redis.url);
     const cleanupQueue = new Queue("cleanup", config.redis.url);
     const errorQueue = new Queue("error", config.redis.url);
@@ -97,9 +98,7 @@ program
       });
     });
 
-    server.on( 'listening', (...args) => console.log(...args));
-
-    server.listen(config.http.port);
+    const listener = server.listen(config.http.port,() => console.log('listen on',listener.address()));
 
     async function startJob(job) {
       const url = job.data.repository.url;
@@ -129,5 +128,7 @@ program
         arch: process.arch
       };
     }
+    } catch(e) {
+     console.log(e); }
   })
   .parse(process.argv);
