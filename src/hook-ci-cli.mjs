@@ -12,6 +12,18 @@ import { createHookHandler } from "./hook-handler";
 import program from "commander";
 import { expand } from "config-expander";
 
+import sockets from 'socket-activation';
+
+try {
+  listeners = sockets.collect('app');
+  console.log('LISTENERS', listeners);
+} catch (err) {
+  console.log('Not using socket activation',err)
+  if (err.code !== 'ESRCH') {
+    throw err
+  }
+}
+
 program
   .version(version)
   .description(description)

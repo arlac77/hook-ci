@@ -39,7 +39,7 @@
     "github-webhook-handler": "^0.7.0",
     "globby": "^9.1.0",
     "micro": "^9.3.3",
-    "systemd": "^0.3.1"
+    "socket-activation": "^3.1.0"
   },
   "devDependencies": {
     "ava": "^1.4.1",
