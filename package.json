@@ -22,11 +22,14 @@
   "bin": {
     "hook-ci": "bin/hook-ci"
   },
+  "files": [
+    "bin"
+  ],
   "scripts": {
     "cover": "c8 --temp-directory build/coverage ava && c8 report -r lcov --temp-directory build/coverage",
     "docs": "documentation readme src/hook-ci-cli.mjs --section=API",
     "lint": "documentation lint src/hook-ci-cli.mjs",
-    "package": "npm-pkgbuild  --npm-dist --npm-modules pkgbuild pacman makepkg",
+    "package": "npm-pkgbuild --npm-dist --npm-modules pkgbuild pacman makepkg",
     "posttest": "npm run prepare && markdown-doctest",
     "prepare": "rollup -c",
     "test": "ava"
@@ -95,7 +98,7 @@
     "install": "pacman/install.sh",
     "depends": {
       "redis": ">=5.0.3",
-      "systemd": ">=240.0"
+      "systemd": ">=241.0"
     },
     "installdir": "/services/${name}"
   },
