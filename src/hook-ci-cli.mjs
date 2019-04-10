@@ -97,6 +97,8 @@ program
       });
     });
 
+    server.on( 'listening', (...args) => console.log(...args));
+
     server.listen(config.http.port);
 
     async function startJob(job) {
@@ -106,7 +108,7 @@ program
 
       job.progress(1);
 
-      const proc = execa("git", ["clone", "--depth", "10", url, wd]);
+      const proc = execa("git", ["clone", "--depth", config.git.clone.depth, url, wd]);
       proc.stdout.pipe(process.stdout);
       proc.stderr.pipe(process.stderr);
       await proc;
