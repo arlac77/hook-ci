@@ -10,15 +10,19 @@ import { pkgbuild } from "./pkgbuild";
 import { createHookHandler } from "./hook-handler";
 import program from "commander";
 import { expand } from "config-expander";
-import sd from 'sd-daemon';
-
-sd.notify('READY=1\nSTATUS=running');
+//import sd from "sd-daemon";
 
 program
   .version(version)
   .description(description)
   .option("-c, --config <dir>", "use config directory")
   .action(async () => {
+    let sd = { notify: (...args) => console.log(...args), listener: () => [] };
+    try {
+      sd = await import("sd-daemon");
+    } catch (e) {}
+    sd.notify("READY=1\nSTATUS=starting");
+
     const configDir = process.env.CONFIGURATION_DIRECTORY || program.config;
 
     const config = await expand(configDir ? "${include('config.json')}" : {}, {
@@ -40,109 +44,115 @@ program
       }
     });
 
-try {
-  const listeners = sd.listeners();
-  console.log('LISTENERS', listeners);
-  if(listeners.length > 0)
-  config.http.port = listeners[0];
-} catch (err) {
-  console.log('Not using socket activation',err)
-}
+    try {
+      const listeners = sd.listeners();
+      console.log("LISTENERS", listeners);
+      if (listeners.length > 0) config.http.port = listeners[0];
+    } catch (err) {
+      console.log("Not using socket activation", err);
+    }
 
     console.log(config);
 
     try {
-    const requestQueue = new Queue("post-requests", config.redis.url);
-    const cleanupQueue = new Queue("cleanup", config.redis.url);
-    const errorQueue = new Queue("error", config.redis.url);
+      const requestQueue = new Queue("post-requests", config.redis.url);
+      const cleanupQueue = new Queue("cleanup", config.redis.url);
+      const errorQueue = new Queue("error", config.redis.url);
 
-    requestQueue.on("cleaned", (job, type) => {
-      console.log("requestQueue cleaned %s %s jobs", job.length, type);
-    });
+      requestQueue.on("cleaned", (job, type) => {
+        console.log("requestQueue cleaned %s %s jobs", job.length, type);
+      });
 
-    cleanupQueue.process(async job => {
-      requestQueue.clean(5000);
-      //queue.clean(10000, 'failed');
+      cleanupQueue.process(async job => {
+        requestQueue.clean(5000);
+        //queue.clean(10000, 'failed');
 
-      console.log("cleanupQueue", job.data.after);
+        console.log("cleanupQueue", job.data.after);
 
-      if (job.data.after) {
-        const wd = join(config.workspace.dir, job.data.after);
+        if (job.data.after) {
+          const wd = join(config.workspace.dir, job.data.after);
 
-        console.log(`rm -rf ${wd}`);
+          console.log(`rm -rf ${wd}`);
 
-        const proc = await execa("rm", ["-rf", wd]);
-      }
-    });
-
-    errorQueue.process(async job => {
-      console.log("errorQueue", job.data.error);
-    });
-
-    requestQueue.process(async job => {
-      try {
-        const result = await startJob(job);
-        cleanupQueue.add(job.data);
-        return result;
-      } catch (e) {
-        errorQueue.add({ error: e });
-        throw e;
-      }
-    });
-
-    requestQueue.on("completed", (job, result) => {
-      console.log("requestQueue completed", result);
-    });
-
-    const handler = createHookHandler(requestQueue);
-
-    const server = micro(async (req, res) => {
-      handler(req, res, err => {
-        if (err) {
-          console.log(err);
-          res.writeHead(404);
-          res.end("no such location");
-        } else {
-          res.writeHead(200);
-          res.end("woot");
+          const proc = await execa("rm", ["-rf", wd]);
         }
       });
-    });
 
-    const listener = server.listen(config.http.port,() => {
-      console.log('listen on',listener.address());
-      sd.notify('READY=1\nSTATUS=running');
-     });
- 
-    async function startJob(job) {
-      const url = job.data.repository.url;
-      console.log("start: ", url);
-      const wd = join(config.workspace.dir, job.data.head_commit.id);
+      errorQueue.process(async job => {
+        console.log("errorQueue", job.data.error);
+      });
 
-      job.progress(1);
+      requestQueue.process(async job => {
+        try {
+          const result = await startJob(job);
+          cleanupQueue.add(job.data);
+          return result;
+        } catch (e) {
+          errorQueue.add({ error: e });
+          throw e;
+        }
+      });
 
-      const proc = execa("git", ["clone", "--depth", config.git.clone.depth, url, wd]);
-      proc.stdout.pipe(process.stdout);
-      proc.stderr.pipe(process.stderr);
-      await proc;
+      requestQueue.on("completed", (job, result) => {
+        console.log("requestQueue completed", result);
+      });
 
-      for (const pkg of await globby(["**/package.json"], { cwd: wd })) {
-        console.log("PACKAGE.JSON", pkg, dirname(pkg));
-        await runNpm(job, wd, dirname(pkg));
+      const handler = createHookHandler(requestQueue);
+
+      const server = micro(async (req, res) => {
+        handler(req, res, err => {
+          if (err) {
+            console.log(err);
+            res.writeHead(404);
+            res.end("no such location");
+          } else {
+            res.writeHead(200);
+            res.end("woot");
+          }
+        });
+      });
+
+      const listener = server.listen(config.http.port, () => {
+        console.log("listen on", listener.address());
+        sd.notify("READY=1\nSTATUS=running");
+      });
+
+      async function startJob(job) {
+        const url = job.data.repository.url;
+        console.log("start: ", url);
+        const wd = join(config.workspace.dir, job.data.head_commit.id);
+
+        job.progress(1);
+
+        const proc = execa("git", [
+          "clone",
+          "--depth",
+          config.git.clone.depth,
+          url,
+          wd
+        ]);
+        proc.stdout.pipe(process.stdout);
+        proc.stderr.pipe(process.stderr);
+        await proc;
+
+        for (const pkg of await globby(["**/package.json"], { cwd: wd })) {
+          console.log("PACKAGE.JSON", pkg, dirname(pkg));
+          await runNpm(job, wd, dirname(pkg));
+        }
+
+        for (const pkg of await globby(["**/PKGBUILD"], { cwd: wd })) {
+          console.log("PKGBUILD", pkg, dirname(pkg));
+          await pkgbuild(job, wd, dirname(pkg));
+        }
+
+        return {
+          url,
+          wd,
+          arch: process.arch
+        };
       }
-
-      for (const pkg of await globby(["**/PKGBUILD"], { cwd: wd })) {
-        console.log("PKGBUILD", pkg, dirname(pkg));
-        await pkgbuild(job, wd, dirname(pkg));
-      }
-
-      return {
-        url,
-        wd,
-        arch: process.arch
-      };
+    } catch (e) {
+      console.log(e);
     }
-    } catch(e) {
-     console.log(e); }
   })
   .parse(process.argv);

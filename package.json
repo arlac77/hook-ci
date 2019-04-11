@@ -38,7 +38,9 @@
     "execa": "^1.0.0",
     "github-webhook-handler": "^0.7.0",
     "globby": "^9.1.0",
-    "micro": "^9.3.3",
+    "micro": "^9.3.3"
+  },
+  "optionalDependencies": {
     "sd-daemon": "^1.0.1"
   },
   "devDependencies": {
