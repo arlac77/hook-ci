@@ -1,7 +1,9 @@
 [Socket]
 ListenStream=3101
-BindIPv6Only=both
+#BindIPv6Only=both
+#FileDescriptorName=http
 MaxConnections=4
+NoDelay=true
 
 [Install]
 RequiredBy={{name}}.service

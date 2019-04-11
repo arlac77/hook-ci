@@ -1,4 +1,3 @@
-//import {} from "systemd";
 import execa from "execa";
 import { join, dirname, resolve } from "path";
 import Queue from "bull";
@@ -12,17 +11,9 @@ import { createHookHandler } from "./hook-handler";
 import program from "commander";
 import { expand } from "config-expander";
 
-import sockets from 'socket-activation';
+import sd from 'sd-daemon';
 
-try {
-  listeners = sockets.collect('app');
-  console.log('LISTENERS', listeners);
-} catch (err) {
-  console.log('Not using socket activation',err)
-  if (err.code !== 'ESRCH') {
-    throw err
-  }
-}
+console.log('START',process.env);
 
 program
   .version(version)
@@ -49,6 +40,15 @@ program
         }
       }
     });
+
+try {
+  const listeners = sd.listeners();
+  console.log('LISTENERS', listeners);
+  if(listeners.length > 0)
+  config.http.port = listeners[0];
+} catch (err) {
+  console.log('Not using socket activation',err)
+}
 
     console.log(config);
 

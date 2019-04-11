@@ -46,7 +46,8 @@ const external = [
   "vm",
   "zlib",
 
-  "bull"
+  "bull",
+  "sd-daemon"
 ];
 
 export default Object.keys(pkg.bin || {}).map(name => {
