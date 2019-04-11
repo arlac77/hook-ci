@@ -98,11 +98,16 @@
   "pacman": {
     "groups": "webhook",
     "install": "pacman/install.sh",
+    "backup": "etc/${name}/config.json",
     "depends": {
       "redis": ">=5.0.3",
       "systemd": ">=241.0"
     },
-    "installdir": "/services/${name}"
+    "installdir": "/services/${name}",
+    "content": {
+      "/usr/lib/tmpfiles.d/${name}.conf": "pacman/tmpfiles.conf",
+      "/etc/${name}/config.json": "config/config.json"
+    }
   },
   "systemd": {
     "units": {

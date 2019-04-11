@@ -1,0 +1,12 @@
+{
+  "git": {
+    "clone": {
+      "depth": 5
+    }
+  },
+  "build": {
+    "npm": {
+      "targets": ["install", "test", "package"]
+    }
+  }
+}
