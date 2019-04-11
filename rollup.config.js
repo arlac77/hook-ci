@@ -67,7 +67,9 @@ export default Object.keys(pkg.bin || {}).map(name => {
         preferConst: true,
         compact: true
       }),
-      cleanup(),
+      cleanup({
+        extensions: ['js','mjs','jsx','tag'] 
+      }),
       executable()
     ],
     external
