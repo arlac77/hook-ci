@@ -10,10 +10,9 @@ import { pkgbuild } from "./pkgbuild";
 import { createHookHandler } from "./hook-handler";
 import program from "commander";
 import { expand } from "config-expander";
-
 import sd from 'sd-daemon';
 
-console.log('START',process.env);
+sd.notify('READY=1\nSTATUS=running');
 
 program
   .version(version)
@@ -110,8 +109,11 @@ try {
       });
     });
 
-    const listener = server.listen(config.http.port,() => console.log('listen on',listener.address()));
-
+    const listener = server.listen(config.http.port,() => {
+      console.log('listen on',listener.address());
+      sd.notify('READY=1\nSTATUS=running');
+     });
+ 
     async function startJob(job) {
       const url = job.data.repository.url;
       console.log("start: ", url);
