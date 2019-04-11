@@ -10,7 +10,6 @@ import { pkgbuild } from "./pkgbuild";
 import { createHookHandler } from "./hook-handler";
 import program from "commander";
 import { expand } from "config-expander";
-//import sd from "sd-daemon";
 
 program
   .version(version)
@@ -44,13 +43,8 @@ program
       }
     });
 
-    try {
-      const listeners = sd.listeners();
-      console.log("LISTENERS", listeners);
-      if (listeners.length > 0) config.http.port = listeners[0];
-    } catch (err) {
-      console.log("Not using socket activation", err);
-    }
+    const listeners = sd.listeners();
+    if (listeners.length > 0) config.http.port = listeners[0];
 
     console.log(config);
 
