@@ -1,4 +1,4 @@
-import createHandler from "github-webhook-handler";
+//import createHandler from "github-webhook-handler";
 
 export function createHookHandler(config,requestQueue) {
   const handler = createHandler(config.http.hook);
