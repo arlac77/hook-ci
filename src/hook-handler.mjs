@@ -1,10 +1,7 @@
 import createHandler from "github-webhook-handler";
 
-export function createHookHandler(requestQueue) {
-  const handler = createHandler({
-    path: "/webhook",
-    secret: process.env.WEBHOOK_SECRET
-  });
+export function createHookHandler(config,requestQueue) {
+  const handler = createHandler(config.http.hook);
 
   handler.on("error", err => {
     console.error("Error:", err.message);

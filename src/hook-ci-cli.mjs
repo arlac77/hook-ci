@@ -1,13 +1,12 @@
 import execa from "execa";
 import { join, dirname, resolve } from "path";
 import Queue from "bull";
-import micro from "micro";
 import globby from "globby";
 import { version, description } from "../package.json";
 import { utf8Encoding } from "./util";
 import { runNpm } from "./npm";
 import { pkgbuild } from "./pkgbuild";
-import { createHookHandler } from "./hook-handler";
+import { createServer } from "./server";
 import program from "commander";
 import { expand } from "config-expander";
 
@@ -38,7 +37,11 @@ program
         workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp')}" },
         redis: { url: "${first(env.REDIS_URL,'redis://127.0.0.1:6379')}" },
         http: {
-          port: "${first(env.PORT,8093)}"
+          port: "${first(env.PORT,8093)}",
+          hook: {
+            path: "/webhook",
+            secret: "${env.WEBHOOK_SECRET}"
+          }
         }
       }
     });
@@ -91,25 +94,7 @@ program
         console.log("requestQueue completed", result);
       });
 
-      const handler = createHookHandler(requestQueue);
-
-      const server = micro(async (req, res) => {
-        handler(req, res, err => {
-          if (err) {
-            console.log(err);
-            res.writeHead(404);
-            res.end("no such location");
-          } else {
-            res.writeHead(200);
-            res.end("woot");
-          }
-        });
-      });
-
-      const listener = server.listen(config.http.port, () => {
-        console.log("listen on", listener.address());
-        sd.notify("READY=1\nSTATUS=running");
-      });
+      const server = await createServer(config, sd, requestQueue);
 
       async function startJob(job) {
         const url = job.data.repository.url;
