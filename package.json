@@ -27,7 +27,7 @@
     "docs": "documentation readme src/hook-ci-cli.mjs --section=API",
     "lint": "documentation lint src/hook-ci-cli.mjs",
     "package": "npm-pkgbuild --npm-dist --npm-modules pkgbuild pacman makepkg",
-    "posttest": "markdown-doctest",
+    "posttest": "npm run prepare && markdown-doctest",
     "prepare": "rollup -c",
     "test": "ava"
   },
@@ -56,7 +56,7 @@
     "rollup-plugin-executable": "^1.4.5",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^4.2.3",
-    "semantic-release": "^15.13.8",
+    "semantic-release": "^15.13.9",
     "x-hub-signature": "^1.2.0"
   },
   "optionalDependencies": {
