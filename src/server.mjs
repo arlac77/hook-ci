@@ -23,7 +23,7 @@ export async function createServer(config, sd, requestQueue) {
     return next();
   });
 
-  router.addRoute("POST", config.http.hook, async (ctx, next) => {
+  router.addRoute("POST", config.http.hook.path, async (ctx, next) => {
     const [sig, event, id] = headers(ctx, [
       "x-hub-signature",
       "x-github-event",
