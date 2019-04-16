@@ -2,7 +2,7 @@ import test from "ava";
 import { createServer } from "../src/server";
 import got from "got";
 import signer from "x-hub-signature/src/signer";
-
+import { promisify } from 'util'; 
 
 const sd = { notify: (...args) => console.log(...args), listeners: () => [] };
 
@@ -26,9 +26,11 @@ test("request status", async t => {
   const response = await got.get(`http://localhost:${port}/state`);
 
   t.is(response.statusCode, 200);
+
+  await (promisify(server.close))();
 });
 
-test.skip("request", async t => {
+test("request", async t => {
   const port = "3152";
   const path = "webhook";
   const secret = "aSecret";
@@ -65,4 +67,5 @@ test.skip("request", async t => {
   console.log(payload);
 
   t.is(response.statusCode, 200);
+  await (promisify(server.close))();
 });
