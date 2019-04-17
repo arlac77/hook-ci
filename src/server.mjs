@@ -4,7 +4,6 @@ import Koa from "koa";
 import rawBody from "raw-body";
 import Router from "koa-better-router";
 import { createHmac } from "crypto";
-//import signer from "x-hub-signature/src/signer";
 
 export async function createServer(config, sd, requestQueue) {
   const app = new Koa();

@@ -46,6 +46,7 @@ const external = [
   "vm",
   "zlib",
 
+  "koa",
   "bull",
   "sd-daemon",
   "koa-better-router"
