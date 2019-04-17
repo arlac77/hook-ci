@@ -27,7 +27,7 @@
     "docs": "documentation readme src/hook-ci-cli.mjs --section=API",
     "lint": "documentation lint src/hook-ci-cli.mjs",
     "package": "npm-pkgbuild --npm-dist --npm-modules pkgbuild pacman makepkg",
-    "posttest": "npm run prepare && markdown-doctest",
+    "posttest": "markdown-doctest",
     "prepare": "rollup -c",
     "test": "ava"
   },
@@ -40,7 +40,7 @@
     "globby": "^9.1.0",
     "koa": "^2.7.0",
     "koa-better-router": "^2.1.1",
-    "koa-bodyparser": "^4.2.1"
+    "raw-body": "^2.3.3"
   },
   "devDependencies": {
     "ava": "^1.4.1",
@@ -102,7 +102,7 @@
     "install": "pacman/install.sh",
     "backup": "etc/${name}/config.json",
     "depends": {
-      "redis": ">=5.0.3",
+      "redis": ">=5.0.4-1",
       "systemd": ">=241.0"
     },
     "installdir": "/services/${name}",

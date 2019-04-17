@@ -1,14 +1,13 @@
 import { createServer as httpCreateServer } from "http";
 import { createServer as httpsCreateServer } from "https";
 import Koa from "koa";
-import bodyParser from "koa-bodyparser";
+import rawBody from "raw-body";
 import Router from "koa-better-router";
-import {createHmac} from 'crypto';
+import { createHmac } from "crypto";
+//import signer from "x-hub-signature/src/signer";
 
 export async function createServer(config, sd, requestQueue) {
   const app = new Koa();
-
-  app.use(bodyParser());
 
   const server = config.http.cert
     ? httpsCreateServer(config.http, app.callback())
@@ -30,15 +29,14 @@ export async function createServer(config, sd, requestQueue) {
       "x-github-delivery"
     ]);
 
-    console.log(ctx.request.body);
+    const body = await rawBody(ctx.req);
+    const data = JSON.parse(body.toString());
 
-    /*
-    if (!verify(sig, data)) {
+    if (!verify(sig, body, config.http.hook.secret)) {
       ctx.throw('X-Hub-Signature does not match blob signature')
     }
-    */
 
-    //obj = JSON.parse(data.toString())
+    requestQueue.add(data);
 
     ctx.body = { ok: true };
     return next();
@@ -56,7 +54,7 @@ export async function createServer(config, sd, requestQueue) {
 
 function headers(ctx, names) {
   return names.map(name => {
-    const v = ctx.headers[name];
+    const v = ctx.get(name);
     if (v === undefined) {
       ctx.throw(400, `${name} required`);
     }
@@ -64,10 +62,15 @@ function headers(ctx, names) {
   });
 }
 
-function sign (data, secret) {
-  return 'sha1=' + createHmac('sha1', secret).update(data).digest('hex');
+function sign(data, secret) {
+  return (
+    "sha1=" +
+    createHmac("sha1", secret)
+      .update(data)
+      .digest("hex")
+  );
 }
 
-function verify (signature, data) {
-  return Buffer.from(signature).equals(Buffer.from(sign(data)));
+function verify(signature, data, secret) {
+  return Buffer.from(signature).equals(Buffer.from(sign(data, secret)));
 }
