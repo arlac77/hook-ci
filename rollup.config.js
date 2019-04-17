@@ -47,7 +47,8 @@ const external = [
   "zlib",
 
   "bull",
-  "sd-daemon"
+  "sd-daemon",
+  "koa-better-router"
 ];
 
 export default Object.keys(pkg.bin || {}).map(name => {
@@ -68,7 +69,7 @@ export default Object.keys(pkg.bin || {}).map(name => {
         compact: true
       }),
       cleanup({
-        extensions: ['js','mjs','jsx','tag'] 
+        extensions: ['js','mjs','jsx','tag']
       }),
       executable()
     ],
