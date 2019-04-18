@@ -27,7 +27,7 @@
     "docs": "documentation readme src/hook-ci-cli.mjs --section=API",
     "lint": "documentation lint src/hook-ci-cli.mjs",
     "package": "npm-pkgbuild --npm-dist --npm-modules pkgbuild pacman makepkg",
-    "posttest": "markdown-doctest",
+    "posttest": "npm run prepare && markdown-doctest",
     "prepare": "rollup -c",
     "test": "ava"
   },
@@ -45,7 +45,7 @@
   "devDependencies": {
     "ava": "^1.4.1",
     "c8": "^3.5.0",
-    "documentation": "^9.3.1",
+    "documentation": "^10.0.0",
     "esm": "^3.2.22",
     "got": "^9.6.0",
     "markdown-doctest": "^0.9.1",
