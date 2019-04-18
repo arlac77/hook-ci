@@ -23,22 +23,25 @@ export async function createServer(config, sd, requestQueue) {
   router.addRoute(
     "POST",
     config.http.hook.path,
-    createGithubHookHandler(config.http.hook, {
-      push: async request => {
-        requestQueue.add(request);
-        return { ok: true };
-      },
-      ping: async request => {
-        console.log(
-          "Received a ping event for %s",
-          request.repository.full_name
-        );
+    createGithubHookHandler(
+      {
+        push: async request => {
+          requestQueue.add(request);
+          return { ok: true };
+        },
+        ping: async request => {
+          console.log(
+            "Received a ping event for %s",
+            request.repository.full_name
+          );
 
-        const count = await requestQueue.getJobCounts();
-        console.log("COUNT", count);
-        return { ok: true, count };
-      }
-    })
+          const count = await requestQueue.getJobCounts();
+          console.log("COUNT", count);
+          return { ok: true, count };
+        }
+      },
+      config.http.hook
+    )
   );
 
   app.use(router.middleware());

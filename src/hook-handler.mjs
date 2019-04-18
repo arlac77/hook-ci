@@ -1,7 +1,7 @@
 import { createHmac } from "crypto";
 import rawBody from "raw-body";
 
-export function createGithubHookHandler(config, actions) {
+export function createGithubHookHandler(actions, config) {
   return async (ctx, next) => {
     const [sig, event, id] = headers(ctx, [
       "x-hub-signature",
