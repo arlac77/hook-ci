@@ -65,11 +65,6 @@ test("request github push", async t => {
       'content-type': 'application/json',
       'X-GitHub-Delivery': '7453c7ec-5fa2-11e9-9af1-60fccbf37b5b',
       'X-GitHub-Event': 'push'
-      //Expect: '',
-      //'User-Agent': 'GitHub-Hookshot/715acfc',
-      //'X-Hub-Signature': 'sha1=d6297df1d72ee62c347f7e4bee7a20c03835c3b6'
-      //"x-github-event": "push",
-      //"x-github-delivery": "77"
     },
     body: pushBody
   });

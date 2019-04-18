@@ -36,11 +36,10 @@
     "commander": "^2.20.0",
     "config-expander": "^10.2.4",
     "execa": "^1.0.0",
-    "github-webhook-handler": "^0.7.0",
     "globby": "^9.1.0",
     "koa": "^2.7.0",
     "koa-better-router": "^2.1.1",
-    "raw-body": "^2.3.3"
+    "koa-github-hook-handler": "^1.0.0"
   },
   "devDependencies": {
     "ava": "^1.4.1",

@@ -2,7 +2,7 @@ import { createServer as httpCreateServer } from "http";
 import { createServer as httpsCreateServer } from "https";
 import Koa from "koa";
 import Router from "koa-better-router";
-import { createGithubHookHandler } from "./hook-handler";
+import { createGithubHookHandler } from "koa-github-hook-handler";
 
 export async function createServer(config, sd, requestQueue) {
   const app = new Koa();
