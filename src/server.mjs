@@ -1,9 +1,8 @@
 import { createServer as httpCreateServer } from "http";
 import { createServer as httpsCreateServer } from "https";
 import Koa from "koa";
-import rawBody from "raw-body";
 import Router from "koa-better-router";
-import { createHmac } from "crypto";
+import { createGithubHookHandler } from "./hook-handler";
 
 export async function createServer(config, sd, requestQueue) {
   const app = new Koa();
@@ -21,25 +20,26 @@ export async function createServer(config, sd, requestQueue) {
     return next();
   });
 
-  router.addRoute("POST", config.http.hook.path, async (ctx, next) => {
-    const [sig, event, id] = headers(ctx, [
-      "x-hub-signature",
-      "x-github-event",
-      "x-github-delivery"
-    ]);
+  router.addRoute(
+    "POST",
+    config.http.hook.path,
+    createGithubHookHandler(config.http.hook, {
+      push: async request => {
+        requestQueue.add(request);
+        return { ok: true };
+      },
+      ping: async request => {
+        console.log(
+          "Received a ping event for %s",
+          request.repository.full_name
+        );
 
-    const body = await rawBody(ctx.req);
-    const data = JSON.parse(body.toString());
-
-    if (!verify(sig, body, config.http.hook.secret)) {
-      ctx.throw('X-Hub-Signature does not match blob signature')
-    }
-
-    requestQueue.add(data);
-
-    ctx.body = { ok: true };
-    return next();
-  });
+        const count = await requestQueue.getJobCounts();
+        console.log("COUNT", count);
+        return { ok: true, count };
+      }
+    })
+  );
 
   app.use(router.middleware());
 
@@ -49,27 +49,4 @@ export async function createServer(config, sd, requestQueue) {
   });
 
   return server;
-}
-
-function headers(ctx, names) {
-  return names.map(name => {
-    const v = ctx.get(name);
-    if (v === undefined) {
-      ctx.throw(400, `${name} required`);
-    }
-    return v;
-  });
-}
-
-function sign(data, secret) {
-  return (
-    "sha1=" +
-    createHmac("sha1", secret)
-      .update(data)
-      .digest("hex")
-  );
-}
-
-function verify(signature, data, secret) {
-  return Buffer.from(signature).equals(Buffer.from(sign(data, secret)));
 }

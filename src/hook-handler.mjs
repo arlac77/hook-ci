@@ -1,35 +1,51 @@
-//import createHandler from "github-webhook-handler";
+import { createHmac } from "crypto";
+import rawBody from "raw-body";
 
-export function createHookHandler(config,requestQueue) {
-  const handler = createHandler(config.http.hook);
+export function createGithubHookHandler(config, actions) {
+  return async (ctx, next) => {
+    const [sig, event, id] = headers(ctx, [
+      "x-hub-signature",
+      "x-github-event",
+      "x-github-delivery"
+    ]);
 
-  handler.on("error", err => {
-    console.error("Error:", err.message);
-  });
+    const body = await rawBody(ctx.req);
 
-  handler.on("ping", async event => {
-    console.log(
-      "Received a ping event for %s",
-      event.payload.repository.full_name
-    );
-
-    const counts = await requestQueue.getJobCounts();
-    console.log("COUNTS", counts);
-  });
-
-  handler.on("push", async event => {
-    try {
-      console.log(
-        "Received a push event for %s to %s",
-        event.payload.repository.full_name,
-        event.payload.ref
-      );
-
-      requestQueue.add(event.payload);
-    } catch (e) {
-      console.error(e);
+    if (!verify(sig, body, config.secret)) {
+      ctx.throw("X-Hub-Signature does not match blob signature");
     }
-  });
 
-  return handler;
+    const handler = actions[event];
+
+    if (handler !== undefined) {
+      const data = JSON.parse(body.toString());
+      ctx.body = handler(data);
+    } else {
+      ctx.throw(`unknown event type ${event}`);
+    }
+    return next();
+  };
+}
+
+function headers(ctx, names) {
+  return names.map(name => {
+    const v = ctx.get(name);
+    if (v === undefined) {
+      ctx.throw(400, `${name} required`);
+    }
+    return v;
+  });
+}
+
+function sign(data, secret) {
+  return (
+    "sha1=" +
+    createHmac("sha1", secret)
+      .update(data)
+      .digest("hex")
+  );
+}
+
+function verify(signature, data, secret) {
+  return Buffer.from(signature).equals(Buffer.from(sign(data, secret)));
 }
