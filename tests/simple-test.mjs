@@ -1,7 +1,7 @@
 import test from "ava";
-import { createServer } from "../src/server";
 import got from "got";
 import signer from "x-hub-signature/src/signer";
+import { createServer } from "../src/server.mjs";
 
 const sd = { notify: (...args) => console.log(...args), listeners: () => [] };
 

@@ -1,7 +1,7 @@
-import { utf8Encoding } from "./util";
 import { join } from "path";
 import { createWriteStream } from "fs";
 import execa from "execa";
+import { utf8Encoding } from "./util.mjs";
 
 const wellKnownScripts = new Set(["install", "test", "publish"]);
 

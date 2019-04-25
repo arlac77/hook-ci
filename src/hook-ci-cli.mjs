@@ -3,12 +3,12 @@ import { join, dirname, resolve } from "path";
 import Queue from "bull";
 import globby from "globby";
 import { version, description } from "../package.json";
-import { utf8Encoding } from "./util";
-import { runNpm } from "./npm";
-import { pkgbuild } from "./pkgbuild";
-import { createServer } from "./server";
 import program from "commander";
 import { expand } from "config-expander";
+import { runNpm } from "./npm.mjs";
+import { pkgbuild } from "./pkgbuild.mjs";
+import { createServer } from "./server.mjs";
+import { utf8Encoding } from "./util.mjs";
 
 program
   .version(version)
