@@ -21,7 +21,15 @@ test("request status", async t => {
         }
       }
     },
-    sd
+    sd,
+    {
+      count() {
+        return 17;
+      },
+      getFailed() {
+        return [1, 2, 3];
+      }
+    }
   );
 
   const response = await got.get(`http://localhost:${port}/state`);
@@ -62,9 +70,9 @@ test("request github push", async t => {
   const response = await got.post(`http://localhost:${port}/${path}`, {
     headers: {
       "X-Hub-Signature": signature,
-      'content-type': 'application/json',
-      'X-GitHub-Delivery': '7453c7ec-5fa2-11e9-9af1-60fccbf37b5b',
-      'X-GitHub-Event': 'push'
+      "content-type": "application/json",
+      "X-GitHub-Delivery": "7453c7ec-5fa2-11e9-9af1-60fccbf37b5b",
+      "X-GitHub-Event": "push"
     },
     body: pushBody
   });
@@ -74,11 +82,10 @@ test("request github push", async t => {
   //console.log(response.body);
 
   t.is(response.statusCode, 200);
-  t.is(payload.ref, 'refs/heads/template-sync-1');
+  t.is(payload.ref, "refs/heads/template-sync-1");
 
   server.close();
 });
-
 
 const pushBody = JSON.stringify({
   ref: "refs/heads/template-sync-1",
@@ -114,8 +121,7 @@ const pushBody = JSON.stringify({
       gists_url: "https://api.github.com/users/arlac77/gists{/gist_id}",
       starred_url:
         "https://api.github.com/users/arlac77/starred{/owner}{/repo}",
-      subscriptions_url:
-        "https://api.github.com/users/arlac77/subscriptions",
+      subscriptions_url: "https://api.github.com/users/arlac77/subscriptions",
       organizations_url: "https://api.github.com/users/arlac77/orgs",
       repos_url: "https://api.github.com/users/arlac77/repos",
       events_url: "https://api.github.com/users/arlac77/events{/privacy}",
@@ -205,8 +211,7 @@ const pushBody = JSON.stringify({
     pushed_at: 1555348695,
     git_url: "git://github.com/arlac77/npm-template-sync-github-hook.git",
     ssh_url: "git@github.com:arlac77/npm-template-sync-github-hook.git",
-    clone_url:
-      "https://github.com/arlac77/npm-template-sync-github-hook.git",
+    clone_url: "https://github.com/arlac77/npm-template-sync-github-hook.git",
     svn_url: "https://github.com/arlac77/npm-template-sync-github-hook",
     homepage: "",
     size: 368,
@@ -253,14 +258,12 @@ const pushBody = JSON.stringify({
     following_url:
       "https://api.github.com/users/arlac77/following{/other_user}",
     gists_url: "https://api.github.com/users/arlac77/gists{/gist_id}",
-    starred_url:
-      "https://api.github.com/users/arlac77/starred{/owner}{/repo}",
+    starred_url: "https://api.github.com/users/arlac77/starred{/owner}{/repo}",
     subscriptions_url: "https://api.github.com/users/arlac77/subscriptions",
     organizations_url: "https://api.github.com/users/arlac77/orgs",
     repos_url: "https://api.github.com/users/arlac77/repos",
     events_url: "https://api.github.com/users/arlac77/events{/privacy}",
-    received_events_url:
-      "https://api.github.com/users/arlac77/received_events",
+    received_events_url: "https://api.github.com/users/arlac77/received_events",
     type: "User",
     site_admin: false
   }

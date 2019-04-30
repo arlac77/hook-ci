@@ -15,7 +15,13 @@ export async function createServer(config, sd, requestQueue) {
 
   router.addRoute("GET", "/state", async (ctx, next) => {
     ctx.body = {
-      version: config.version
+      version: config.version,
+      queues: {
+        request: {
+          count: await requestQueue.count(),
+          failed: (await requestQueue.getFailed()).length
+        }
+      }
     };
     return next();
   });
