@@ -86,6 +86,7 @@ program
           cleanupQueue.add(job.data);
           return result;
         } catch (e) {
+          console.log(e);
           errorQueue.add({ error: e });
           throw e;
         }
@@ -100,7 +101,15 @@ program
       async function startJob(job) {
         const url = job.data.repository.url;
         console.log("start: ", url);
-        const wd = join(config.workspace.dir, job.data.head_commit.id);
+        
+        if(!job.data.head_commit) {
+          console.log("no commit id present");
+          return;
+        }
+
+        const commit = job.data.head_commit.id;
+        
+        const wd = join(config.workspace.dir, commit);
 
         job.progress(1);
 
