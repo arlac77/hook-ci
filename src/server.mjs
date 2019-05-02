@@ -18,8 +18,8 @@ export async function createServer(config, sd, requestQueue) {
       version: config.version,
       queues: {
         request: {
-          count: await requestQueue.count(),
-          failed: (await requestQueue.getFailed()).length
+         /* count: await requestQueue.count(),
+          failed: (await requestQueue.getFailed()).length */
         }
       }
     };
