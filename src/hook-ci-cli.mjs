@@ -124,16 +124,20 @@ program
         proc.stderr.pipe(process.stderr);
         await proc;
 
+        const steps = [];
+
         for (const pkg of await globby(["**/package.json"], { cwd: wd })) {
           console.log("PACKAGE.JSON", pkg, dirname(pkg));
-          await runNpm(job, wd, dirname(pkg));
+          steps.push(runNpm(job, wd, dirname(pkg)));
         }
 
         for (const pkg of await globby(["**/PKGBUILD"], { cwd: wd })) {
           console.log("PKGBUILD", pkg, dirname(pkg));
-          await pkgbuild(job, wd, dirname(pkg));
+          steps.push(await pkgbuild(job, wd, dirname(pkg)));
         }
 
+        await Promise.all(steps);
+        
         return {
           url,
           wd,
