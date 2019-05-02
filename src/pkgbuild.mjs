@@ -7,12 +7,14 @@ export async function pkgbuild(job, wd, dir) {
   const pkgDir = join(wd, dir);
   const proc = execa("makepkg", [], { cwd: pkgDir });
 
+  const stepName = 'pkgbuild';
+  
   proc.stdout.pipe(
-      createWriteStream(join(wd, `${scriptName}.stdout.log`), utf8Encoding)
+      createWriteStream(join(wd, `${stepName}.stdout.log`), utf8Encoding)
   );
 
   proc.stderr.pipe(
-    createWriteStream(join(wd, `${scriptName}.stderr.log`), utf8Encoding)
+    createWriteStream(join(wd, `${stepName}.stderr.log`), utf8Encoding)
   );
   await proc;
 
