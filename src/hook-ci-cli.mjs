@@ -29,6 +29,7 @@ program
         installdir: resolve(__dirname, "..")
       },
       default: {
+        version,
         git: {
           clone: {
             depth: 10
