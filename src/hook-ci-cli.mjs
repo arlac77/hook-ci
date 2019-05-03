@@ -53,7 +53,7 @@ program
     console.log(config);
 
     try {
-      queues = ["requests", "cleanup", "error"].reduce((queues, name) => {
+      const queues = ["request", "cleanup", "error"].reduce((queues, name) => {
         queues[name] = new Queue(name, config.redis.url);
         return queues;
       }, {});
