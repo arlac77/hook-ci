@@ -54,7 +54,7 @@ program
 
     try {
       queues = ["requests", "cleanup", "error"].reduce((queues, name) => {
-        a[name] = new Queue(name, config.redis.url);
+        queues[name] = new Queue(name, config.redis.url);
         return queues;
       }, {});
 
