@@ -24,11 +24,23 @@ test("request status", async t => {
     sd,
     {
       request: {
-        count() {
-          return 17;
+        getActiveCount() {
+          return 0;
         },
-        getFailed() {
-          return [1, 2, 3];
+        getWaitingCount() {
+          return 0;
+        },
+        getPausedCount() {
+          return 0;
+        },
+        getCompletedCount() {
+          return 0;
+        },
+        getFailedCount() {
+          return 0;
+        },
+        getDelayedCount() {
+          return 0;
         }
       }
     }

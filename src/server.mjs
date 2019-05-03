@@ -19,8 +19,12 @@ export async function createServer(config, sd, queues) {
       const queue = queues[name];
       return {
         name,
-        count: await queue.count(),
-        failed: (await queue.getFailed()).length
+        active: await queue.getActiveCount(),
+        waiting: await queue.getWaitingCount(),
+        paused: await queue.getPausedCount(),
+        completed: await queue.getCompletedCount(),
+        failed: await queue.getFailedCount(),
+        delayed: await queue.getDelayedCount()
       };
     }));
 
