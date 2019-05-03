@@ -23,11 +23,13 @@ test("request status", async t => {
     },
     sd,
     {
-      count() {
-        return 17;
-      },
-      getFailed() {
-        return [1, 2, 3];
+      request: {
+        count() {
+          return 17;
+        },
+        getFailed() {
+          return [1, 2, 3];
+        }
       }
     }
   );
@@ -58,8 +60,10 @@ test("request github push", async t => {
     },
     sd,
     {
-      add(event) {
-        payload = event;
+      request: {
+        add(event) {
+          payload = event;
+        }
       }
     }
   );

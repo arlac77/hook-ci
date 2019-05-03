@@ -4,7 +4,7 @@ import Koa from "koa";
 import Router from "koa-better-router";
 import { createGithubHookHandler } from "koa-github-hook-handler";
 
-export async function createServer(config, sd, requestQueue) {
+export async function createServer(config, sd, queues) {
   const app = new Koa();
 
   const server = config.http.cert
@@ -14,14 +14,19 @@ export async function createServer(config, sd, requestQueue) {
   const router = Router();
 
   router.addRoute("GET", "/state", async (ctx, next) => {
+
+    const q = await Promise.all(Object.keys(queues).map(async name => {
+      const queue = queues[name];
+      return {
+        name,
+        count: await queue.count(),
+        failed: (await queue.getFailed()).length
+      };
+    }));
+
     ctx.body = {
       version: config.version,
-      queues: {
-        request: {
-          count: await requestQueue.count(),
-          failed: (await requestQueue.getFailed()).length
-        }
-      }
+      queues: q
     };
     return next();
   });
@@ -32,7 +37,7 @@ export async function createServer(config, sd, requestQueue) {
     createGithubHookHandler(
       {
         push: async request => {
-          requestQueue.add(request);
+          queues.request.add(request);
           return { ok: true };
         },
         ping: async request => {
@@ -41,7 +46,7 @@ export async function createServer(config, sd, requestQueue) {
             request.repository.full_name
           );
 
-          const count = await requestQueue.getJobCounts();
+          const count = await queues.request.getJobCounts();
           console.log("COUNT", count);
           return { ok: true, count };
         }

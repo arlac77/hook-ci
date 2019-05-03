@@ -53,19 +53,20 @@ program
     console.log(config);
 
     try {
-      const requestQueue = new Queue("post-requests", config.redis.url);
-      const cleanupQueue = new Queue("cleanup", config.redis.url);
-      const errorQueue = new Queue("error", config.redis.url);
+      queues = ["requests", "cleanup", "error"].reduce((queues, name) => {
+        a[name] = new Queue(name, config.redis.url);
+        return queues;
+      }, {});
 
-      requestQueue.on("cleaned", (job, type) => {
-        console.log("requestQueue cleaned %s %s jobs", job.length, type);
+      queues.request.on("cleaned", (job, type) => {
+        console.log("request queue cleaned %s %s jobs", job.length, type);
       });
 
-      cleanupQueue.process(async job => {
-        requestQueue.clean(5000);
+      queues.cleanup.process(async job => {
+        queues.request.clean(5000);
         //queue.clean(10000, 'failed');
 
-        console.log("cleanupQueue", job.data.after);
+        console.log("cleanup queue", job.data.after);
 
         if (job.data.after) {
           const wd = join(config.workspace.dir, job.data.after);
@@ -76,39 +77,39 @@ program
         }
       });
 
-      errorQueue.process(async job => {
-        console.log("errorQueue", job.data.error);
+      queues.error.process(async job => {
+        console.log("error queue", job.data.error);
       });
 
-      requestQueue.process(async job => {
+      queues.request.process(async job => {
         try {
           const result = await startJob(job);
-          cleanupQueue.add(job.data);
+          queues.cleanup.add(job.data);
           return result;
         } catch (e) {
           console.log(e);
-          errorQueue.add({ error: e });
+          queues.error.add({ error: e });
           throw e;
         }
       });
 
-      requestQueue.on("completed", (job, result) => {
-        console.log("requestQueue completed", result);
+      queues.request.on("completed", (job, result) => {
+        console.log("request queue completed", result);
       });
 
-      const server = await createServer(config, sd, requestQueue);
+      const server = await createServer(config, sd, queues);
 
       async function startJob(job) {
         const url = job.data.repository.url;
         console.log("start: ", url);
-        
-        if(!job.data.head_commit) {
+
+        if (!job.data.head_commit) {
           console.log("no commit id present");
           return;
         }
 
         const commit = job.data.head_commit.id;
-        
+
         const wd = join(config.workspace.dir, commit);
 
         job.progress(1);
@@ -137,7 +138,7 @@ program
         }
 
         await Promise.all(steps);
-        
+
         return {
           url,
           wd,
