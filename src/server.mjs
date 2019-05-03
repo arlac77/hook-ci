@@ -41,7 +41,7 @@ export async function createServer(config, sd, queues) {
     createGithubHookHandler(
       {
         push: async request => {
-          queues.request.add(request);
+          await queues.request.add(request);
           return { ok: true };
         },
         ping: async request => {
