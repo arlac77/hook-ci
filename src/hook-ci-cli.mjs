@@ -88,7 +88,7 @@ program
           return result;
         } catch (e) {
           console.log(e);
-          queues.error.add({ error: e });
+          queues.error.add(Object.assign({ error: e }, job.data));
           throw e;
         }
       });
@@ -105,7 +105,9 @@ program
 
         if (!job.data.head_commit) {
           console.log("no commit id present");
-          return;
+          return {
+            url
+          };
         }
 
         const commit = job.data.head_commit.id;
