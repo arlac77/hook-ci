@@ -131,7 +131,7 @@ program
 
         const steps = await npmAnalyse(wd);
 
-        for (const step of step) {
+        for (const step of steps) {
           console.log(`start ${step.name}`);
           await step.execute(job, wd);
         }
