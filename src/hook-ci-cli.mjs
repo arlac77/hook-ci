@@ -4,7 +4,7 @@ import Queue from "bull";
 import globby from "globby";
 import { version, description } from "../package.json";
 import program from "commander";
-import { expand } from "config-expander";
+import { expand, removeSensibleValues } from "config-expander";
 import { runNpm } from "./npm.mjs";
 import { pkgbuild } from "./pkgbuild.mjs";
 import { createServer } from "./server.mjs";
@@ -15,7 +15,7 @@ program
   .description(description)
   .option("-c, --config <dir>", "use config directory")
   .action(async () => {
-    let sd = { notify: (...args) => console.log(...args), listeners: () => [] };
+    let sd = { notify: (...args) => {}, listeners: () => [] };
     try {
       sd = await import("sd-daemon");
     } catch (e) {}
@@ -50,7 +50,7 @@ program
     const listeners = sd.listeners();
     if (listeners.length > 0) config.http.port = listeners[0];
 
-    console.log(config);
+    console.log(removeSensibleValues(config));
 
     try {
       const queues = ["request", "cleanup", "error"].reduce((queues, name) => {

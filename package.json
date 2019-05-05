@@ -31,7 +31,7 @@
   "dependencies": {
     "bull": "^3.6.0",
     "commander": "^2.20.0",
-    "config-expander": "^10.2.5",
+    "config-expander": "^10.3.0",
     "execa": "^1.0.0",
     "globby": "^9.1.0",
     "koa": "^2.7.0",
