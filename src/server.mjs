@@ -44,6 +44,13 @@ export async function createServer(config, sd, queues) {
           await queues.request.add(request);
           return { ok: true };
         },
+        pull_request: async request => {
+          console.log(
+            "Received a ping event for %s",
+            request
+          );
+          return { ok: true };
+        },
         ping: async request => {
           console.log(
             "Received a ping event for %s",
