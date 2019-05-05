@@ -1,7 +1,8 @@
-import { join } from "path";
-import { createWriteStream } from "fs";
+import { join, dirname } from "path";
+import fs, { createWriteStream } from "fs";
 import execa from "execa";
-import { utf8Encoding } from "./util.mjs";
+import globby from "globby";
+import { utf8Encoding, createStep } from "./util.mjs";
 
 const wellKnownScripts = new Set(["install", "test", "publish"]);
 
@@ -35,4 +36,53 @@ export async function runNpm(job, wd, dir) {
 
   await e("package");
   job.progress(100);
+}
+
+export async function npmAnalyse(wd) {
+  const steps = [];
+
+  for (const pkg of await globby(["**/package.json"], { cwd: wd })) {
+    const file = join(wd, pkg);
+    const json = JSON.parse(await fs.promises.readFile(file, utf8Encoding));
+
+    const directory = dirname(pkg);
+
+    steps.push(
+      createStep({
+        name: "prepare",
+        directory,
+        executable: "npm",
+        args: ["install"],
+        progress: 10
+      })
+    );
+
+    if (json.scripts) {
+      if (json.scripts.test) {
+        steps.push(
+          createStep({
+            name: "test",
+            directory,
+            executable: "npm",
+            args: ["test"],
+            progress: 30
+          })
+        );
+      }
+    }
+
+    if (json.devDependencies && json.devDependencies["semantic-release"]) {
+      steps.push(
+        createStep({
+          name: "deploy",
+          directory,
+          executable: "npx",
+          args: ["semantic-release"],
+          progress: 100
+        })
+      );
+    }
+  }
+
+  return steps;
 }

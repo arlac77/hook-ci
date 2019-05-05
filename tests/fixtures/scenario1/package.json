@@ -1,0 +1,9 @@
+{
+  "name": "scenario1",
+  "scripts": {
+    "test": "echo test"
+  },
+  "devDependencies": {
+    "semantic-release": "*"
+  }
+}
