@@ -39,6 +39,7 @@
     "koa-github-hook-handler": "^1.0.1"
   },
   "devDependencies": {
+    "@semantic-release/exec": "^3.3.2",
     "ava": "^1.4.1",
     "c8": "^4.1.4",
     "documentation": "^10.1.0",
@@ -72,7 +73,16 @@
     "url": "https://github.com/arlac77/hook-ci/issues"
   },
   "homepage": "https://github.com/arlac77/hook-ci#readme",
-  "release": {},
+  "release": {
+    "plugins": [
+      [
+        "@semantic-release/exec",
+        {
+          "publishCmd": "npm run package --version ${nextRelease.version}"
+        }
+      ]
+    ]
+  },
   "ava": {
     "files": [
       "tests/*-test.js",
