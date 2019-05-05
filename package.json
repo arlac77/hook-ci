@@ -80,7 +80,7 @@
       [
         "@semantic-release/exec",
         {
-          "publishCmd": "npm run package"
+          "publishCmd": "npx npm-pkgbuild --pkgver ${nextRelease.version} --npm-dist --npm-modules pkgbuild pacman makepkg"
         }
       ]
     ]
