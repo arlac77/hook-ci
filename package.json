@@ -75,6 +75,8 @@
   "homepage": "https://github.com/arlac77/hook-ci#readme",
   "release": {
     "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
       [
         "@semantic-release/exec",
         {
