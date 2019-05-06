@@ -1,0 +1,16 @@
+# Maintainer: Markus Felten <markus.felten@gmx.de>
+url='https://github.com/arlac77/hook-ci#readme'
+pkgdesc='simple ci to be triggered by git hooks'
+license=('BSD-2-Clause')
+pkgrel=1
+pkgver='1.0.6'
+pkgname=('hook-ci')
+arch=(any)
+makedepends=(git)
+source=('git+https://github.com/arlac77/hook-ci.git')
+md5sums=(SKIP)
+groups=(webhook)
+install='hook-ci.install'
+backup=('etc/hook-ci/config.json')
+depends=('redis>=5.0.4-1' 'systemd>=242.0' 'nodejs>=10.15.3')
+installdir='/services/hook-ci'

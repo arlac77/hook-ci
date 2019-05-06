@@ -5,8 +5,8 @@ import globby from "globby";
 import { version, description } from "../package.json";
 import program from "commander";
 import { expand, removeSensibleValues } from "config-expander";
-import { npmAnalyse, runNpm } from "./npm.mjs";
-import { pkgbuild } from "./pkgbuild.mjs";
+import { npmAnalyse } from "./npm.mjs";
+import { pkgbuildAnalyse } from "./pkgbuild.mjs";
 import { createServer } from "./server.mjs";
 import { utf8Encoding } from "./util.mjs";
 
@@ -127,32 +127,14 @@ program
         proc.stderr.pipe(process.stderr);
         await proc;
 
-        //const steps = [];
+        const steps = (await Promise.all([npmAnalyse(wd),pkgbuildAnalyse(wd)])).reduce((a,c) => { a.push(...c); return a; },[]);
 
-        try {
-          const steps = await npmAnalyse(wd);
-
-          for (const step of steps) {
-            console.log(`start ${step.name}`);
-            const process = await step.execute(job, wd);
-            console.log(`end ${step.name} ${process.exitCode}`);
-          }
-        } catch (e) {
-          console.log(e);
+        for (const step of steps) {
+          console.log(`start ${step.name}`);
+          const process = await step.execute(job, wd);
+          console.log(`end ${step.name} ${process.exitCode}`);
         }
 
-        //        for (const pkg of await globby(["**/package.json"], { cwd: wd })) {
-        /*          console.log("PACKAGE.JSON", pkg, dirname(pkg));
-          steps.push(runNpm(job, wd, dirname(pkg)));
-        }
-*/
-        //        for (const pkg of await globby(["**/PKGBUILD"], { cwd: wd })) {
-        /*          console.log("PKGBUILD", pkg, dirname(pkg));
-          steps.push(await pkgbuild(job, wd, dirname(pkg)));
-        }
-
-        await Promise.all(steps);
-*/
         return {
           url,
           wd,
