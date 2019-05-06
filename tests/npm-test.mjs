@@ -30,7 +30,7 @@ test("npm", async t => {
       args: ["semantic-release"],
       progress: 100,
       options: {
-        localDir: true
+        localDir: "."
       }
     }
   ]);

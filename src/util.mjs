@@ -6,9 +6,6 @@ export const utf8Encoding = { encoding: "utf8" };
 
 export function createStep(step) {
   step.execute = async (job, wd) => {
-    console.log(job);
-    console.log(wd);
-
     const cwd = join(wd, step.directory);
 
     console.log(`${step.executable} (${cwd})`);

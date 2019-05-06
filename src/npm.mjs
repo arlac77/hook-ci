@@ -80,7 +80,7 @@ export async function npmAnalyse(wd) {
           args: ["semantic-release"],
           progress: 100,
           options: {
-            localDir: true
+            localDir: directory
           }
         })
       );
