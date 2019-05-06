@@ -57,9 +57,8 @@ export async function createServer(config, sd, queues) {
             request.repository.full_name
           );
 
-          const count = await queues.request.getJobCounts();
-          console.log("COUNT", count);
-          return { ok: true, count };
+          const activeCount = await queues.request.getActiveCount();
+          return { ok: true, activeCount };
         }
       },
       config.http.hook
