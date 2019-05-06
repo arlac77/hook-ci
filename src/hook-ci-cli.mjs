@@ -43,6 +43,9 @@ program
             path: "/webhook",
             secret: "${env.WEBHOOK_SECRET}"
           }
+        },
+        analyse: {
+          skip: ["!test","!tests"]
         }
       }
     });
@@ -127,7 +130,7 @@ program
         proc.stderr.pipe(process.stderr);
         await proc;
 
-        const steps = (await Promise.all([npmAnalyse(wd),pkgbuildAnalyse(wd)])).reduce((a,c) => { a.push(...c); return a; },[]);
+        const steps = (await Promise.all([npmAnalyse(config,wd),pkgbuildAnalyse(config,wd)])).reduce((a,c) => { a.push(...c); return a; },[]);
 
         for (const step of steps) {
           console.log(`start ${step.name}`);

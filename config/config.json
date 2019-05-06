@@ -4,9 +4,10 @@
       "depth": 5
     }
   },
-  "build": {
-    "npm": {
-      "targets": ["install", "test", "package"]
-    }
+  "analyse": {
+    "skip": [
+      "!test",
+      "!tests"
+    ]
   }
 }

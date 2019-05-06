@@ -2,11 +2,10 @@ import { join, dirname } from "path";
 import globby from "globby";
 import { utf8Encoding, createStep } from "./util.mjs";
 
-
-export async function pkgbuildAnalyse(wd) {
+export async function pkgbuildAnalyse(config,wd) {
   const steps = [];
 
-  for (const pkg of await globby(["**/PKGBUILD"], { cwd: wd })) {
+  for (const pkg of await globby(["**/PKGBUILD", ...config.analyse.skip], { cwd: wd })) {
     const directory = dirname(pkg);
 
     steps.push(

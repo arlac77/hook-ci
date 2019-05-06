@@ -6,10 +6,10 @@ import { utf8Encoding, createStep } from "./util.mjs";
 
 const wellKnownScripts = new Set(["install", "test", "publish"]);
 
-export async function npmAnalyse(wd) {
+export async function npmAnalyse(config,wd) {
   const steps = [];
 
-  for (const pkg of await globby(["**/package.json"], { cwd: wd })) {
+  for (const pkg of await globby(["**/package.json", ...config.analyse.skip], { cwd: wd })) {
     const file = join(wd, pkg);
     const json = JSON.parse(await fs.promises.readFile(file, utf8Encoding));
 
