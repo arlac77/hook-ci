@@ -26,7 +26,18 @@ export async function npmAnalyse(config,wd) {
     );
 
     if (json.scripts) {
-      if (json.scripts.test) {
+      if (json.scripts.cover) {
+        steps.push(
+          createStep({
+            name: "test",
+            directory,
+            executable: "npm",
+            args: ["run", "cover"],
+            progress: 30
+          })
+        );
+      }
+      else if (json.scripts.test) {
         steps.push(
           createStep({
             name: "test",
@@ -34,6 +45,17 @@ export async function npmAnalyse(config,wd) {
             executable: "npm",
             args: ["test"],
             progress: 30
+          })
+        );
+      }
+      if (json.scripts.docs) {
+        steps.push(
+          createStep({
+            name: "test",
+            directory,
+            executable: "npm",
+            args: ["run", "docs"],
+            progress: 40
           })
         );
       }
