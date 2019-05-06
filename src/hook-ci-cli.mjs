@@ -129,11 +129,16 @@ program
 
         //const steps = [];
 
-        const steps = await npmAnalyse(wd);
+        try {
+          const steps = await npmAnalyse(wd);
 
-        for (const step of steps) {
-          console.log(`start ${step.name}`);
-          await step.execute(job, wd);
+          for (const step of steps) {
+            console.log(`start ${step.name}`);
+            const process = await step.execute(job, wd);
+            console.log(`end ${step.name} ${process.exitCode}`);
+          }
+        } catch (e) {
+          console.log(e);
         }
 
         //        for (const pkg of await globby(["**/package.json"], { cwd: wd })) {
