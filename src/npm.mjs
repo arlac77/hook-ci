@@ -78,7 +78,10 @@ export async function npmAnalyse(wd) {
           directory,
           executable: "npx",
           args: ["semantic-release"],
-          progress: 100
+          progress: 100,
+          options: {
+            localDir: true
+          }
         })
       );
     }
