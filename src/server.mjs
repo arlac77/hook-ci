@@ -14,19 +14,20 @@ export async function createServer(config, sd, queues) {
   const router = Router();
 
   router.addRoute("GET", "/state", async (ctx, next) => {
-
-    const q = await Promise.all(Object.keys(queues).map(async name => {
-      const queue = queues[name];
-      return {
-        name,
-        active: await queue.getActiveCount(),
-        waiting: await queue.getWaitingCount(),
-        paused: await queue.getPausedCount(),
-        completed: await queue.getCompletedCount(),
-        failed: await queue.getFailedCount(),
-        delayed: await queue.getDelayedCount()
-      };
-    }));
+    const q = await Promise.all(
+      Object.keys(queues).map(async name => {
+        const queue = queues[name];
+        return {
+          name,
+          active: await queue.getActiveCount(),
+          waiting: await queue.getWaitingCount(),
+          paused: await queue.getPausedCount(),
+          completed: await queue.getCompletedCount(),
+          failed: await queue.getFailedCount(),
+          delayed: await queue.getDelayedCount()
+        };
+      })
+    );
 
     ctx.body = {
       version: config.version,
@@ -44,16 +45,14 @@ export async function createServer(config, sd, queues) {
           await queues.request.add(request);
           return { ok: true };
         },
-        pull_request: async request => {
-          console.log(
-            "Received a ping event for %s",
-            request
-          );
+        pull_request: async (request, event) => {
+          console.log("Received a %s event for %s", event, request);
           return { ok: true };
         },
-        ping: async request => {
+        ping: async (request, event) => {
           console.log(
-            "Received a ping event for %s",
+            "Received a ping %s for %s",
+            event,
             request.repository.full_name
           );
 

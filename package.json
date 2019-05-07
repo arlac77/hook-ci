@@ -36,7 +36,7 @@
     "globby": "^9.1.0",
     "koa": "^2.7.0",
     "koa-better-router": "^2.1.1",
-    "koa-github-hook-handler": "^1.0.1"
+    "koa-github-hook-handler": "^1.1.0"
   },
   "devDependencies": {
     "@semantic-release/exec": "^3.3.3",
