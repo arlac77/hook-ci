@@ -29,7 +29,7 @@
     "test": "ava"
   },
   "dependencies": {
-    "bull": "^3.6.0",
+    "bull": "^3.9.0",
     "commander": "^2.20.0",
     "config-expander": "^10.3.2",
     "execa": "^1.0.0",
