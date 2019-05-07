@@ -39,7 +39,7 @@ const queues = {
   }
 };
 
-test.only("request jobs", async t => {
+test("request jobs", async t => {
   const port = 3150;
 
   const server = await createServer(
