@@ -16,10 +16,12 @@ program
   .description(description)
   .option("-c, --config <dir>", "use config directory")
   .action(async () => {
-    let sd = { notify: (...args) => {}, listeners: () => [] };
+    let sd = { notify: () => {}, listeners: () => [] };
+
     try {
-      sd = await import("sd-daemon");
+        sd = await import("sd-daemon");
     } catch (e) {}
+
     sd.notify("READY=1\nSTATUS=starting");
 
     const configDir = process.env.CONFIGURATION_DIRECTORY || program.config;
@@ -55,7 +57,6 @@ program
     if (listeners.length > 0) config.http.port = listeners[0];
 
     console.log(removeSensibleValues(config));
-
     try {
       const queues = ["request", "cleanup", "error"].reduce((queues, name) => {
         queues[name] = new Queue(name, config.redis.url);
