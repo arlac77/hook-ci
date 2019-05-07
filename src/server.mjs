@@ -14,6 +14,16 @@ export async function createServer(config, sd, queues) {
   const router = Router();
 
   router.addRoute("GET", "/state", async (ctx, next) => {
+    ctx.body = {
+      version: config.version,
+      versions: process.versions,
+      uptime: process.uptime(),
+      memory: process.memoryUsage()
+    };
+    return next();
+  });
+
+  router.addRoute("GET", "/queues", async (ctx, next) => {
     const q = await Promise.all(
       Object.keys(queues).map(async name => {
         const queue = queues[name];
@@ -29,13 +39,13 @@ export async function createServer(config, sd, queues) {
       })
     );
 
-    ctx.body = {
-      version: config.version,
-      versions: process.versions,
-      uptime: process.uptime(),
-      memory: process.memoryUsage(),
-      queues: q
-    };
+    ctx.body = q;
+    return next();
+  });
+
+  router.addRoute("GET", "/queue/:queue/jobs", async (ctx, next) => {
+    const queue = queues[ctx.params.queue];
+    ctx.body = (await queue.getJobs({ asc: true })).map(job => { return { id: job.id, data: job.data }; });
     return next();
   });
 

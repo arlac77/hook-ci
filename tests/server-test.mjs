@@ -3,12 +3,44 @@ import got from "got";
 import signer from "x-hub-signature/src/signer";
 import { createServer } from "../src/server.mjs";
 
+const hook = "webhook";
+const secret = "aSecret";
 const sd = { notify: () => {}, listeners: () => [] };
 
-test("request status", async t => {
-  const port = 3152;
-  const path = "webhook";
-  const secret = "aSecret";
+const queues = {
+  request: {
+    async getJobs() {
+      return [{
+        id: 'job1',
+        data: { value: 'data1' }
+      },{
+        id: 'job2',
+        data: { value: 'data2' }
+      }];
+    },
+    getActiveCount() {
+      return 0;
+    },
+    getWaitingCount() {
+      return 0;
+    },
+    getPausedCount() {
+      return 0;
+    },
+    getCompletedCount() {
+      return 0;
+    },
+    getFailedCount() {
+      return 0;
+    },
+    getDelayedCount() {
+      return 0;
+    }
+  }
+};
+
+test.only("request jobs", async t => {
+  const port = 3150;
 
   const server = await createServer(
     {
@@ -16,34 +48,72 @@ test("request status", async t => {
       http: {
         port,
         hook: {
-          path,
+          path: hook,
           secret
         }
       }
     },
     sd,
+    queues
+  );
+
+  const response = await got.get(`http://localhost:${port}/queue/request/jobs`);
+
+  t.is(response.statusCode, 200);
+
+  const json = JSON.parse(response.body);
+  t.true(json.length >= 1);
+  t.is(json[0].id, 'job1');
+  t.deepEqual(json[1].data, {value: 'data2'});
+
+  server.close();
+});
+
+test("request queues", async t => {
+  const port = 3151;
+
+  const server = await createServer(
     {
-      request: {
-        getActiveCount() {
-          return 0;
-        },
-        getWaitingCount() {
-          return 0;
-        },
-        getPausedCount() {
-          return 0;
-        },
-        getCompletedCount() {
-          return 0;
-        },
-        getFailedCount() {
-          return 0;
-        },
-        getDelayedCount() {
-          return 0;
+      version: 99,
+      http: {
+        port,
+        hook: {
+          path: hook,
+          secret
         }
       }
-    }
+    },
+    sd,
+    queues
+  );
+
+  const response = await got.get(`http://localhost:${port}/queues`);
+
+  t.is(response.statusCode, 200);
+
+  const json = JSON.parse(response.body);
+  t.true(json.length >= 1);
+  t.is(json[0].name, 'request');
+
+  server.close();
+});
+
+test("request state", async t => {
+  const port = 3152;
+
+  const server = await createServer(
+    {
+      version: 99,
+      http: {
+        port,
+        hook: {
+          path: hook,
+          secret
+        }
+      }
+    },
+    sd,
+    queues
   );
 
   const response = await got.get(`http://localhost:${port}/state`);
@@ -51,7 +121,7 @@ test("request status", async t => {
   t.is(response.statusCode, 200);
 
   const json = JSON.parse(response.body);
-  t.is(json.version,99);
+  t.is(json.version, 99);
   t.true(json.versions.node.length > 2);
   t.true(json.uptime > 0.001);
 
@@ -60,8 +130,6 @@ test("request status", async t => {
 
 test("request github push", async t => {
   const port = "3153";
-  const path = "webhook";
-  const secret = "aSecret";
 
   let payload;
 
@@ -70,7 +138,7 @@ test("request github push", async t => {
       http: {
         port,
         hook: {
-          path,
+          path: hook,
           secret
         }
       }
@@ -88,7 +156,7 @@ test("request github push", async t => {
   const sign = signer({ algorithm: "sha1", secret });
   const signature = sign(new Buffer(pushBody));
 
-  const response = await got.post(`http://localhost:${port}/${path}`, {
+  const response = await got.post(`http://localhost:${port}/${hook}`, {
     headers: {
       "X-Hub-Signature": signature,
       "content-type": "application/json",
