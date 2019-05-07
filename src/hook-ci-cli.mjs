@@ -1,5 +1,6 @@
-import execa from "execa";
 import { join, dirname, resolve } from "path";
+import fs from "fs";
+import execa from "execa";
 import Queue from "bull";
 import globby from "globby";
 import { version, description } from "../package.json";
@@ -45,7 +46,7 @@ program
           }
         },
         analyse: {
-          skip: ["!test","!tests"]
+          skip: ["!test", "!tests"]
         }
       }
     });
@@ -117,20 +118,31 @@ program
 
         const wd = join(config.workspace.dir, commit);
 
-        job.progress(1);
+        try {
+          await fs.promises.access(wd, fs.constants.W_OK);
+          console.log(`${wd} already present`);
+        } catch (err) {
+          const proc = execa("git", [
+            "clone",
+            "--depth",
+            config.git.clone.depth,
+            url,
+            wd
+          ]);
+          proc.stdout.pipe(process.stdout);
+          proc.stderr.pipe(process.stderr);
+          await proc;
+        }
 
-        const proc = execa("git", [
-          "clone",
-          "--depth",
-          config.git.clone.depth,
-          url,
-          wd
-        ]);
-        proc.stdout.pipe(process.stdout);
-        proc.stderr.pipe(process.stderr);
-        await proc;
+        job.progress(10);
 
-        const steps = (await Promise.all([npmAnalyse(config,wd),pkgbuildAnalyse(config,wd)])).reduce((a,c) => { a.push(...c); return a; },[]);
+        const steps = (await Promise.all([
+          npmAnalyse(config, wd),
+          pkgbuildAnalyse(config, wd)
+        ])).reduce((a, c) => {
+          a.push(...c);
+          return a;
+        }, []);
 
         for (const step of steps) {
           console.log(`start ${step.name}`);
