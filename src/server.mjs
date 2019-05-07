@@ -45,7 +45,7 @@ export async function createServer(config, sd, queues) {
 
   router.addRoute("GET", "/queue/:queue/jobs", async (ctx, next) => {
     const queue = queues[ctx.params.queue];
-    ctx.body = (await queue.getJobs({ asc: true })).map(job => { return { id: job.id, data: job.data }; });
+    ctx.body = (await queue.getJobs(['active', 'waiting','completed','paused','failed','delayed'] /*, { asc: true }*/)).map(job => { return { id: job.id, data: job.data }; });
     return next();
   });
 
