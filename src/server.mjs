@@ -31,6 +31,9 @@ export async function createServer(config, sd, queues) {
 
     ctx.body = {
       version: config.version,
+      versions: process.versions,
+      uptime: process.uptime(),
+      memory: process.memoryUsage(),
       queues: q
     };
     return next();

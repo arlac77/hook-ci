@@ -15,6 +15,12 @@ export async function npmAnalyse(config,wd) {
 
     const directory = dirname(pkg);
 
+    if(json.engines) {
+      if(json.engines.node) {
+          // select node
+      }
+    }
+
     steps.push(
       createStep({
         name: "prepare",
