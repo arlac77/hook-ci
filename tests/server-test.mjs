@@ -5,7 +5,7 @@ import { createServer } from "../src/server.mjs";
 
 const sd = { notify: () => {}, listeners: () => [] };
 
-test.only("request status", async t => {
+test("request status", async t => {
   const port = 3152;
   const path = "webhook";
   const secret = "aSecret";

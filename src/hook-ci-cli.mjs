@@ -19,7 +19,7 @@ program
     let sd = { notify: () => {}, listeners: () => [] };
 
     try {
-        sd = await import("sd-daemon");
+      sd = await import("sd-daemon");
     } catch (e) {}
 
     sd.notify("READY=1\nSTATUS=starting");
@@ -146,9 +146,14 @@ program
         }, []);
 
         for (const step of steps) {
-          console.log(`start ${step.name}`);
-          const process = await step.execute(job, wd);
-          console.log(`end ${step.name} ${process.exitCode}`);
+          try {
+            console.log(`start ${step.name}`);
+            const process = await step.execute(job, wd);
+            console.log(`end ${step.name} ${process.exitCode}`);
+          } catch (e) {
+            console.log(`failed ${step.name}`);
+            console.log(e);
+          }
         }
 
         return {
