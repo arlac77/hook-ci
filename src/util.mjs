@@ -5,10 +5,11 @@ import execa from "execa";
 export const utf8Encoding = { encoding: "utf8" };
 
 export function createStep(step) {
+
   step.execute = async (job, wd) => {
     const cwd = join(wd, step.directory);
 
-    console.log(`${step.executable} (${cwd})`);
+    console.log(`${job.id}: ${step.executable} ${stpe.args.join(' ')}`);
     const proc = execa(
       step.executable,
       step.args,
@@ -31,7 +32,9 @@ export function createStep(step) {
 
 
 /**
- * strip away currently unised request data
+ * strip away currently unused request data
+ * @param {Object} request decodec webhook request data
+ @ @return {Object} stipped down request data
  */
 export function stripUnusedDataFromHookRequest(request)
 {
