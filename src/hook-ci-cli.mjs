@@ -149,7 +149,7 @@ program
           try {
             console.log(`start ${step.name}`);
             const process = await step.execute(job, wd);
-            console.log(`end ${step.name} ${process.exitCode}`);
+            console.log(`end ${step.name} ${process.code}`);
           } catch (e) {
             console.log(`failed ${step.name}`);
             console.log(e);
