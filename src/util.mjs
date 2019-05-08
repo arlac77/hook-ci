@@ -93,6 +93,13 @@ export function stripUnusedDataFromHookRequest(request)
     delete repository.default_branch;
     delete repository.stargazers;
     delete repository.license;
+    delete repository.has_issues;
+    delete repository.has_projects;
+    delete repository.has_downloads;
+    delete repository.has_wiki;
+    delete repository.has_pages;
+    delete repository.html_url;
+    delete repository.homepage;
   }
 
   const sender = request.sender;
