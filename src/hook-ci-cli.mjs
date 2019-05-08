@@ -69,7 +69,7 @@ program
 
       queues.cleanup.process(async job => {
         queues.request.clean(5000);
-        //queue.clean(10000, 'failed');
+        queue.cleanup.clean(5000);
 
         console.log("cleanup queue", job.data.after);
 
