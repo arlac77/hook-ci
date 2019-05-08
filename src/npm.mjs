@@ -4,7 +4,7 @@ import globby from "globby";
 
 import { utf8Encoding, createStep } from "./util.mjs";
 
-const wellKnownScripts = new Set(["install", "test", "publish"]);
+const wellKnownScripts = new Set(["install", "test", "pack", "version", "publish"]);
 
 function scriptArgs(name)
 {
