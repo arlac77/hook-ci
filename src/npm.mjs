@@ -6,6 +6,11 @@ import { utf8Encoding, createStep } from "./util.mjs";
 
 const wellKnownScripts = new Set(["install", "test", "publish"]);
 
+function scriptArgs(name)
+{
+  return wellKnownScripts.has(name) ? [name] : ['run', name];
+}
+
 export async function npmAnalyse(config,wd) {
   const steps = [];
 
@@ -26,7 +31,7 @@ export async function npmAnalyse(config,wd) {
         name: "prepare",
         directory,
         executable: "npm",
-        args: ["install"],
+        args: scriptArgs('install'),
         progress: 10
       })
     );
@@ -38,7 +43,7 @@ export async function npmAnalyse(config,wd) {
             name: "test",
             directory,
             executable: "npm",
-            args: ["run", "cover"],
+            args: scriptArgs('cover'),
             progress: 30
           })
         );
@@ -49,7 +54,7 @@ export async function npmAnalyse(config,wd) {
             name: "test",
             directory,
             executable: "npm",
-            args: ["test"],
+            args: scriptArgs('test'),
             progress: 30
           })
         );
@@ -60,7 +65,7 @@ export async function npmAnalyse(config,wd) {
             name: "test",
             directory,
             executable: "npm",
-            args: ["run", "docs"],
+            args: scriptArgs('docs'),
             progress: 40
           })
         );
