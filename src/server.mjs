@@ -5,6 +5,19 @@ import Router from "koa-better-router";
 import { createGithubHookHandler } from "koa-github-hook-handler";
 import { stripUnusedDataFromHookRequest } from "./util.mjs";
 
+
+async function queueDetails(name, queue) {
+  return {
+    name,
+    active: await queue.getActiveCount(),
+    waiting: await queue.getWaitingCount(),
+    paused: await queue.getPausedCount(),
+    completed: await queue.getCompletedCount(),
+    failed: await queue.getFailedCount(),
+    delayed: await queue.getDelayedCount()
+  };
+}
+
 export async function createServer(config, sd, queues) {
   const app = new Koa();
 
@@ -25,22 +38,17 @@ export async function createServer(config, sd, queues) {
   });
 
   router.addRoute("GET", "/queues", async (ctx, next) => {
-    const q = await Promise.all(
+    ctx.body = await Promise.all(
       Object.keys(queues).map(async name => {
         const queue = queues[name];
-        return {
-          name,
-          active: await queue.getActiveCount(),
-          waiting: await queue.getWaitingCount(),
-          paused: await queue.getPausedCount(),
-          completed: await queue.getCompletedCount(),
-          failed: await queue.getFailedCount(),
-          delayed: await queue.getDelayedCount()
-        };
+        return queueDetails(name,queue);
       })
     );
+    return next();
+  });
 
-    ctx.body = q;
+  router.addRoute("GET", "/queue/:queue", async (ctx, next) => {
+    ctx.body = await queueDetails(ctx.params.queue,queues[ctx.params.queue]);
     return next();
   });
 

@@ -101,8 +101,37 @@ test("request queues", async t => {
   server.close();
 });
 
-test("pause/resume queues", async t => {
+test("request queue", async t => {
   const port = 3152;
+
+  const server = await createServer(
+    {
+      version: 99,
+      http: {
+        port,
+        hook: {
+          path: hook,
+          secret
+        }
+      }
+    },
+    sd,
+    queues
+  );
+
+  const response = await got.get(`http://localhost:${port}/queue/request`);
+
+  t.is(response.statusCode, 200);
+
+  const json = JSON.parse(response.body);
+  t.is(json.name, "request");
+
+  server.close();
+});
+
+
+test("pause/resume queues", async t => {
+  const port = 3153;
   let paused, resumed;
 
   queues.request.pause = async () => {
@@ -141,7 +170,7 @@ test("pause/resume queues", async t => {
 });
 
 test("request state", async t => {
-  const port = 3153;
+  const port = 3154;
 
   const server = await createServer(
     {
@@ -171,7 +200,7 @@ test("request state", async t => {
 });
 
 test("request github push", async t => {
-  const port = 3154;
+  const port = 3155;
 
   let payload;
 
