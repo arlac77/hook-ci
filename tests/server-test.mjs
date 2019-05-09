@@ -130,9 +130,9 @@ test("request queue", async t => {
 });
 
 
-test("pause/resume queues", async t => {
+test("pause/resume/empty queues", async t => {
   const port = 3153;
-  let paused, resumed;
+  let paused, resumed, empty;
 
   queues.request.pause = async () => {
     paused = true;
@@ -140,6 +140,10 @@ test("pause/resume queues", async t => {
 
   queues.request.resume = async () => {
     resumed = true;
+  };
+
+  queues.request.empty = async () => {
+    empty = true;
   };
 
   const server = await createServer(
@@ -165,6 +169,10 @@ test("pause/resume queues", async t => {
   response = await got.post(`http://localhost:${port}/queue/request/resume`);
   t.is(response.statusCode, 200);
   t.true(resumed);
+
+  response = await got.post(`http://localhost:${port}/queue/request/empty`);
+  t.is(response.statusCode, 200);
+  t.true(empty);
 
   server.close();
 });
