@@ -3,7 +3,7 @@ import { createServer as httpsCreateServer } from "https";
 import Koa from "koa";
 import Router from "koa-better-router";
 import { createGithubHookHandler } from "koa-github-hook-handler";
-import { stripUnusedDataFromHookRequest} from './util.mjs';
+import { stripUnusedDataFromHookRequest } from "./util.mjs";
 
 export async function createServer(config, sd, queues) {
   const app = new Koa();
@@ -46,7 +46,18 @@ export async function createServer(config, sd, queues) {
 
   router.addRoute("GET", "/queue/:queue/jobs", async (ctx, next) => {
     const queue = queues[ctx.params.queue];
-    ctx.body = (await queue.getJobs(['active', 'waiting','completed','paused','failed','delayed'] /*, { asc: true }*/)).map(job => { return { id: job.id, data: job.data }; });
+    ctx.body = (await queue.getJobs(
+      [
+        "active",
+        "waiting",
+        "completed",
+        "paused",
+        "failed",
+        "delayed"
+      ] /*, { asc: true }*/
+    )).map(job => {
+      return { id: job.id, data: job.data };
+    });
     return next();
   });
 
@@ -56,7 +67,6 @@ export async function createServer(config, sd, queues) {
     createGithubHookHandler(
       {
         push: async request => {
-
           await queues.request.add(stripUnusedDataFromHookRequest(request));
           return { ok: true };
         },
