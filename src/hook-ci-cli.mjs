@@ -38,7 +38,7 @@ program
             depth: 10
           }
         },
-        workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp')}" },
+        workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp/hook-ci')}" },
         redis: { url: "${first(env.REDIS_URL,'redis://127.0.0.1:6379')}" },
         http: {
           port: "${first(env.PORT,8093)}",
