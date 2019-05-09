@@ -9,7 +9,7 @@ export function createStep(step) {
   step.execute = async (job, wd) => {
     const cwd = join(wd, step.directory);
 
-    console.log(`${job.id}: ${step.executable} ${stpe.args.join(' ')}`);
+    console.log(`${job.id}: ${step.executable} ${step.args.join(' ')}`);
     const proc = execa(
       step.executable,
       step.args,
