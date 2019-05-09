@@ -1,14 +1,9 @@
 import { join, dirname, resolve } from "path";
 import fs from "fs";
-import execa from "execa";
-import Queue from "bull";
-import globby from "globby";
 import { version, description } from "../package.json";
 import program from "commander";
 import { expand, removeSensibleValues } from "config-expander";
 import { utf8Encoding } from "./util.mjs";
-import { npmAnalyse } from "./npm.mjs";
-import { pkgbuildAnalyse } from "./pkgbuild.mjs";
 import { defaultServerConfig, createServer } from "./server.mjs";
 import { defaultQueuesConfig } from "./queues.mjs";
 import { defaultAnalyserConfig } from "./analyser.mjs";

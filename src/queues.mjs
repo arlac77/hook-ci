@@ -1,4 +1,7 @@
-import { executeJob } from "processor.mjs";
+import Queue from "bull";
+import execa from "execa";
+
+import { processJob } from "processor.mjs";
 
 export const defaultQueuesConfig = {
   redis: { url: "${first(env.REDIS_URL,'redis://127.0.0.1:6379')}" },
@@ -27,32 +30,34 @@ export async function createQueues(config) {
     return queues;
   }, {});
 
-  queues.cleanup.process(async job => {
-    queues.incoming.clean(5000);
-    queue.cleanup.clean(5000);
-
-    if (job.data.after) {
-      const wd = join(config.workspace.dir, job.data.after);
-
-      console.log(`rm -rf ${wd}`);
-
-      //const proc = await execa("rm", ["-rf", wd]);
+  Object.keys(config.queues).forEach(name => {
+    if (config.queues[name].active) {
+      const queue = queues[name];
+      switch (name) {
+        case "cleanup":
+          queue.process(async job => cleanupJob(job, config, queues));
+          break;
+        case "incoming":
+          queue.process(async job => analyseJob(job, config, queues));
+          break;
+        case "process":
+          queue.process(async job => processJob(job, config, queues));
+          break;
+      }
     }
   });
 
-  if (config.queues.incoming.active) {
-    queues.incoming.process(async job => {
-      try {
-        const result = await startJob(job);
-        queues.cleanup.add(job.data);
-        return result;
-      } catch (e) {
-        console.log(e);
-        queues.error.add(Object.assign({ error: e }, job.data));
-        throw e;
-      }
-    });
-  }
-
   return queues;
+}
+
+async function cleanupJob(job, config, queues) {
+  queues.incoming.clean(5000);
+
+  if (job.data.after) {
+    const wd = join(config.workspace.dir, job.data.after);
+
+    console.log(`rm -rf ${wd}`);
+
+    //const proc = await execa("rm", ["-rf", wd]);
+  }
 }

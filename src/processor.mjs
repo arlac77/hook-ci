@@ -1,3 +1,6 @@
+import execa from "execa";
+
+
 export const defaultProcessorConfig = {
   git: {
     clone: {
@@ -7,7 +10,7 @@ export const defaultProcessorConfig = {
   workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp/hook-ci')}" }
 };
 
-export async function executeJob(config,job) {
+export async function processJob(job,config) {
   const url = job.data.repository.url;
   console.log("start: ", url);
 
