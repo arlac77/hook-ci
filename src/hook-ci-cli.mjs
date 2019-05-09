@@ -115,7 +115,7 @@ program
           };
         }
 
-        const commit = job.data.head_commit.id;
+        const commit = job.data.request.head_commit.id;
 
         const wd = join(config.workspace.dir, commit);
 

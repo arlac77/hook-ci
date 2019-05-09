@@ -13,11 +13,11 @@ const queues = {
       return [
         {
           id: "job1",
-          data: { value: "data1" }
+          data: { event: "push", repository: {full_name: "repo1" }, request: {ref: "refs/heads/template-sync-1"} }
         },
         {
           id: "job2",
-          data: { value: "data2" }
+          data: { event: "push", repository: {full_name: "repo2" }, request: {ref: "refs/heads/template-sync-2"} }
         }
       ];
     },
@@ -67,7 +67,7 @@ test("request jobs", async t => {
   const json = JSON.parse(response.body);
   t.true(json.length >= 1);
   t.is(json[0].id, "job1");
-  t.deepEqual(json[1].data, { value: "data2" });
+  t.is(json[1].repository.full_name, "repo2");
 
   server.close();
 });
@@ -225,8 +225,8 @@ test("request github push", async t => {
     sd,
     {
       request: {
-        add(event) {
-          payload = event;
+        add(job) {
+          payload = job;
         }
       }
     }
@@ -250,7 +250,9 @@ test("request github push", async t => {
   //console.log(response.body);
 
   t.is(response.statusCode, 200);
-  t.is(payload.ref, "refs/heads/template-sync-1");
+  t.is(payload.event, "push");
+  t.is(payload.repository.full_name, "arlac77/npm-template-sync-github-hook");
+  t.is(payload.request.ref, "refs/heads/template-sync-1");
 
   server.close();
 });

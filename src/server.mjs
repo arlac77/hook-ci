@@ -5,7 +5,6 @@ import Router from "koa-better-router";
 import { createGithubHookHandler } from "koa-github-hook-handler";
 import { stripUnusedDataFromHookRequest } from "./util.mjs";
 
-
 async function queueDetails(name, queue) {
   return {
     name,
@@ -41,14 +40,14 @@ export async function createServer(config, sd, queues) {
     ctx.body = await Promise.all(
       Object.keys(queues).map(async name => {
         const queue = queues[name];
-        return queueDetails(name,queue);
+        return queueDetails(name, queue);
       })
     );
     return next();
   });
 
   router.addRoute("GET", "/queue/:queue", async (ctx, next) => {
-    ctx.body = await queueDetails(ctx.params.queue,queues[ctx.params.queue]);
+    ctx.body = await queueDetails(ctx.params.queue, queues[ctx.params.queue]);
     return next();
   });
 
@@ -85,7 +84,7 @@ export async function createServer(config, sd, queues) {
         "delayed"
       ] /*, { asc: true }*/
     )).map(job => {
-      return { id: job.id, data: job.data };
+      return Object.assign({ id: job.id }, job.data);
     });
     return next();
   });
@@ -95,8 +94,13 @@ export async function createServer(config, sd, queues) {
     config.http.hook.path,
     createGithubHookHandler(
       {
-        push: async request => {
-          await queues.request.add(stripUnusedDataFromHookRequest(request));
+        push: async (request, event) => {
+          const data = {
+            event,
+            request: stripUnusedDataFromHookRequest(request)
+          };
+          data.repository = data.request.repository;
+          await queues.request.add(data);
           return { ok: true };
         },
         pull_request: async (request, event) => {
