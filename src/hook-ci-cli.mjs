@@ -147,11 +147,11 @@ program
 
         for (const step of steps) {
           try {
-            console.log(`${jod.id}: start ${step.name}`);
+            console.log(`${job.id}: start ${step.name}`);
             const process = await step.execute(job, wd);
-            console.log(`${jod.id}: end ${step.name} ${process.code}`);
+            console.log(`${job.id}: end ${step.name} ${process.code}`);
           } catch (e) {
-            console.log(`${jod.id}: failed ${step.name}`,e);
+            console.log(`${job.id}: failed ${step.name}`,e);
           }
         }
 
