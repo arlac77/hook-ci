@@ -10,13 +10,16 @@ const sd = { notify: () => {}, listeners: () => [] };
 const queues = {
   request: {
     async getJobs() {
-      return [{
-        id: 'job1',
-        data: { value: 'data1' }
-      },{
-        id: 'job2',
-        data: { value: 'data2' }
-      }];
+      return [
+        {
+          id: "job1",
+          data: { value: "data1" }
+        },
+        {
+          id: "job2",
+          data: { value: "data2" }
+        }
+      ];
     },
     getActiveCount() {
       return 0;
@@ -63,8 +66,8 @@ test("request jobs", async t => {
 
   const json = JSON.parse(response.body);
   t.true(json.length >= 1);
-  t.is(json[0].id, 'job1');
-  t.deepEqual(json[1].data, {value: 'data2'});
+  t.is(json[0].id, "job1");
+  t.deepEqual(json[1].data, { value: "data2" });
 
   server.close();
 });
@@ -93,13 +96,52 @@ test("request queues", async t => {
 
   const json = JSON.parse(response.body);
   t.true(json.length >= 1);
-  t.is(json[0].name, 'request');
+  t.is(json[0].name, "request");
+
+  server.close();
+});
+
+test("pause/resume queues", async t => {
+  const port = 3152;
+  let paused, resumed;
+
+  queues.request.pause = async () => {
+    paused = true;
+  };
+
+  queues.request.resume = async () => {
+    resumed = true;
+  };
+
+  const server = await createServer(
+    {
+      version: 99,
+      http: {
+        port,
+        hook: {
+          path: hook,
+          secret
+        }
+      }
+    },
+    sd,
+    queues
+  );
+
+  let response = await got.post(`http://localhost:${port}/queue/request/pause`);
+  t.is(response.statusCode, 200);
+  t.true(paused);
+
+
+  response = await got.post(`http://localhost:${port}/queue/request/resume`);
+  t.is(response.statusCode, 200);
+  t.true(resumed);
 
   server.close();
 });
 
 test("request state", async t => {
-  const port = 3152;
+  const port = 3153;
 
   const server = await createServer(
     {
@@ -129,7 +171,7 @@ test("request state", async t => {
 });
 
 test("request github push", async t => {
-  const port = "3153";
+  const port = 3154;
 
   let payload;
 

@@ -44,6 +44,20 @@ export async function createServer(config, sd, queues) {
     return next();
   });
 
+  router.addRoute("POST", "/queue/:queue/pause", async (ctx, next) => {
+    const queue = queues[ctx.params.queue];
+    await queue.pause();
+    ctx.body = {};
+    return next();
+  });
+
+  router.addRoute("POST", "/queue/:queue/resume", async (ctx, next) => {
+    const queue = queues[ctx.params.queue];
+    await queue.resume();
+    ctx.body = {};
+    return next();
+  });
+
   router.addRoute("GET", "/queue/:queue/jobs", async (ctx, next) => {
     const queue = queues[ctx.params.queue];
     ctx.body = (await queue.getJobs(
