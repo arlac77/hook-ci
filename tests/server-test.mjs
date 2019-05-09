@@ -8,7 +8,7 @@ const secret = "aSecret";
 const sd = { notify: () => {}, listeners: () => [] };
 
 const queues = {
-  request: {
+  incoming: {
     async getJobs() {
       return [
         {
@@ -42,7 +42,7 @@ const queues = {
   }
 };
 
-test("request jobs", async t => {
+test("incoming jobs", async t => {
   const port = 3150;
 
   const server = await createServer(
@@ -60,7 +60,7 @@ test("request jobs", async t => {
     queues
   );
 
-  const response = await got.get(`http://localhost:${port}/queue/request/jobs`);
+  const response = await got.get(`http://localhost:${port}/queue/incoming/jobs`);
 
   t.is(response.statusCode, 200);
 
@@ -96,12 +96,12 @@ test("request queues", async t => {
 
   const json = JSON.parse(response.body);
   t.true(json.length >= 1);
-  t.is(json[0].name, "request");
+  t.is(json[0].name, "incoming");
 
   server.close();
 });
 
-test("request queue", async t => {
+test("incoming queue", async t => {
   const port = 3152;
 
   const server = await createServer(
@@ -119,12 +119,12 @@ test("request queue", async t => {
     queues
   );
 
-  const response = await got.get(`http://localhost:${port}/queue/request`);
+  const response = await got.get(`http://localhost:${port}/queue/incoming`);
 
   t.is(response.statusCode, 200);
 
   const json = JSON.parse(response.body);
-  t.is(json.name, "request");
+  t.is(json.name, "incoming");
 
   server.close();
 });
@@ -134,15 +134,15 @@ test("pause/resume/empty queues", async t => {
   const port = 3153;
   let paused, resumed, empty;
 
-  queues.request.pause = async () => {
+  queues.incoming.pause = async () => {
     paused = true;
   };
 
-  queues.request.resume = async () => {
+  queues.incoming.resume = async () => {
     resumed = true;
   };
 
-  queues.request.empty = async () => {
+  queues.incoming.empty = async () => {
     empty = true;
   };
 
@@ -161,23 +161,23 @@ test("pause/resume/empty queues", async t => {
     queues
   );
 
-  let response = await got.post(`http://localhost:${port}/queue/request/pause`);
+  let response = await got.post(`http://localhost:${port}/queue/incoming/pause`);
   t.is(response.statusCode, 200);
   t.true(paused);
 
 
-  response = await got.post(`http://localhost:${port}/queue/request/resume`);
+  response = await got.post(`http://localhost:${port}/queue/incoming/resume`);
   t.is(response.statusCode, 200);
   t.true(resumed);
 
-  response = await got.post(`http://localhost:${port}/queue/request/empty`);
+  response = await got.post(`http://localhost:${port}/queue/incoming/empty`);
   t.is(response.statusCode, 200);
   t.true(empty);
 
   server.close();
 });
 
-test("request state", async t => {
+test("get state", async t => {
   const port = 3154;
 
   const server = await createServer(
@@ -207,7 +207,7 @@ test("request state", async t => {
   server.close();
 });
 
-test("request github push", async t => {
+test("github push", async t => {
   const port = 3155;
 
   let payload;
@@ -224,7 +224,7 @@ test("request github push", async t => {
     },
     sd,
     {
-      request: {
+      incoming: {
         add(job) {
           payload = job;
         }

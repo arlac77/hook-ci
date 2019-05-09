@@ -5,6 +5,16 @@ import Router from "koa-better-router";
 import { createGithubHookHandler } from "koa-github-hook-handler";
 import { stripUnusedDataFromHookRequest } from "./util.mjs";
 
+export const defaultServerConfig = {
+  http: {
+    port: "${first(env.PORT,8093)}",
+    hook: {
+      path: "/webhook",
+      secret: "${env.WEBHOOK_SECRET}"
+    }
+  }
+};
+
 async function queueDetails(name, queue) {
   return {
     name,
@@ -100,7 +110,7 @@ export async function createServer(config, sd, queues) {
             request: stripUnusedDataFromHookRequest(request)
           };
           data.repository = data.request.repository;
-          await queues.request.add(data);
+          await queues.incoming.add(data);
           return { ok: true };
         },
         pull_request: async (request, event) => {
@@ -114,7 +124,7 @@ export async function createServer(config, sd, queues) {
             request.repository.full_name
           );
 
-          const activeCount = await queues.request.getActiveCount();
+          const activeCount = await queues.incoming.getActiveCount();
           return { ok: true, activeCount };
         }
       },
