@@ -49,6 +49,11 @@ program
         },
         analyse: {
           skip: ["!test", "!tests"]
+        },
+        queues: {
+          request: {
+            active: true
+          }
         }
       }
     });
@@ -86,18 +91,20 @@ program
         console.log("error queue", job.data.error);
       });
 
-      queues.request.process(async job => {
-        try {
-          const result = await startJob(job);
-          queues.cleanup.add(job.data);
-          return result;
-        } catch (e) {
-          console.log(e);
-          queues.error.add(Object.assign({ error: e }, job.data));
-          throw e;
-        }
-      });
-
+      if (config.queues.request.active) {
+        queues.request.process(async job => {
+          try {
+            const result = await startJob(job);
+            queues.cleanup.add(job.data);
+            return result;
+          } catch (e) {
+            console.log(e);
+            queues.error.add(Object.assign({ error: e }, job.data));
+            throw e;
+          }
+        });
+      }
+      
       queues.request.on("completed", (job, result) => {
         console.log("request queue completed", result);
       });
@@ -151,7 +158,7 @@ program
             const process = await step.execute(job, wd);
             console.log(`${job.id}: end ${step.name} ${process.code}`);
           } catch (e) {
-            console.log(`${job.id}: failed ${step.name}`,e);
+            console.log(`${job.id}: failed ${step.name}`, e);
           }
         }
 
