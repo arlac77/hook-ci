@@ -1,20 +1,12 @@
 import execa from "execa";
 
+export const defaultProcessorConfig = {};
 
-export const defaultProcessorConfig = {
-  git: {
-    clone: {
-      depth: 10
-    }
-  },
-  workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp/hook-ci')}" }
-};
-
-export async function processJob(job,config) {
+export async function processJob(job, config, queues, repositories) {
   const url = job.data.repository.url;
   console.log("start: ", url);
 
-  if (!job.data.head_commit) {
+  if (!job.data.request.head_commit) {
     console.log("no commit id present");
     return {
       url

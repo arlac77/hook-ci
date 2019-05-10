@@ -27,7 +27,7 @@ async function queueDetails(name, queue) {
   };
 }
 
-export async function createServer(config, sd, queues) {
+export async function createServer(config, sd, queues, repositories) {
   const app = new Koa();
 
   const server = config.http.cert

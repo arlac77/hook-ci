@@ -29,14 +29,17 @@
     "test": "ava"
   },
   "dependencies": {
+    "aggregation-repository-provider": "^2.3.5",
     "bull": "^3.9.1",
     "commander": "^2.20.0",
     "config-expander": "^10.3.2",
     "execa": "^1.0.0",
+    "github-repository-provider": "^7.1.0",
     "globby": "^9.1.0",
     "koa": "^2.7.0",
     "koa-better-router": "^2.1.1",
-    "koa-github-hook-handler": "^1.1.0"
+    "koa-github-hook-handler": "^1.1.0",
+    "local-repository-provider": "^6.2.5"
   },
   "devDependencies": {
     "@semantic-release/exec": "^3.3.3",

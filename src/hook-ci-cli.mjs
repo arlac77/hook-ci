@@ -8,6 +8,7 @@ import { defaultServerConfig, createServer } from "./server.mjs";
 import { defaultQueuesConfig } from "./queues.mjs";
 import { defaultAnalyserConfig } from "./analyser.mjs";
 import { defaultProcessorConfig } from "./processor.mjs";
+import { defaultRepositoriesConfig } from "./repositories.mjs";
 
 program
   .version(version)
@@ -31,6 +32,7 @@ program
       },
       default: {
         version,
+        ...defaultRepositoriesConfig,
         ...defaultServerConfig,
         ...defaultProcessorConfig,
         ...defaultAnalyserConfig,
@@ -44,8 +46,9 @@ program
     console.log(removeSensibleValues(config));
 
     try {
-      const queues = await createQueues(config);
-      const server = await createServer(config, sd, queues);
+      const repositories = await createRepositories(config);
+      const queues = await createQueues(config, repositories);
+      const server = await createServer(config, sd, queues, repositories);
     } catch (err) {
       console.log(error);
     }
