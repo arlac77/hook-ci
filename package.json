@@ -32,7 +32,7 @@
     "aggregation-repository-provider": "^2.3.5",
     "bull": "^3.9.1",
     "commander": "^2.20.0",
-    "config-expander": "^10.3.2",
+    "config-expander": "^10.3.3",
     "execa": "^1.0.0",
     "github-repository-provider": "^7.1.0",
     "globby": "^9.1.0",
