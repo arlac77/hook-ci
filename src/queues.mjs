@@ -2,6 +2,7 @@ import Queue from "bull";
 import execa from "execa";
 
 import { processJob } from "./processor.mjs";
+import { analyseJob } from "./analyser.mjs";
 
 /**
  * default configuration for queues

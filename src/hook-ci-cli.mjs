@@ -5,10 +5,10 @@ import program from "commander";
 import { expand, removeSensibleValues } from "config-expander";
 import { utf8Encoding } from "./util.mjs";
 import { defaultServerConfig, createServer } from "./server.mjs";
-import { defaultQueuesConfig } from "./queues.mjs";
+import { defaultQueuesConfig, createQueues } from "./queues.mjs";
 import { defaultAnalyserConfig } from "./analyser.mjs";
 import { defaultProcessorConfig } from "./processor.mjs";
-import { defaultRepositoriesConfig } from "./repositories.mjs";
+import { defaultRepositoriesConfig, createRepositories } from "./repositories.mjs";
 
 program
   .version(version)
@@ -49,7 +49,7 @@ program
       const repositories = await createRepositories(config);
       const queues = await createQueues(config, repositories);
       const server = await createServer(config, sd, queues, repositories);
-    } catch (err) {
+    } catch (error) {
       console.log(error);
     }
   })

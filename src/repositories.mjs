@@ -10,26 +10,26 @@ export const defaultRepositoriesConfig = {
     }
   },
   workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp/hook-ci')}" },
-  providers: [GithubProvider, LocalProvider]
+  providers: [{ type: GithubProvider }, { type: LocalProvider }]
 };
 
 export async function createRepositories(config) {
-  const providers = [];
-
   const logOptions = {
     logger: (...args) => {
       console.log(...args);
     }
   };
 
-  config.providers.forEach(provider => {
-    const options = {
-      logOptions,
-      ...properties[provider.name],
-      ...provider.optionsFromEnvironment(process.env)
-    };
-    providers.push(new provider(options));
-  });
+
+  console.log(config.providers);
+
+  const providers = config.providers.map(
+    provider =>
+      new provider.type({
+        logOptions,
+        ...provider.type.optionsFromEnvironment(process.env)
+      })
+  );
 
   const aggregationProvider = new AggregationProvider(providers, logOptions);
 
