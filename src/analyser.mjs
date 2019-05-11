@@ -24,7 +24,7 @@ export async function analyseJob(job, config, queues, repositories) {
 
   console.log("branch: ", branch);
 
-  await queues.process.add({ steps: [{ type: "exec" }] });
-}
+  const steps = await npmAnalyse(branch, job, config);
 
-export class Analyser {}
+  await queues.process.add({ ...job.data, steps });
+}

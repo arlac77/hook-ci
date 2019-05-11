@@ -58,3 +58,24 @@ export async function processJob(job, config, queues, repositories) {
     arch: process.arch
   };
 }
+
+export async function executeStep(step, job, wd) {
+  if (step.executable) {
+    const cwd = join(wd, step.directory);
+
+    console.log(`${job.id}: ${step.executable} ${step.args.join(" ")}`);
+    const proc = execa(
+      step.executable,
+      step.args,
+      Object.assign({ cwd }, step.options)
+    );
+    proc.stdout.pipe(
+      createWriteStream(join(wd, `${step.name}.stdout.log`), utf8Encoding)
+    );
+    proc.stderr.pipe(
+      createWriteStream(join(wd, `${step.name}.stderr.log`), utf8Encoding)
+    );
+
+    return proc;
+  }
+}

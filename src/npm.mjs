@@ -1,7 +1,4 @@
 import { join, dirname } from "path";
-import fs from "fs";
-import globby from "globby";
-
 import { utf8Encoding, createStep } from "./util.mjs";
 
 const wellKnownScripts = new Set(["install", "test", "pack", "version", "publish"]);
@@ -11,14 +8,12 @@ function scriptArgs(name)
   return wellKnownScripts.has(name) ? [name] : ['run', name];
 }
 
-export async function npmAnalyse(config,wd) {
+export async function npmAnalyse(branch, job, config,wd) {
   const steps = [];
 
-  for (const pkg of await globby(["**/package.json", ...config.analyse.skip], { cwd: wd })) {
-    const file = join(wd, pkg);
-    const json = JSON.parse(await fs.promises.readFile(file, utf8Encoding));
-
-    const directory = dirname(pkg);
+  for await (const entry of branch.entries(["**/package.json", ...config.analyse.skip])) {
+    const json = JSON.parse(await (await branch.entry(entry.name)).getString());
+    const directory = dirname(entry.name);
 
     if(json.engines) {
       if(json.engines.node) {
@@ -31,8 +26,7 @@ export async function npmAnalyse(config,wd) {
         name: "prepare",
         directory,
         executable: "npm",
-        args: scriptArgs('install'),
-        progress: 10
+        args: scriptArgs('install')
       })
     );
 
@@ -43,8 +37,7 @@ export async function npmAnalyse(config,wd) {
             name: "test",
             directory,
             executable: "npm",
-            args: scriptArgs('cover'),
-            progress: 30
+            args: scriptArgs('cover')
           })
         );
       }
@@ -54,8 +47,7 @@ export async function npmAnalyse(config,wd) {
             name: "test",
             directory,
             executable: "npm",
-            args: scriptArgs('test'),
-            progress: 30
+            args: scriptArgs('test')
           })
         );
       }
@@ -65,8 +57,7 @@ export async function npmAnalyse(config,wd) {
             name: "test",
             directory,
             executable: "npm",
-            args: scriptArgs('docs'),
-            progress: 40
+            args: scriptArgs('docs')
           })
         );
       }
@@ -79,7 +70,6 @@ export async function npmAnalyse(config,wd) {
           directory,
           executable: "npx",
           args: ["semantic-release"],
-          progress: 100,
           options: {
             localDir: directory
           }

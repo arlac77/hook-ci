@@ -1,10 +1,12 @@
 import test from "ava";
 import { join, dirname } from "path";
-import { analyseJob } from "../src/analyser.mjs";
+import { analyseJob, defaultAnalyserConfig } from "../src/analyser.mjs";
 import { GithubProvider } from "github-repository-provider";
 
 test("analyser", async t => {
-  const config = {};
+  const config = {
+    ...defaultAnalyserConfig
+  };
   const job = {
     id: 1,
     data: {
@@ -22,7 +24,7 @@ test("analyser", async t => {
   const queues = {
     process: {
       async add(job) {
-        processData = job;
+        processData = { steps:job.steps };
       }
     }
   };
@@ -32,5 +34,29 @@ test("analyser", async t => {
   );
 
   await analyseJob(job, config, queues, repositories);
-  t.deepEqual(processData, { steps: [{ type: "exec" }] });
+  t.deepEqual(processData, {
+    steps: [
+      {
+        name: "prepare",
+        directory: ".",
+        executable: "npm",
+        args: ["install"]
+      },
+      {
+        name: "test",
+        directory: ".",
+        executable: "npm",
+        args: ["test"]
+      },
+      {
+        name: "deploy",
+        directory: ".",
+        executable: "npx",
+        args: ["semantic-release"],
+        options: {
+          localDir: "."
+        }
+      }
+    ]
+  });
 });
