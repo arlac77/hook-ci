@@ -10,7 +10,7 @@ export const defaultRepositoriesConfig = {
     }
   },
   workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp/hook-ci')}" },
-  providers: [{ type: GithubProvider }, { type: LocalProvider }]
+  providers: [{ type: "github-repository-provider" }, { type: "local-repository-provider" }]
 };
 
 export async function createRepositories(config) {
@@ -20,15 +20,13 @@ export async function createRepositories(config) {
     }
   };
 
-  config.providders = defaultRepositoriesConfig.providers;
+  px = [GithubProvider,LocalProvider];
 
-  console.log(config.providers);
-
-  const providers = config.providers.map(
+  const providers = px.map(
     provider =>
-      new provider.type({
+      new provider({
         logOptions,
-        ...provider.type.optionsFromEnvironment(process.env)
+        ...provider.optionsFromEnvironment(process.env)
       })
   );
 
