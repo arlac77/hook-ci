@@ -20,6 +20,7 @@ export async function createRepositories(config) {
     }
   };
 
+  config.providders = defaultRepositoriesConfig.providers;
 
   console.log(config.providers);
 
