@@ -20,7 +20,7 @@ export async function createRepositories(config) {
     }
   };
 
-  px = [GithubProvider,LocalProvider];
+  const px = [GithubProvider,LocalProvider];
 
   const providers = px.map(
     provider =>
