@@ -10,15 +10,20 @@ function scriptArgs(name)
 
 export async function npmAnalyse(branch, job, config,wd) {
   const steps = [];
-
+  const requirements = [
+  ];
+  
   for await (const entry of branch.entries(["**/package.json", ...config.analyse.skip])) {
     const json = JSON.parse(await (await branch.entry(entry.name)).getString());
     const directory = dirname(entry.name);
 
     if(json.engines) {
       if(json.engines.node) {
-          // select node
-      }
+         requirements.push({
+           executable: "node",
+           version: json.engines.node 
+         });
+       }
     }
 
     steps.push(
@@ -26,7 +31,8 @@ export async function npmAnalyse(branch, job, config,wd) {
         name: "prepare",
         directory,
         executable: "npm",
-        args: scriptArgs('install')
+        args: scriptArgs('install'),
+        requirements
       })
     );
 
@@ -37,7 +43,8 @@ export async function npmAnalyse(branch, job, config,wd) {
             name: "test",
             directory,
             executable: "npm",
-            args: scriptArgs('cover')
+            args: scriptArgs('cover'),
+            requirements
           })
         );
       }
@@ -47,7 +54,8 @@ export async function npmAnalyse(branch, job, config,wd) {
             name: "test",
             directory,
             executable: "npm",
-            args: scriptArgs('test')
+            args: scriptArgs('test'),
+            requirements
           })
         );
       }
@@ -57,7 +65,8 @@ export async function npmAnalyse(branch, job, config,wd) {
             name: "test",
             directory,
             executable: "npm",
-            args: scriptArgs('docs')
+            args: scriptArgs('docs'),
+            requirements
           })
         );
       }
@@ -72,7 +81,8 @@ export async function npmAnalyse(branch, job, config,wd) {
           args: ["semantic-release"],
           options: {
             localDir: directory
-          }
+          },
+          requirements
         })
       );
     }
