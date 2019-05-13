@@ -1,9 +1,11 @@
+import { join } from "path";
 import globby from "globby";
-
+import { createStep } from "./util.mjs";
 import { npmAnalyse } from "./npm.mjs";
 import { pkgbuildAnalyse } from "./pkgbuild.mjs";
 
 export const defaultAnalyserConfig = {
+  workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp/hook-ci')}" },
   analyse: {
     skip: ["!test", "!tests"]
   }
@@ -24,7 +26,23 @@ export async function analyseJob(job, config, queues, repositories) {
 
   console.log("branch: ", branch);
 
-  const steps = await npmAnalyse(branch, job, config);
+  let wd;
 
-  await queues.process.add({ ...job.data, steps });
+  if (job.data.request && job.data.request.head_commit) {
+    const commit = job.data.request.head_commit.id;
+    wd = join(config.workspace.dir, commit);
+  } else {
+    wd = join(config.workspace.dir, String(job.id));
+  }
+
+  const steps = [
+    createStep({
+      name: "git clone",
+      executable: "git",
+      args: ["clone", "--depth", config.git.clone.depth, url, wd]
+    }),
+    ...(await npmAnalyse(branch, job, config))
+  ];
+
+  await queues.process.add({ wd, ...job.data, steps });
 }

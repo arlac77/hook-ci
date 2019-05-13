@@ -68,7 +68,7 @@ export async function npmAnalyse(branch, job, config, wd) {
       if (json.scripts.docs) {
         steps.push(
           createStep({
-            name: "test",
+            name: "documentation",
             directory,
             executable: "npm",
             args: scriptArgs("docs"),

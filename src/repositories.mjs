@@ -6,11 +6,13 @@ import { AggregationProvider } from "aggregation-repository-provider";
 export const defaultRepositoriesConfig = {
   git: {
     clone: {
-      depth: 10
+      depth: 5
     }
   },
-  workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp/hook-ci')}" },
-  providers: [{ type: "github-repository-provider" }, { type: "local-repository-provider" }]
+  providers: [
+    { type: "github-repository-provider" },
+    { type: "local-repository-provider" }
+  ]
 };
 
 export async function createRepositories(config) {
@@ -20,7 +22,7 @@ export async function createRepositories(config) {
     }
   };
 
-  const px = [GithubProvider,LocalProvider];
+  const px = [GithubProvider, LocalProvider];
 
   const providers = px.map(
     provider =>
