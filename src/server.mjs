@@ -27,6 +27,15 @@ async function queueDetails(name, queue) {
   };
 }
 
+function getQueue(queues, name, ctx) {
+  const queue = queues[name];
+  if (!queue) {
+    ctx.throw(500, `Queue ${name} not found`);
+  }
+
+  return queue;
+}
+
 export async function createServer(config, sd, queues, repositories) {
   const app = new Koa();
 
@@ -57,33 +66,36 @@ export async function createServer(config, sd, queues, repositories) {
   });
 
   router.addRoute("GET", "/queue/:queue", async (ctx, next) => {
-    ctx.body = await queueDetails(ctx.params.queue, queues[ctx.params.queue]);
+    ctx.body = await queueDetails(
+      ctx.params.queue,
+      getQueue(queues, ctx.params.queue, ctx)
+    );
     return next();
   });
 
   router.addRoute("POST", "/queue/:queue/pause", async (ctx, next) => {
-    const queue = queues[ctx.params.queue];
+    const queue = getQueue(queues, ctx.params.queue, ctx);
     await queue.pause();
     ctx.body = {};
     return next();
   });
 
   router.addRoute("POST", "/queue/:queue/resume", async (ctx, next) => {
-    const queue = queues[ctx.params.queue];
+    const queue = getQueue(queues, ctx.params.queue, ctx);
     await queue.resume();
     ctx.body = {};
     return next();
   });
 
   router.addRoute("POST", "/queue/:queue/empty", async (ctx, next) => {
-    const queue = queues[ctx.params.queue];
+    const queue = getQueue(queues, ctx.params.queue, ctx);
     await queue.empty();
     ctx.body = {};
     return next();
   });
 
   router.addRoute("GET", "/queue/:queue/jobs", async (ctx, next) => {
-    const queue = queues[ctx.params.queue];
+    const queue = getQueue(queues, ctx.params.queue, ctx);
     ctx.body = (await queue.getJobs(
       [
         "active",

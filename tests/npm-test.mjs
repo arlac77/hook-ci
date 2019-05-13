@@ -25,22 +25,19 @@ test("npm", async t => {
         name: "prepare",
         directory: ".",
         executable: "npm",
-        args: ["install"],
-        progress: 10
+        args: ["install"]
       },
       {
         name: "test",
         directory: ".",
         executable: "npm",
-        args: ["test"],
-        progress: 30
+        args: ["test"]
       },
       {
         name: "deploy",
         directory: ".",
         executable: "npx",
-        args: ["semantic-release"],
-        progress: 100,
+        args: ["semantic-release"]
         options: {
           localDir: "."
         }
