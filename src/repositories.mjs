@@ -10,29 +10,33 @@ export const defaultRepositoriesConfig = {
     }
   },
   providers: [
-    { type: "github-repository-provider" },
-    { type: "local-repository-provider" }
+    { type: "github-repository-provider", logLevel: "debug" },
+    { type: "local-repository-provider", logLevel: "info" }
   ]
 };
 
 export async function createRepositories(config) {
-  const logOptions = {
-    logger: (...args) => {
-      console.log(...args);
-    }
+  const logger = function logger(...args) {
+    console.log(...args);
   };
 
-  const px = [GithubProvider, LocalProvider];
+  const providers = await Promise.all(
+    config.providers.map(async provider => {
+      const rpm = await import(provider.type);
+      const providerFactory = rpm.default;
+      delete provider.type;
 
-  const providers = px.map(
-    provider =>
-      new provider({
-        logOptions,
-        ...provider.optionsFromEnvironment(process.env)
-      })
+      const options = {
+        ...provider,
+        logger,
+        ...providerFactory.optionsFromEnvironment(process.env)
+      };
+      console.log(providerFactory, options);
+      return new providerFactory(options);
+    })
   );
 
-  const aggregationProvider = new AggregationProvider(providers, logOptions);
+  const aggregationProvider = new AggregationProvider(providers, { logger });
 
   return aggregationProvider;
 }

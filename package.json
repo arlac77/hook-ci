@@ -34,12 +34,12 @@
     "commander": "^2.20.0",
     "config-expander": "^11.0.0",
     "execa": "^1.0.0",
-    "github-repository-provider": "^7.1.1",
+    "github-repository-provider": "^7.2.0",
     "globby": "^9.2.0",
     "koa": "^2.7.0",
     "koa-better-router": "^2.1.1",
     "koa-github-hook-handler": "^1.1.0",
-    "local-repository-provider": "^6.2.5",
+    "local-repository-provider": "^6.3.0",
     "remove-sensible-values": "^1.0.0"
   },
   "devDependencies": {
