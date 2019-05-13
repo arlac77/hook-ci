@@ -3,9 +3,10 @@ import execa from "execa";
 export const defaultProcessorConfig = {};
 
 export async function processJob(job, config, queues, repositories) {
-  const wd = job.data.wd;
+  const data = job.data;
+  const wd = data.wd;
 
-  for (const step of job.data.steps) {
+  for (const step of data.steps) {
     try {
       console.log(`${job.id}: start ${step.name} (${wd})`);
       const process = await step.execute(job, wd);

@@ -18,18 +18,26 @@ export const defaultAnalyserConfig = {
  * @param {Object} queues
  */
 export async function analyseJob(job, config, queues, repositories) {
-  const url = job.data.repository.url;
+  const data = job.data;
+
+  data.repository = data.request.repository;
+
+  const url = data.repository.url;
 
   console.log("start: ", url);
 
+  job.progress(5);
+
   const branch = await repositories.branch(url);
 
-  console.log("branch: ", branch);
+  job.progress(10);
+
+  console.log("branch: ", branch.fullName);
 
   let wd;
 
-  if (job.data.request && job.data.request.head_commit) {
-    const commit = job.data.request.head_commit.id;
+  if (data.request && data.request.head_commit) {
+    const commit = data.request.head_commit.id;
     wd = join(config.workspace.dir, commit);
   } else {
     wd = join(config.workspace.dir, String(job.id));
@@ -44,5 +52,9 @@ export async function analyseJob(job, config, queues, repositories) {
     ...(await npmAnalyse(branch, job, config))
   ];
 
-  await queues.process.add({ wd, ...job.data, steps });
+  job.progress(90);
+
+  await queues.process.add({ wd, ...data, steps });
+
+  job.progress(100);
 }

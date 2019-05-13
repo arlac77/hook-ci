@@ -30,7 +30,7 @@ export const defaultQueuesConfig = {
 
 /**
  * map queue names
- * to preocessing
+ * to processing
  */
 const queueTypes = {
   incoming: analyseJob,
@@ -62,9 +62,7 @@ export async function createQueues(config, repositories) {
 async function cleanupJob(job, config, queues, repositories) {
   queues.incoming.clean(5000);
 
-  if (job.data.after) {
-    const wd = join(config.workspace.dir, job.data.after);
-
+  if (job.data.wd) {
     console.log(`rm -rf ${wd}`);
 
     //const proc = await execa("rm", ["-rf", wd]);
