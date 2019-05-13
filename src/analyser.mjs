@@ -54,7 +54,9 @@ export async function analyseJob(job, config, queues, repositories) {
 
   job.progress(90);
 
-  await queues.process.add({ wd, ...data, steps });
+  const newData = { ...data, steps, wd };
+  console.log(newData);
+  await queues.process.add(newData);
 
   job.progress(100);
 }

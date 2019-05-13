@@ -4,6 +4,14 @@ import { defaultRepositoriesConfig } from "../src/repositories.mjs";
 import { analyseJob, defaultAnalyserConfig } from "../src/analyser.mjs";
 import { GithubProvider } from "github-repository-provider";
 
+function makeJob(id, data) {
+  return {
+    id,
+    progress() {},
+    data
+  };
+}
+
 test("analyser", async t => {
   const config = {
     ...defaultRepositoriesConfig,
@@ -11,19 +19,19 @@ test("analyser", async t => {
     workspace: { dir: "/tmp" }
   };
 
-  const job = {
-    id: 1,
-    data: {
-      event: "push",
-      ref: "refs/heads/template-sync-1",
+  const job = makeJob(1, {
+    event: "push",
 
+    request: {
+      ref: "refs/heads/template-sync-1",
       repository: {
         full_name: "arlac77/npm-template-sync-github-hook",
 
         url: "https://github.com/arlac77/npm-template-sync-github-hook"
       }
     }
-  };
+  });
+
   let processData;
   const queues = {
     process: {

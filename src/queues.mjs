@@ -16,9 +16,6 @@ export const defaultQueuesConfig = {
     investigate: {
       active: false
     },
-    dispatch: {
-      active: true
-    },
     process: {
       active: true
     },
