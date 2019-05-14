@@ -40,7 +40,7 @@
     "koa-better-router": "^2.1.1",
     "koa-github-hook-handler": "^1.1.0",
     "local-repository-provider": "^6.3.0",
-    "remove-sensible-values": "^1.0.0"
+    "remove-sensible-values": "^1.0.1"
   },
   "devDependencies": {
     "@semantic-release/exec": "^3.3.3",
@@ -50,7 +50,7 @@
     "esm": "^3.2.22",
     "got": "^9.6.0",
     "markdown-doctest": "^0.9.1",
-    "npm-pkgbuild":"^6.0.14",
+    "npm-pkgbuild": "^6.0.14",
     "rollup": "^1.11.3",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-commonjs": "^9.3.4",
