@@ -57,15 +57,15 @@ export async function createServer(config, sd, queues, repositories) {
   });
 
   router.addRoute("GET", "/repositories", async (ctx, next) => {
-    const names = [];
+    const rs = [];
 
     for await (const repository of repositories.repositories(
-      ctx.query.pattern || '*'
+      ctx.query.pattern || "*"
     )) {
-      names.push(repository.fullName);
+      rs.push(repository.toJSON);
     }
 
-    ctx.body = names;
+    ctx.body = rs;
 
     return next();
   });
@@ -121,7 +121,7 @@ export async function createServer(config, sd, queues, repositories) {
         "delayed"
       ] /*, { asc: true }*/
     )).map(job => {
-      return Object.assign({ id: job.id }, job.data);
+      return { id: job.id, ...job.data };
     });
     return next();
   });

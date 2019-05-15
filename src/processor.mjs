@@ -22,11 +22,7 @@ export async function executeStep(step, job, wd) {
     const cwd = join(wd, step.directory);
 
     console.log(`${job.id}: ${step.executable} ${step.args.join(" ")}`);
-    const proc = execa(
-      step.executable,
-      step.args,
-      Object.assign({ cwd }, step.options)
-    );
+    const proc = execa(step.executable, step.args, { cwd, ...step.options });
     proc.stdout.pipe(
       createWriteStream(join(wd, `${step.name}.stdout.log`), utf8Encoding)
     );
