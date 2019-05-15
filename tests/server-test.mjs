@@ -1,5 +1,6 @@
 import test from "ava";
 import got from "got";
+import { GithubProvider } from "github-repository-provider";
 import signer from "x-hub-signature/src/signer";
 import { createServer } from "../src/server.mjs";
 
@@ -13,11 +14,19 @@ const queues = {
       return [
         {
           id: "job1",
-          data: { event: "push", repository: {full_name: "repo1" }, request: {ref: "refs/heads/template-sync-1"} }
+          data: {
+            event: "push",
+            repository: { full_name: "repo1" },
+            request: { ref: "refs/heads/template-sync-1" }
+          }
         },
         {
           id: "job2",
-          data: { event: "push", repository: {full_name: "repo2" }, request: {ref: "refs/heads/template-sync-2"} }
+          data: {
+            event: "push",
+            repository: { full_name: "repo2" },
+            request: { ref: "refs/heads/template-sync-2" }
+          }
         }
       ];
     },
@@ -43,7 +52,7 @@ const queues = {
 };
 
 test("incoming jobs", async t => {
-  const port = 3150;
+  const port = 3149;
 
   const server = await createServer(
     {
@@ -60,7 +69,9 @@ test("incoming jobs", async t => {
     queues
   );
 
-  const response = await got.get(`http://localhost:${port}/queue/incoming/jobs`);
+  const response = await got.get(
+    `http://localhost:${port}/queue/incoming/jobs`
+  );
 
   t.is(response.statusCode, 200);
 
@@ -68,6 +79,38 @@ test("incoming jobs", async t => {
   t.true(json.length >= 1);
   t.is(json[0].id, "job1");
   t.is(json[1].repository.full_name, "repo2");
+
+  server.close();
+});
+
+test("request repositories", async t => {
+  const port = 3150;
+
+  const server = await createServer(
+    {
+      version: 99,
+      http: {
+        port,
+        hook: {
+          path: hook,
+          secret
+        }
+      }
+    },
+    sd,
+    queues,
+    new GithubProvider(GithubProvider.optionsFromEnvironment(process.env))
+  );
+
+  const response = await got.get(
+    `http://localhost:${port}/repositories?pattern=arlac77/sync-test*`
+  );
+
+  t.is(response.statusCode, 200);
+
+  const json = JSON.parse(response.body);
+  t.true(json.length >= 1);
+  t.is(json[0].name, "sync-test-repository");
 
   server.close();
 });
@@ -129,7 +172,6 @@ test("incoming queue", async t => {
   server.close();
 });
 
-
 test("pause/resume/empty queues", async t => {
   const port = 3153;
   let paused, resumed, empty;
@@ -161,10 +203,11 @@ test("pause/resume/empty queues", async t => {
     queues
   );
 
-  let response = await got.post(`http://localhost:${port}/queue/incoming/pause`);
+  let response = await got.post(
+    `http://localhost:${port}/queue/incoming/pause`
+  );
   t.is(response.statusCode, 200);
   t.true(paused);
-
 
   response = await got.post(`http://localhost:${port}/queue/incoming/resume`);
   t.is(response.statusCode, 200);
