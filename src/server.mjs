@@ -62,7 +62,7 @@ export async function createServer(config, sd, queues, repositories) {
     for await (const repository of repositories.repositories(
       ctx.query.pattern || "*"
     )) {
-      rs.push(repository.toJSON);
+      rs.push(repository.toJSON());
     }
 
     ctx.body = rs;
