@@ -47,7 +47,7 @@ export async function createServer(config, sd, queues, repositories) {
 
   router.addRoute("GET", "/state", async (ctx, next) => {
     ctx.body = [{
-      node: '1',
+      node: config.nodename,
       version: config.version,
       versions: process.versions,
       platform: process.platform,
