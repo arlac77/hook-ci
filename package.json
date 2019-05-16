@@ -39,7 +39,7 @@
     "koa": "^2.7.0",
     "koa-better-router": "^2.1.1",
     "koa-github-hook-handler": "^1.1.0",
-    "local-repository-provider": "^6.3.1",
+    "local-repository-provider": "^6.3.2",
     "remove-sensible-values": "^1.0.1"
   },
   "devDependencies": {
