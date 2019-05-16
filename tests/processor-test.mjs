@@ -6,12 +6,13 @@ test("executeStep", async t => {
     {
       name: "echo",
       directory: ".",
-      executable: "echo",
-      args: ["hello"]
+      executable: "npm",
+      args: ["--version"]
     },
     { id: "1" },
     "/tmp"
   );
 
   t.is(proc.code, 0);
+  t.regex(proc.stdout, /\d+\.\d+\.\d+/);
 });
