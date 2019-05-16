@@ -5,7 +5,7 @@ import execa from "execa";
 export const utf8Encoding = { encoding: "utf8" };
 
 export function createStep(step) {
-  return step;
+  return { name: "unnamed", args: [], options: {}, ...step };
 }
 
 

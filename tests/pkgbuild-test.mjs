@@ -23,7 +23,6 @@ test("pkgbuild", async t => {
     [
       {
         name: "build",
-        directory: ".",
         executable: "makepkg",
         args: [],
         progress: 100

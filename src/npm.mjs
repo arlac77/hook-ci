@@ -23,6 +23,7 @@ export async function npmAnalyse(branch, job, config, wd) {
   ])) {
     const json = JSON.parse(await (await branch.entry(entry.name)).getString());
     const directory = dirname(entry.name);
+    const options = { cwd: join(wd,directory) };
 
     if (json.engines) {
       if (json.engines.node) {
@@ -36,9 +37,9 @@ export async function npmAnalyse(branch, job, config, wd) {
     steps.push(
       createStep({
         name: "prepare",
-        directory,
         executable: "npm",
         args: scriptArgs("install"),
+        options,
         requirements
       })
     );
@@ -48,9 +49,9 @@ export async function npmAnalyse(branch, job, config, wd) {
         steps.push(
           createStep({
             name: "test",
-            directory,
             executable: "npm",
             args: scriptArgs("cover"),
+            options,
             requirements
           })
         );
@@ -58,9 +59,9 @@ export async function npmAnalyse(branch, job, config, wd) {
         steps.push(
           createStep({
             name: "test",
-            directory,
             executable: "npm",
             args: scriptArgs("test"),
+            options,
             requirements
           })
         );
@@ -69,9 +70,9 @@ export async function npmAnalyse(branch, job, config, wd) {
         steps.push(
           createStep({
             name: "documentation",
-            directory,
             executable: "npm",
             args: scriptArgs("docs"),
+            options,
             requirements
           })
         );
@@ -82,11 +83,11 @@ export async function npmAnalyse(branch, job, config, wd) {
       steps.push(
         createStep({
           name: "deploy",
-          directory,
           executable: "npx",
           args: ["semantic-release"],
           options: {
-            localDir: directory
+            ...options,
+            localDir: options.cwd
           },
           requirements
         })

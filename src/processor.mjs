@@ -16,6 +16,7 @@ export async function processJob(job, config, queues, repositories) {
       console.log(`${job.id}: start ${step.name} (${wd})`);
       const process = await executeStep(step, job, wd, options);
       options.logFile = true;
+      options.cwd = wd;
       console.log(`${job.id}: end ${step.name} ${process.code}`);
     } catch (e) {
       console.log(`${job.id}: failed ${step.name}`, e);
