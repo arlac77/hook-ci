@@ -9,7 +9,7 @@ export async function processJob(job, config, queues, repositories) {
   for (const step of data.steps) {
     try {
       console.log(`${job.id}: start ${step.name} (${wd})`);
-      const process = await step.execute(job, wd);
+      const process = await executeStep(step, job, wd);
       console.log(`${job.id}: end ${step.name} ${process.code}`);
     } catch (e) {
       console.log(`${job.id}: failed ${step.name}`, e);
