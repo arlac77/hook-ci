@@ -33,6 +33,7 @@ program
       },
       default: {
         version,
+        nodename: "${os.hostname}",
         ...defaultRepositoriesConfig,
         ...defaultServerConfig,
         ...defaultProcessorConfig,
