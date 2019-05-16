@@ -52,7 +52,7 @@ export async function analyseJob(job, config, queues, repositories) {
       executable: "/usr/bin/git",
       args: ["clone", "--depth", config.git.clone.depth, url, wd]
     }),
-    ...(await npmAnalyse(branch, job, config))
+    ...(await npmAnalyse(branch, job, config, wd))
   ];
 
   job.progress(90);
