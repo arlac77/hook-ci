@@ -43,6 +43,8 @@ export async function analyseJob(job, config, queues, repositories) {
     wd = join(config.workspace.dir, String(job.id));
   }
 
+  console.log("wd: ", wd);
+
   const steps = [
     createStep({
       name: "git clone",
@@ -52,6 +54,9 @@ export async function analyseJob(job, config, queues, repositories) {
     ...(await npmAnalyse(branch, job, config))
   ];
 
+
+  console.log("steps: ", steps);
+  
   job.progress(90);
 
   const newData = { ...data, steps, wd };
