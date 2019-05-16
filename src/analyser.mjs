@@ -32,8 +32,6 @@ export async function analyseJob(job, config, queues, repositories) {
 
   job.progress(10);
 
-  console.log("branch: ", branch.fullName);
-
   let wd;
 
   if (data.request && data.request.head_commit) {
@@ -42,8 +40,6 @@ export async function analyseJob(job, config, queues, repositories) {
   } else {
     wd = join(config.workspace.dir, String(job.id));
   }
-
-  console.log("wd: ", wd);
 
   const steps = [
     createStep({
@@ -54,9 +50,6 @@ export async function analyseJob(job, config, queues, repositories) {
     ...(await npmAnalyse(branch, job, config))
   ];
 
-
-  console.log("steps: ", steps);
-  
   job.progress(90);
 
   const newData = { ...data, steps, wd };
