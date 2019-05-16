@@ -11,13 +11,21 @@ export const defaultQueuesConfig = {
   redis: { url: "${first(env.REDIS_URL,'redis://127.0.0.1:6379')}" },
   queues: {
     incoming: {
-      active: true
+      active: true,
+      propagate: {
+        failure: "investigate",
+        success: "process"
+      }
     },
     investigate: {
       active: false
     },
     process: {
-      active: true
+      active: true,
+      propagate: {
+        failure: "investigate",
+        success: "cleanup"
+      }
     },
     cleanup: {
       active: true
@@ -42,20 +50,24 @@ export async function createQueues(config, repositories) {
   }, {});
 
   Object.keys(config.queues).forEach(name => {
-    if (config.queues[name].active) {
+    const cq = config.queues[name];
+    if (cq.active) {
       const queue = queues[name];
       const qt = queueTypes[name];
       if (qt === undefined) {
         console.log(`no queue type for ${name}`);
       } else {
         queue.process(async job => qt(job, config, queues, repositories));
-        
-        queue.on('error', (error) => {
-          console.log("ERROR",error);
+
+        queue.on("error", error => {
+          console.log("ERROR", error);
         });
-        
-        queue.on('failed', (job,error) => {
-          console.log("FAILED",job,error);
+
+        queue.on("failed", (job, error) => {
+          console.log("FAILED", job, error);
+          if (cq.propagate && cq.propagate.failure) {
+            console.log("PROPAGATE TO", cq.propagate.failure);
+          }
         });
       }
     }
