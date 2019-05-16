@@ -22,7 +22,7 @@ export async function processJob(job, config, queues, repositories) {
 
 export async function executeStep(step, job, wd) {
   if (step.executable) {
-    const cwd = join(wd, step.directory);
+    const cwd = step.directory !== undefined ? join(wd, step.directory) : wd;
 
     console.log(`${job.id}: ${step.executable} ${step.args.join(" ")}`);
     const proc = execa(step.executable, step.args, { cwd, ...step.options });
