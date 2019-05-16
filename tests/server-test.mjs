@@ -243,9 +243,10 @@ test("get state", async t => {
   t.is(response.statusCode, 200);
 
   const json = JSON.parse(response.body);
-  t.is(json.version, 99);
-  t.true(json.versions.node.length > 2);
-  t.true(json.uptime > 0.001);
+  t.is(json.length, 1);
+  t.is(json[0].version, 99);
+  t.true(json[0].versions.node.length > 2);
+  t.true(json[0].uptime > 0.001);
 
   server.close();
 });

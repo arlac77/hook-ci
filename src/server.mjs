@@ -46,13 +46,14 @@ export async function createServer(config, sd, queues, repositories) {
   const router = Router();
 
   router.addRoute("GET", "/state", async (ctx, next) => {
-    ctx.body = {
+    ctx.body = [{
+      node: '1',
       version: config.version,
       versions: process.versions,
       platform: process.platform,
       uptime: process.uptime(),
       memory: process.memoryUsage()
-    };
+    }];
     return next();
   });
 
