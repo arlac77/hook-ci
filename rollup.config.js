@@ -11,7 +11,8 @@ const external = [
   "koa",
   "bull",
   "sd-daemon",
-  "koa-better-router"
+  "koa-better-router",
+  "node-fetch"
 ];
 
 export default Object.keys(pkg.bin || {}).map(name => {
@@ -32,7 +33,7 @@ export default Object.keys(pkg.bin || {}).map(name => {
         compact: true
       }),
       cleanup({
-        extensions: ['js','mjs','jsx','tag']
+        extensions: ["js", "mjs", "jsx", "tag"]
       }),
       executable()
     ],
