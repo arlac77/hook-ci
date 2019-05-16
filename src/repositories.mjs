@@ -12,8 +12,7 @@ export const defaultRepositoriesConfig = {
     }
   },
   providers: [
-    { type: "github-repository-provider", logLevel: "debug" },
-    { type: "local-repository-provider", logLevel: "info" }
+    { type: "github-repository-provider", logLevel: "debug" }
   ]
 };
 
