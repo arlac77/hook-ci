@@ -51,7 +51,11 @@ export async function createQueues(config, repositories) {
         queue.process(async job => qt(job, config, queues, repositories));
         
         queue.on('error', (error) => {
-          console.log(error);
+          console.log("ERROR",error);
+        });
+        
+        queue.on('failed', (job,error) => {
+          console.log("FAILED",job,error);
         });
       }
     }
