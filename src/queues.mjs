@@ -49,6 +49,10 @@ export async function createQueues(config, repositories) {
         console.log(`no queue type for ${name}`);
       } else {
         queue.process(async job => qt(job, config, queues, repositories));
+        
+        queue.on('error', (error) => {
+          console.log(error);
+        });
       }
     }
   });
