@@ -56,6 +56,20 @@ export async function createServer(config, sd, queues, repositories) {
     return next();
   });
 
+  router.addRoute("GET", "/repositories", async (ctx, next) => {
+    const rs = [];
+
+    for await (const repository of repositories.repositories(
+      ctx.query.pattern || "*"
+    )) {
+      rs.push(repository.toJSON());
+    }
+
+    ctx.body = rs;
+
+    return next();
+  });
+
   router.addRoute("GET", "/queues", async (ctx, next) => {
     ctx.body = await Promise.all(
       Object.keys(queues).map(async name => {
@@ -107,7 +121,7 @@ export async function createServer(config, sd, queues, repositories) {
         "delayed"
       ] /*, { asc: true }*/
     )).map(job => {
-      return Object.assign({ id: job.id }, job.data);
+      return { id: job.id, ...job.data };
     });
     return next();
   });
