@@ -46,14 +46,16 @@ export async function createServer(config, sd, queues, repositories) {
   const router = Router();
 
   router.addRoute("GET", "/state", async (ctx, next) => {
-    ctx.body = [{
-      node: config.nodename,
-      version: config.version,
-      versions: process.versions,
-      platform: process.platform,
-      uptime: process.uptime(),
-      memory: process.memoryUsage()
-    }];
+    ctx.body = [
+      {
+        name: config.nodename,
+        version: config.version,
+        versions: process.versions,
+        platform: process.platform,
+        uptime: process.uptime(),
+        memory: process.memoryUsage()
+      }
+    ];
     return next();
   });
 
@@ -111,6 +113,7 @@ export async function createServer(config, sd, queues, repositories) {
   });
 
   router.addRoute("GET", "/queue/:queue/jobs", async (ctx, next) => {
+    //ctx.query.states;
     const queue = getQueue(queues, ctx.params.queue, ctx);
     ctx.body = (await queue.getJobs(
       [
@@ -124,6 +127,14 @@ export async function createServer(config, sd, queues, repositories) {
     )).map(job => {
       return { id: job.id, ...job.data };
     });
+    return next();
+  });
+
+  router.addRoute("GET", "/queue/:queue/job/:job", async (ctx, next) => {
+    const queue = getQueue(queues, ctx.params.queue, ctx);
+    const job = await queue.getJob(ctx.params.job);
+    console.log(job);
+    ctx.body = { id: job.id, ...job.data};
     return next();
   });
 
