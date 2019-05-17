@@ -63,10 +63,21 @@ export async function createQueues(config, repositories) {
           console.log("ERROR", error);
         });
 
+        queue.on("completed", (job, result) => {
+          console.log("COMPLETED", job, result);
+          if (cq.propagate && cq.propagate.success) {
+            console.log("PROPAGATE TO", cq.propagate.success);
+            const dest = queues[cq.propagate.success];
+            dest.add({ ...job.data, result });
+          }
+        });
+
         queue.on("failed", (job, error) => {
           console.log("FAILED", job, error);
           if (cq.propagate && cq.propagate.failure) {
             console.log("PROPAGATE TO", cq.propagate.failure);
+            const dest = queues[cq.propagate.failure];
+            dest.add({ ...job.data, error });
           }
         });
       }

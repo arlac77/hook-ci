@@ -15,15 +15,12 @@ test("pkgbuild", async t => {
     join(here, "fixtures", "scenario1")
   );
 
-  t.deepEqual(
-    steps,
-    [
-      {
-        name: "build",
-        executable: "makepkg",
-        args: [],
-        options: {}
-      }
-    ]
-  );
+  t.deepEqual(steps, [
+    {
+      name: "build",
+      executable: "makepkg",
+      args: [],
+      options: { cwd: join(here, "fixtures", "scenario1") }
+    }
+  ]);
 });

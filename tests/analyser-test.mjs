@@ -4,7 +4,7 @@ import { defaultRepositoriesConfig } from "../src/repositories.mjs";
 import { analyseJob, defaultAnalyserConfig } from "../src/analyser.mjs";
 import { processJob } from "../src/processor.mjs";
 import { GithubProvider } from "github-repository-provider";
-import { makeJob } from './util.mjs';
+import { makeJob } from "./util.mjs";
 
 test("analyser", async t => {
   const config = {
@@ -17,7 +17,7 @@ test("analyser", async t => {
     event: "push",
 
     request: {
-      ref: "refs/heads/template-sync-1",
+      ref: "refs/heads/master",
       repository: {
         full_name: "arlac77/npm-template-sync-github-hook",
 
@@ -50,7 +50,23 @@ test("analyser", async t => {
     }
   ];
 
+  //console.log(processData);
+
   t.deepEqual(processData, {
+    branch: "master",
+    event: "push",
+    wd: "/tmp/1",
+    request: {
+      ref: "refs/heads/master",
+      repository: {
+        full_name: "arlac77/npm-template-sync-github-hook",
+        url: "https://github.com/arlac77/npm-template-sync-github-hook"
+      }
+    },
+    repository: {
+      full_name: "arlac77/npm-template-sync-github-hook",
+      url: "https://github.com/arlac77/npm-template-sync-github-hook"
+    },
     steps: [
       {
         name: "git clone",
@@ -59,6 +75,8 @@ test("analyser", async t => {
           "clone",
           "--depth",
           5,
+          "-b",
+          "master",
           "https://github.com/arlac77/npm-template-sync-github-hook",
           "/tmp/1"
         ],
@@ -104,6 +122,6 @@ test("analyser", async t => {
     ]
   });
 
-  console.log(processData);
-//  await processJob( makeJob(2,processData), config, queues, repositories);
+  //console.log(processData);
+  //  await processJob( makeJob(2,processData), config, queues, repositories);
 });
