@@ -5,9 +5,12 @@ import { utf8Encoding, createStep } from "./util.mjs";
 export async function pkgbuildAnalyse(config, wd) {
   const steps = [];
 
-  for (const pkg of await globby(["**/PKGBUILD", ...config.analyse.skip], {
-    cwd: wd
-  })) {
+  for (const pkg of await globby(
+    ["**/PKGBUILD", ...config.analyse.entries.exclude],
+    {
+      cwd: wd
+    }
+  )) {
     steps.push(
       createStep({
         name: "build",

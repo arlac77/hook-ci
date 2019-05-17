@@ -7,7 +7,12 @@ import { pkgbuildAnalyse } from "./pkgbuild.mjs";
 export const defaultAnalyserConfig = {
   workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp/hook-ci')}" },
   analyse: {
-    skip: ["!test/**/*", "!tests/**/*"],
+    entries: {
+      exclude: ["!test/**/*", "!tests/**/*"]
+    },
+    refs: {
+      exclude: "/refs/tags/.*"
+    },
     analyser: [
       {
         type: "npm",
@@ -33,6 +38,11 @@ export async function analyseJob(job, config, queues, repositories) {
   data.repository = data.request.repository;
 
   const url = data.repository.url;
+
+  if (data.request.ref.startsWith("/refs/tags")) {
+    console.log("analyse:", data.event, url, "skipping tags", data.request.ref);
+    return {};
+  }
 
   const branch_name = data.request.ref.substring("/refs/heads".length);
   data.branch = branch_name;

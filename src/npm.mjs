@@ -19,11 +19,11 @@ export async function npmAnalyse(branch, job, config, wd) {
 
   for await (const entry of branch.entries([
     "**/package.json",
-    ...config.analyse.skip
+    ...config.analyse.entries.exclude
   ])) {
     const json = JSON.parse(await (await branch.entry(entry.name)).getString());
     const directory = dirname(entry.name);
-    const options = { cwd: join(wd,directory) };
+    const options = { cwd: join(wd, directory) };
 
     if (json.engines) {
       if (json.engines.node) {
