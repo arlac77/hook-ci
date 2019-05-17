@@ -4,15 +4,7 @@ import { defaultRepositoriesConfig } from "../src/repositories.mjs";
 import { analyseJob, defaultAnalyserConfig } from "../src/analyser.mjs";
 import { processJob } from "../src/processor.mjs";
 import { GithubProvider } from "github-repository-provider";
-
-function makeJob(id, data) {
-  return {
-    id,
-    progress() {},
-    log(line) { console.log(line)},
-    data
-  };
-}
+import { makeJob } from './util.mjs';
 
 test("analyser", async t => {
   const config = {

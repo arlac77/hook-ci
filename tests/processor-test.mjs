@@ -1,5 +1,6 @@
 import test from "ava";
 import { executeStep } from "../src/processor.mjs";
+import { makeJob } from './util.mjs';
 
 test("executeStep", async t => {
   const proc = await executeStep(
@@ -9,7 +10,7 @@ test("executeStep", async t => {
       executable: "npm",
       args: ["--version"]
     },
-    { id: "1" },
+    makeJob(1),
     "/tmp"
   );
 

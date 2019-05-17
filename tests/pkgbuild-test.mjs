@@ -23,7 +23,6 @@ test("pkgbuild", async t => {
         executable: "makepkg",
         args: [],
         options: {}
-        progress: 100
       }
     ]
   );
