@@ -3,11 +3,5 @@
     "clone": {
       "depth": 5
     }
-  },
-  "analyse": {
-    "skip": [
-      "!test",
-      "!tests"
-    ]
   }
 }

@@ -8,17 +8,42 @@ export function createStep(step) {
   return { name: "unnamed", args: [], options: {}, ...step };
 }
 
+/**
+ * add log entries to a job
+ * @param {ReadableStream} stream
+ * @param {Job} job
+ */
+export async function streamIntoJob(stream, job) {
+  let remainder = "";
+
+  for await (const chunk of stream) {
+    const lines = chunk.toString("utf8").split(/\r?\n/);
+    if (lines.length === 1) {
+      remainder += lines[0];
+    } else {
+      lines[0] = remainder + lines[0];
+      remainder = lines.pop();
+
+      for (const line of lines) {
+        job.log(line);
+      }
+    }
+  }
+
+  if (remainder.length > 0) {
+    job.log(remainder);
+  }
+}
 
 /**
  * strip away currently unused request data
  * @param {Object} request decodec webhook request data
  @ @return {Object} stipped down request data
  */
-export function stripUnusedDataFromHookRequest(request)
-{
+export function stripUnusedDataFromHookRequest(request) {
   const repository = request.repository;
 
-  if(repository) {
+  if (repository) {
     delete repository.private;
     delete repository.owner;
     delete repository.fork;
@@ -84,7 +109,7 @@ export function stripUnusedDataFromHookRequest(request)
   }
 
   const sender = request.sender;
-  if(sender) {
+  if (sender) {
     delete sender.avatar_url;
     delete sender.gravatar_id;
     delete sender.url;

@@ -7,7 +7,16 @@ import { pkgbuildAnalyse } from "./pkgbuild.mjs";
 export const defaultAnalyserConfig = {
   workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp/hook-ci')}" },
   analyse: {
-    skip: ["!test", "!tests"]
+    skip: ["!test/**/*", "!tests/**/*"],
+    analyser: [
+      {
+        type: "npm",
+        logLevel: "debug"
+      },
+      {
+        type: "pkgbuild"
+      }
+    ]
   }
 };
 
@@ -35,14 +44,14 @@ export async function analyseJob(job, config, queues, repositories) {
 
   let wd;
 
-  if(data.request && data.request.head_commit) {
+  if (data.request && data.request.head_commit) {
     const commit = data.request.head_commit.id;
-    if(commit) {
+    if (commit) {
       wd = join(config.workspace.dir, commit);
     }
   }
 
-  if(wd === undefined) {
+  if (wd === undefined) {
     wd = join(config.workspace.dir, String(job.id));
   }
 

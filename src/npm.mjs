@@ -1,5 +1,5 @@
 import { join, dirname } from "path";
-import { utf8Encoding, createStep } from "./util.mjs";
+import { createStep } from "./util.mjs";
 
 const wellKnownScripts = new Set([
   "install",
