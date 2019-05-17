@@ -34,11 +34,14 @@ export async function analyseJob(job, config, queues, repositories) {
 
   const url = data.repository.url;
 
-  console.log("start: ", url);
+  const branch_name = data.request.ref.substring('/refs/heads'.length);
+  data.branch = branch_name;
+
+  console.log("start: ", data.event, url, branch_name);
 
   job.progress(5);
 
-  const branch = await repositories.branch(url);
+  const branch = await repositories.branch(`${url}#${branch_name}`);
 
   job.progress(10);
 
@@ -59,7 +62,7 @@ export async function analyseJob(job, config, queues, repositories) {
     createStep({
       name: "git clone",
       executable: "git",
-      args: ["clone", "--depth", config.git.clone.depth, url, wd]
+      args: ["clone", "--depth", config.git.clone.depth, '-b', branch_name, url, wd]
     }),
     ...(await npmAnalyse(branch, job, config, wd))
   ];
