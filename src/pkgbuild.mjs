@@ -6,15 +6,13 @@ export async function pkgbuildAnalyse(config,wd) {
   const steps = [];
 
   for (const pkg of await globby(["**/PKGBUILD", ...config.analyse.skip], { cwd: wd })) {
-    const directory = dirname(pkg);
-
     steps.push(
       createStep({
         name: "build",
-        directory,
         executable: "makepkg",
         args: [],
-        progress: 100
+        progress: 100,
+        options: { cwd: join(wd,dirname(pkg)) }
       })
     );
   }

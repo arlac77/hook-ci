@@ -16,15 +16,13 @@ test("pkgbuild", async t => {
   );
 
   t.deepEqual(
-    steps.map(s => {
-      delete s.execute;
-      return s;
-    }),
+    steps,
     [
       {
         name: "build",
         executable: "makepkg",
         args: [],
+        options: {}
         progress: 100
       }
     ]

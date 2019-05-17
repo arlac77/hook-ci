@@ -35,7 +35,7 @@ export async function analyseJob(job, config, queues, repositories) {
 
   let wd;
 
-  if(data.request) {
+  if(data.request && data.request.head_commit) {
     const commit = data.request.head_commit.id;
     if(commit) {
       wd = join(config.workspace.dir, commit);
@@ -49,7 +49,7 @@ export async function analyseJob(job, config, queues, repositories) {
   const steps = [
     createStep({
       name: "git clone",
-      executable: "/usr/bin/git",
+      executable: "git",
       args: ["clone", "--depth", config.git.clone.depth, url, wd]
     }),
     ...(await npmAnalyse(branch, job, config, wd))
@@ -58,7 +58,7 @@ export async function analyseJob(job, config, queues, repositories) {
   job.progress(90);
 
   const newData = { ...data, steps, wd };
-  console.log(newData);
+
   await queues.process.add(newData);
 
   job.progress(100);

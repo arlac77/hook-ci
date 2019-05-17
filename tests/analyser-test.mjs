@@ -2,6 +2,7 @@ import test from "ava";
 import { join, dirname } from "path";
 import { defaultRepositoriesConfig } from "../src/repositories.mjs";
 import { analyseJob, defaultAnalyserConfig } from "../src/analyser.mjs";
+import { processJob } from "../src/processor.mjs";
 import { GithubProvider } from "github-repository-provider";
 
 function makeJob(id, data) {
@@ -36,7 +37,7 @@ test("analyser", async t => {
   const queues = {
     process: {
       async add(job) {
-        processData = { steps: job.steps };
+        processData = { ...job };
       }
     }
   };
@@ -67,39 +68,49 @@ test("analyser", async t => {
           5,
           "https://github.com/arlac77/npm-template-sync-github-hook",
           "/tmp/1"
-        ]
+        ],
+        options: {}
       },
       {
         name: "prepare",
-        directory: ".",
         executable: "npm",
         args: ["install"],
+        options: {
+          cwd: "/tmp/1"
+        },
         requirements
       },
       {
         name: "test",
-        directory: ".",
         executable: "npm",
         args: ["run", "cover"],
+        options: {
+          cwd: "/tmp/1"
+        },
         requirements
       },
       {
         name: "documentation",
-        directory: ".",
         executable: "npm",
         args: ["run", "docs"],
+        options: {
+          cwd: "/tmp/1"
+        },
         requirements
       },
       {
         name: "deploy",
-        directory: ".",
         executable: "npx",
         args: ["semantic-release"],
         options: {
-          localDir: "."
+          cwd: "/tmp/1",
+          localDir: "/tmp/1"
         },
         requirements
       }
     ]
   });
+
+  console.log(processData);
+  await processJob({ id: 2, data: processData }, config, queues, repositories);
 });
