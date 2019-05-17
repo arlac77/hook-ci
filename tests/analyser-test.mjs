@@ -9,6 +9,7 @@ function makeJob(id, data) {
   return {
     id,
     progress() {},
+    log(line) { console.log(line)},
     data
   };
 }
@@ -112,5 +113,5 @@ test("analyser", async t => {
   });
 
   console.log(processData);
-  await processJob({ id: 2, data: processData }, config, queues, repositories);
+//  await processJob( makeJob(2,processData), config, queues, repositories);
 });

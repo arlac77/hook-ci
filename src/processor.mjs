@@ -15,7 +15,6 @@ export async function processJob(job, config, queues, repositories) {
     try {
       console.log(`${job.id}: start ${step.name} (${wd})`);
       const process = await executeStep(step, job, wd, options);
-      options.logFile = true;
       console.log(`${job.id}: end ${step.name} ${process.code}`);
     } catch (e) {
       console.log(`${job.id}: failed ${step.name}`, e);
@@ -28,16 +27,14 @@ export async function executeStep(step, job, wd, options = { logFile: true }) {
     const name = step.name.replace(/\s+/, "_");
 
     console.log(`${job.id}: ${step.executable} ${step.args.join(" ")}`);
-    const proc = execa(step.executable, step.args, step.options );
+    const proc = execa(step.executable, step.args, step.options);
 
-    if (options.logFile) {
-      proc.stdout.pipe(
-        createWriteStream(join(wd, `${name}.stdout.log`), utf8Encoding)
-      );
-      proc.stderr.pipe(
-        createWriteStream(join(wd, `${name}.stderr.log`), utf8Encoding)
-      );
-    }
+    proc.stdout.on("data", chunk => {
+      job.log(chunk.toString('utf8'));
+    });
+    proc.stderr.on("data", chunk => {
+      job.log(chunk.toString('utf8'));
+    });
 
     return proc;
   }

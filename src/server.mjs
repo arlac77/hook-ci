@@ -139,7 +139,7 @@ export async function createServer(config, sd, queues, repositories) {
   router.addRoute("GET", "/queue/:queue/job/:job", async (ctx, next) => {
     const queue = getQueue(queues, ctx.params.queue, ctx);
     const job = await queue.getJob(ctx.params.job);
-    console.log(job);
+    //console.log(job);
     ctx.body = {
       id: job.id,
       state: await job.getState(),
@@ -148,6 +148,12 @@ export async function createServer(config, sd, queues, repositories) {
       finishedOn: job.processedOn,
       ...job.data
     };
+    return next();
+  });
+
+  router.addRoute("GET", "/queue/:queue/job/:job/log", async (ctx, next) => {
+    const queue = getQueue(queues, ctx.params.queue, ctx);
+    ctx.body = queue.getJobLogs(ctx.params.job,ctx.query.start,ctx.query.end);
     return next();
   });
 
