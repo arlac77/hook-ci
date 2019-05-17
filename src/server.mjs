@@ -125,7 +125,13 @@ export async function createServer(config, sd, queues, repositories) {
         "delayed"
       ] /*, { asc: true }*/
     )).map(job => {
-      return { id: job.id, ...job.data };
+      return {
+        id: job.id,
+        attemptsMade: job.attemptsMade,
+        processedOn: job.processedOn,
+        finishedOn: job.processedOn,
+        ...job.data
+      };
     });
     return next();
   });
@@ -134,7 +140,7 @@ export async function createServer(config, sd, queues, repositories) {
     const queue = getQueue(queues, ctx.params.queue, ctx);
     const job = await queue.getJob(ctx.params.job);
     console.log(job);
-    ctx.body = { id: job.id, ...job.data};
+    ctx.body = { id: job.id, processedOn: job.processedOn, ...job.data };
     return next();
   });
 
