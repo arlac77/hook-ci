@@ -140,7 +140,14 @@ export async function createServer(config, sd, queues, repositories) {
     const queue = getQueue(queues, ctx.params.queue, ctx);
     const job = await queue.getJob(ctx.params.job);
     console.log(job);
-    ctx.body = { id: job.id, processedOn: job.processedOn, ...job.data };
+    ctx.body = {
+      id: job.id,
+      state: await job.getState(),
+      attemptsMade: job.attemptsMade,
+      processedOn: job.processedOn,
+      finishedOn: job.processedOn,
+      ...job.data
+    };
     return next();
   });
 
