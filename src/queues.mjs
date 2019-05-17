@@ -90,9 +90,9 @@ export async function createQueues(config, repositories) {
 async function cleanupJob(job, config, queues, repositories) {
   queues.incoming.clean(5000);
 
-  if (job.data.wd) {
+  const wd = job.data.wd;
+  if (wd !== undefined) {
     console.log(`rm -rf ${wd}`);
-
-    //const proc = await execa("rm", ["-rf", wd]);
+    const proc = await execa("rm", ["-rf", wd]);
   }
 }
