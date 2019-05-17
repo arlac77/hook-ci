@@ -37,7 +37,7 @@ export async function analyseJob(job, config, queues, repositories) {
   const branch_name = data.request.ref.substring("/refs/heads".length);
   data.branch = branch_name;
 
-  console.log("start: ", data.event, url, branch_name);
+  console.log("analyse:", data.event, url, branch_name);
 
   job.progress(5);
 

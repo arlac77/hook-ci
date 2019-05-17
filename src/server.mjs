@@ -153,7 +153,11 @@ export async function createServer(config, sd, queues, repositories) {
 
   router.addRoute("GET", "/queue/:queue/job/:job/log", async (ctx, next) => {
     const queue = getQueue(queues, ctx.params.queue, ctx);
-    ctx.body = await queue.getJobLogs(ctx.params.job,ctx.query.start,ctx.query.end);
+    ctx.body = await queue.getJobLogs(
+      ctx.params.job,
+      ctx.query.start,
+      ctx.query.end
+    );
     return next();
   });
 
@@ -172,7 +176,11 @@ export async function createServer(config, sd, queues, repositories) {
           return { ok: true };
         },
         pull_request: async (request, event) => {
-          console.log("Received a %s event for %s", event, request);
+          console.log(
+            "Received a %s event for %s",
+            event,
+            request.repository.full_name
+          );
           return { ok: true };
         },
         ping: async (request, event) => {
