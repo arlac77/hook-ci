@@ -136,6 +136,18 @@ export async function createServer(config, sd, queues, repositories) {
     return next();
   });
 
+  router.addRoute(
+    "POST",
+    "/queue/:queue/job/:job/cancel",
+    async (ctx, next) => {
+      const queue = getQueue(queues, ctx.params.queue, ctx);
+      //const job = await queue.getJob(ctx.params.job);
+      ctx.throw(500, `Unable to cancel job ${ctx.params.job}`);
+
+      return next();
+    }
+  );
+
   router.addRoute("GET", "/queue/:queue/job/:job", async (ctx, next) => {
     const queue = getQueue(queues, ctx.params.queue, ctx);
     const job = await queue.getJob(ctx.params.job);
