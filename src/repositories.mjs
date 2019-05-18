@@ -34,7 +34,6 @@ export async function createRepositories(config) {
         logger,
         ...providerFactory.optionsFromEnvironment(process.env)
       };
-      console.log(providerFactory, options);
       return new providerFactory(options);
     })
   );
