@@ -22,7 +22,7 @@ export async function processJob(job, config, queues, repositories) {
   }
   }
   else {
-     console.log(`${job.id}.${step.name}: no steps to execute`,);
+     console.log(`${job.id}: no steps to execute`);
   }
 }
 
