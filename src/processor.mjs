@@ -9,20 +9,26 @@ export async function processJob(job, config, queues, repositories) {
   const data = job.data;
   const wd = data.wd;
 
+  if(Array.isArray(data.steps)) {
+  
   for (const step of data.steps) {
     try {
-      console.log(`${job.id}: start ${step.name} (${wd})`);
+      console.log(`${job.id}.${step.name}: start (${wd})`);
       const process = await executeStep(step, job, wd);
-      console.log(`${job.id}: end ${step.name} ${process.code}`);
+      console.log(`${job.id}.${step.name}: end ${process.code}`);
     } catch (e) {
-      console.log(`${job.id}: failed ${step.name}`, e);
+      console.log(`${job.id}.${step.name}: failed`, e);
     }
+  }
+  }
+  else {
+     console.log(`${job.id}.${step.name}: no steps to execute`,);
   }
 }
 
 export async function executeStep(step, job, wd) {
   if (step.executable) {
-    console.log(`${job.id}/${step.name}: ${step.executable} ${step.args.join(" ")}`);
+    console.log(`${job.id}.${step.name}: ${step.executable} ${step.args.join(" ")}`);
     const proc = execa(step.executable, step.args, step.options);
 
     streamIntoJob(proc.stdout, job);

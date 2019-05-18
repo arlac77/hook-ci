@@ -91,9 +91,12 @@ export async function analyseJob(job, config, queues, repositories) {
 
   job.progress(90);
 
+  delete data.request;
   const newData = { ...data, steps, wd };
 
-  await queues.process.add(newData);
+  //await queues.process.add(newData);
 
   job.progress(100);
+  
+  return newData;
 }
