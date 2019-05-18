@@ -13,6 +13,7 @@ export const defaultQueuesConfig = {
   queues: {
     incoming: {
       active: true,
+      clean: 36000000,
       propagate: {
         failed: "investigate",
         completed: "process"
@@ -26,12 +27,14 @@ export const defaultQueuesConfig = {
     },
     process: {
       active: true,
+      clean: 36000000,
       propagate: {
         failed: "investigate",
         completed: "cleanup"
       }
     },
     cleanup: {
+      clean: 36000000,
       active: true
     }
   }
@@ -79,11 +82,16 @@ export async function createQueues(config, repositories) {
                 `${job.id}: ${event} no propagation destination queue`
               );
             }
+
+            if (cq.clean !== undefined) {
+              queue.clean(cq.clean);
+            }
           };
         };
 
-        queue.on("completed", propagator("completed"));
-        queue.on("failed", propagator("failed"));
+        ["completed", "failed"].forEach(state =>
+          queue.on(state, propagator(state))
+        );
       }
     }
   });
@@ -92,11 +100,8 @@ export async function createQueues(config, repositories) {
 }
 
 async function cleanupJob(job, config, queues, repositories) {
-  queues.incoming.clean(5000);
-
   const wd = job.data.wd;
   if (wd !== undefined) {
-    console.log(`rm -rf ${wd}`);
     const proc = await execa("rm", ["-rf", wd]);
     streamIntoJob(proc.stdout, job);
     streamIntoJob(proc.stderr, job);
