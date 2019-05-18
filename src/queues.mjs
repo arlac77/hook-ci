@@ -73,7 +73,7 @@ export async function createQueues(config, repositories) {
             if (cq.propagate && cq.propagate[event]) {
               console.log(`${job.id}: propagate to`, cq.propagate[event]);
               const dest = queues[cq.propagate[event]];
-              dest.add({ ...job.data, result });
+              dest.add(result);
             } else {
               console.log(
                 `${job.id}: ${event} no propagation destination queue`
