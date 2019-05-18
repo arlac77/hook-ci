@@ -73,6 +73,8 @@ export async function createQueues(config, repositories) {
         const propagator = event => {
           return (job, result) => {
             console.log(`${job.id}: ${event}`, result);
+            if(result === undefined) { return; }
+
             if (cq.propagate && cq.propagate[event]) {
               console.log(`${job.id}: propagate to`, cq.propagate[event]);
               const dest = queues[cq.propagate[event]];
