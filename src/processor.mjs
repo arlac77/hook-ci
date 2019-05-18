@@ -10,7 +10,7 @@ export async function processJob(job, config, queues, repositories) {
   const wd = data.wd;
 
   if(Array.isArray(data.steps)) {
-  
+
   for (const step of data.steps) {
     try {
       console.log(`${job.id}.${step.name}: start (${wd})`);
@@ -29,6 +29,7 @@ export async function processJob(job, config, queues, repositories) {
 export async function executeStep(step, job, wd) {
   if (step.executable) {
     console.log(`${job.id}.${step.name}: ${step.executable} ${step.args.join(" ")}`);
+    job.log(`${step.executable} ${step.args.join(" ")}`);
     const proc = execa(step.executable, step.args, step.options);
 
     streamIntoJob(proc.stdout, job);
