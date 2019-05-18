@@ -11,7 +11,7 @@ export const defaultAnalyserConfig = {
       exclude: ["!test/**/*", "!tests/**/*"]
     },
     refs: {
-      exclude: "/refs/tags/.*"
+      exclude: "/refs/tags/"
     },
     analyser: [
       {
@@ -39,9 +39,11 @@ export async function analyseJob(job, config, queues, repositories) {
 
   const url = data.repository.url;
 
-  if (data.request.ref.startsWith("/refs/tags")) {
+  const regex = new RegExp(config.analyse.refs.exclude);
+
+  if(data.request.ref.match(regex)) {
     console.log("analyse:", data.event, url, "skipping tags", data.request.ref);
-    return {};
+    return undefined;
   }
 
   const branch_name = data.request.ref.substring("/refs/heads".length);
@@ -97,6 +99,6 @@ export async function analyseJob(job, config, queues, repositories) {
   //await queues.process.add(newData);
 
   job.progress(100);
-  
+
   return newData;
 }
