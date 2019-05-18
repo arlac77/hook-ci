@@ -53,6 +53,10 @@ export async function analyseJob(job, config, queues, repositories) {
 
   const branch = await repositories.branch(`${url}#${branch_name}`);
 
+  if (branch === undefined) {
+    throw new Error(`No such branch: ${url} ${branch_name}`);
+  }
+
   job.progress(10);
 
   let wd;
