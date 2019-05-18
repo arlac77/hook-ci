@@ -3,6 +3,7 @@ import execa from "execa";
 
 import { processJob } from "./processor.mjs";
 import { analyseJob } from "./analyser.mjs";
+import { streamIntoJob } from "./util.mjs";
 
 /**
  * default configuration for queues
@@ -13,18 +14,21 @@ export const defaultQueuesConfig = {
     incoming: {
       active: true,
       propagate: {
-        failure: "investigate",
-        success: "process"
+        failed: "investigate",
+        completed: "process"
       }
     },
     investigate: {
-      active: false
+      active: false,
+      propagate: {
+        completed: "cleanup"
+      }
     },
     process: {
       active: true,
       propagate: {
-        failure: "investigate",
-        success: "cleanup"
+        failed: "investigate",
+        completed: "cleanup"
       }
     },
     cleanup: {
@@ -63,23 +67,23 @@ export async function createQueues(config, repositories) {
           console.log("ERROR", error);
         });
 
-        queue.on("completed", (job, result) => {
-          console.log("COMPLETED", job.id, result);
-          if (cq.propagate && cq.propagate.success) {
-            console.log("PROPAGATE TO", cq.propagate.success);
-            const dest = queues[cq.propagate.success];
-            dest.add({ ...job.data, result });
-          }
-        });
+        const propagator = event => {
+          return (job, result) => {
+            console.log(`${job.id}: ${event}`, result);
+            if (cq.propagate && cq.propagate[event]) {
+              console.log(`${job.id}: propagate to`, cq.propagate[event]);
+              const dest = queues[cq.propagate[event]];
+              dest.add({ ...job.data, result });
+            } else {
+              console.log(
+                `${job.id}: ${event} no propagation destination queue`
+              );
+            }
+          };
+        };
 
-        queue.on("failed", (job, error) => {
-          console.log("FAILED", job.id, error);
-          if (cq.propagate && cq.propagate.failure) {
-            console.log("PROPAGATE TO", cq.propagate.failure);
-            const dest = queues[cq.propagate.failure];
-            dest.add({ ...job.data, error });
-          }
-        });
+        queue.on("completed", propagator("completed"));
+        queue.on("failed", propagator("failed"));
       }
     }
   });
@@ -94,5 +98,7 @@ async function cleanupJob(job, config, queues, repositories) {
   if (wd !== undefined) {
     console.log(`rm -rf ${wd}`);
     const proc = await execa("rm", ["-rf", wd]);
+    streamIntoJob(proc.stdout, job);
+    streamIntoJob(proc.stderr, job);
   }
 }

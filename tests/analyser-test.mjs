@@ -26,20 +26,13 @@ test("analyser", async t => {
     }
   });
 
-  let processData;
-  const queues = {
-    process: {
-      async add(job) {
-        processData = { ...job };
-      }
-    }
-  };
+  const queues = {};
 
   const repositories = new GithubProvider(
     GithubProvider.optionsFromEnvironment(process.env)
   );
 
-  await analyseJob(job, config, queues, repositories);
+  const processData = await analyseJob(job, config, queues, repositories);
 
   //console.log(JSON.stringify(processData, undefined, 2));
 
@@ -56,13 +49,6 @@ test("analyser", async t => {
     branch: "master",
     event: "push",
     wd: "/tmp/1",
-    request: {
-      ref: "refs/heads/master",
-      repository: {
-        full_name: "arlac77/npm-template-sync-github-hook",
-        url: "https://github.com/arlac77/npm-template-sync-github-hook"
-      }
-    },
     repository: {
       full_name: "arlac77/npm-template-sync-github-hook",
       url: "https://github.com/arlac77/npm-template-sync-github-hook"
