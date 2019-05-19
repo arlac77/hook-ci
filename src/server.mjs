@@ -179,31 +179,27 @@ export async function createServer(config, sd, queues, repositories) {
     createGithubHookHandler(
       {
         push: async (request, event) => {
-          const data = {
+          await queues.incoming.add({
             event,
             request: stripUnusedDataFromHookRequest(request)
-          };
-          data.repository = data.request.repository;
-          await queues.incoming.add(data);
+          });
           return { ok: true };
         },
         pull_request: async (request, event) => {
           console.log(
-            "Received a %s event for %s",
+            "Received a %s event for %s#%s",
             event,
-            request.repository.full_name
+            request.repository.full_name,request.ref
           );
           return { ok: true };
         },
         ping: async (request, event) => {
           console.log(
-            "Received a ping %s for %s",
+            "Received a ping %s for %s#%s",
             event,
-            request.repository.full_name
+            request.repository.full_name,request.ref
           );
-
-          const activeCount = await queues.incoming.getActiveCount();
-          return { ok: true, activeCount };
+          return { ok: true };
         }
       },
       config.http.hook
