@@ -29,7 +29,7 @@
     "test": "ava"
   },
   "dependencies": {
-    "aggregation-repository-provider": "^2.4.0",
+    "aggregation-repository-provider": "^2.4.1",
     "bull": "^3.9.1",
     "commander": "^2.20.0",
     "config-expander": "^11.0.2",
