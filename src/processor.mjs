@@ -12,9 +12,14 @@ export async function processJob(job, config, queues, repositories) {
   if (Array.isArray(data.steps)) {
     for (const step of data.steps) {
       try {
+        step.started = new Date();
         const process = await executeStep(step, job, wd);
       } catch (e) {
+        step.error = e;
         console.log(`${job.id}.${step.name}: failed`, e);
+      } finally {
+        step.ended = new Date();
+        job.update(data);
       }
     }
   } else {
@@ -37,6 +42,7 @@ export async function executeStep(step, job, wd) {
 
     proc = await proc;
     console.log(`${job.id}.${step.name}: end ${proc.code}`);
+    step.code = proc.code;
 
     return proc;
   }
