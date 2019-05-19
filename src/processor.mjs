@@ -34,15 +34,16 @@ export async function executeStep(step, job, wd) {
     console.log(
       `${job.id}.${step.name}: ${step.executable} ${step.args.join(" ")}`
     );
-    job.log(`${step.executable} ${step.args.join(" ")}`);
+    job.log(`### ${step.name}: ${step.executable} ${step.args.join(" ")}`);
     let proc = execa(step.executable, step.args, step.options);
 
     streamIntoJob(proc.stdout, job);
     streamIntoJob(proc.stderr, job);
 
     proc = await proc;
-    console.log(`${job.id}.${step.name}: end ${proc.code}`);
     step.code = proc.code;
+
+    console.log(`${job.id}.${step.name}: end ${step.code}`);
 
     return proc;
   }
