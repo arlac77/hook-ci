@@ -9,24 +9,26 @@ export async function processJob(job, config, queues, repositories) {
   const data = job.data;
   const wd = data.wd;
 
-  if(Array.isArray(data.steps)) {
-
-  for (const step of data.steps) {
-    try {
-      const process = await executeStep(step, job, wd);
-    } catch (e) {
-      console.log(`${job.id}.${step.name}: failed`, e);
+  if (Array.isArray(data.steps)) {
+    for (const step of data.steps) {
+      try {
+        const process = await executeStep(step, job, wd);
+      } catch (e) {
+        console.log(`${job.id}.${step.name}: failed`, e);
+      }
     }
+  } else {
+    console.log(`${job.id}: no steps to execute`);
   }
-  }
-  else {
-     console.log(`${job.id}: no steps to execute`);
-  }
+
+  return data;
 }
 
 export async function executeStep(step, job, wd) {
   if (step.executable) {
-    console.log(`${job.id}.${step.name}: ${step.executable} ${step.args.join(" ")}`);
+    console.log(
+      `${job.id}.${step.name}: ${step.executable} ${step.args.join(" ")}`
+    );
     job.log(`${step.executable} ${step.args.join(" ")}`);
     let proc = execa(step.executable, step.args, step.options);
 
