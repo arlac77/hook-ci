@@ -58,11 +58,7 @@ test("incoming jobs", async t => {
     {
       version: 99,
       http: {
-        port,
-        hook: {
-          path: hook,
-          secret
-        }
+        port
       }
     },
     sd,
@@ -90,11 +86,7 @@ test("request repositories", async t => {
     {
       version: 99,
       http: {
-        port,
-        hook: {
-          path: hook,
-          secret
-        }
+        port
       }
     },
     sd,
@@ -122,11 +114,7 @@ test("request queues", async t => {
     {
       version: 99,
       http: {
-        port,
-        hook: {
-          path: hook,
-          secret
-        }
+        port
       }
     },
     sd,
@@ -151,11 +139,7 @@ test("incoming queue", async t => {
     {
       version: 99,
       http: {
-        port,
-        hook: {
-          path: hook,
-          secret
-        }
+        port
       }
     },
     sd,
@@ -192,11 +176,7 @@ test("pause/resume/empty queues", async t => {
     {
       version: 99,
       http: {
-        port,
-        hook: {
-          path: hook,
-          secret
-        }
+        port
       }
     },
     sd,
@@ -227,11 +207,7 @@ test("get state", async t => {
     {
       version: 99,
       http: {
-        port,
-        hook: {
-          path: hook,
-          secret
-        }
+        port
       }
     },
     sd,
@@ -260,9 +236,12 @@ test("github push", async t => {
     {
       http: {
         port,
-        hook: {
-          path: hook,
-          secret
+        hooks: {
+          github: {
+            path: hook,
+            secret,
+            queue: "incoming"
+          }
         }
       }
     },

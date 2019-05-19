@@ -2,15 +2,26 @@ import { createServer as httpCreateServer } from "http";
 import { createServer as httpsCreateServer } from "https";
 import Koa from "koa";
 import Router from "koa-better-router";
-import { createGithubHookHandler } from "koa-github-hook-handler";
+import {
+  createGithubHookHandler,
+  createGiteaHookHandler
+} from "koa-github-hook-handler";
 import { stripUnusedDataFromHookRequest } from "./util.mjs";
 
 export const defaultServerConfig = {
   http: {
     port: "${first(env.PORT,8093)}",
-    hook: {
-      path: "/webhook",
-      secret: "${env.WEBHOOK_SECRET}"
+    hooks: {
+      gitea: {
+        path: "/gitea",
+        secret: "${env.WEBHOOK_SECRET}",
+        queue: "incoming"
+      },
+      github: {
+        path: "/webhook",
+        secret: "${env.WEBHOOK_SECRET}",
+        queue: "incoming"
+      }
     }
   }
 };
@@ -34,6 +45,54 @@ function getQueue(queues, name, ctx) {
   }
 
   return queue;
+}
+
+function createHooks(hooks, router, queues) {
+  if (hooks === undefined) {
+    return;
+  }
+
+  for (const t of Object.keys(hooks)) {
+    const hook = hooks[t];
+    const queue = queues[hook.queue];
+
+    const handler =
+      t === "gitea" ? createGiteaHookHandler : createGithubHookHandler;
+    router.addRoute(
+      "POST",
+      hook.path,
+      handler(
+        {
+          push: async (request, event) => {
+            await queue.add({
+              event,
+              request: stripUnusedDataFromHookRequest(request)
+            });
+            return { ok: true };
+          },
+          pull_request: async (request, event) => {
+            console.log(
+              "Received a %s event for %s#%s",
+              event,
+              request.repository.full_name,
+              request.ref
+            );
+            return { ok: true };
+          },
+          ping: async (request, event) => {
+            console.log(
+              "Received a ping %s for %s#%s",
+              event,
+              request.repository.full_name,
+              request.ref
+            );
+            return { ok: true };
+          }
+        },
+        hook
+      )
+    );
+  }
 }
 
 export async function createServer(config, sd, queues, repositories) {
@@ -173,38 +232,7 @@ export async function createServer(config, sd, queues, repositories) {
     return next();
   });
 
-  router.addRoute(
-    "POST",
-    config.http.hook.path,
-    createGithubHookHandler(
-      {
-        push: async (request, event) => {
-          await queues.incoming.add({
-            event,
-            request: stripUnusedDataFromHookRequest(request)
-          });
-          return { ok: true };
-        },
-        pull_request: async (request, event) => {
-          console.log(
-            "Received a %s event for %s#%s",
-            event,
-            request.repository.full_name,request.ref
-          );
-          return { ok: true };
-        },
-        ping: async (request, event) => {
-          console.log(
-            "Received a ping %s for %s#%s",
-            event,
-            request.repository.full_name,request.ref
-          );
-          return { ok: true };
-        }
-      },
-      config.http.hook
-    )
-  );
+  createHooks(config.http.hooks, router, queues);
 
   app.use(router.middleware());
 
