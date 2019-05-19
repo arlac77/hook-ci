@@ -29,12 +29,12 @@
     "test": "ava"
   },
   "dependencies": {
-    "aggregation-repository-provider": "^2.4.1",
+    "aggregation-repository-provider": "^2.4.2",
     "bull": "^3.9.1",
     "commander": "^2.20.0",
     "config-expander": "^11.0.2",
     "execa": "^1.0.0",
-    "github-repository-provider": "^7.2.3",
+    "github-repository-provider": "^7.2.5",
     "globby": "^9.2.0",
     "koa": "^2.7.0",
     "koa-better-router": "^2.1.1",
