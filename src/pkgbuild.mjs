@@ -14,7 +14,7 @@ export async function pkgbuildAnalyse(branch, job, config, wd) {
         name: "build",
         executable: "makepkg",
         args: [],
-        options: { cwd: join(wd, dirname(pkg)) }
+        options: { cwd: join(wd, dirname(entry.name)) }
       })
     );
   }

@@ -3,15 +3,23 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { defaultAnalyserConfig } from "../src/analyser.mjs";
 import { pkgbuildAnalyse } from "../src/pkgbuild.mjs";
+import { MockProvider } from "mock-repository-provider";
+import { makeJob } from "./util.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
-test.skip("pkgbuild", async t => {
+test("pkgbuild", async t => {
+  const repositories = new MockProvider(join(here, "fixtures", "scenario1"), {
+    repositoryName: "fixtures/scenario1"
+  });
 
+  const job = makeJob(1);
 
-  const steps = await pkgbuildAnalyse(repositories,
+  const steps = await pkgbuildAnalyse(
+    await repositories.branch("fixtures/scenario1#master"),
+    job,
     defaultAnalyserConfig,
-    join(here, "fixtures", "scenario1")
+    "/tmp"
   );
 
   t.deepEqual(steps, [
@@ -19,7 +27,7 @@ test.skip("pkgbuild", async t => {
       name: "build",
       executable: "makepkg",
       args: [],
-      options: { cwd: join(here, "fixtures", "scenario1") }
+      options: { cwd: "/tmp" }
     }
   ]);
 });
