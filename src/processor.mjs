@@ -13,9 +13,7 @@ export async function processJob(job, config, queues, repositories) {
 
   for (const step of data.steps) {
     try {
-      console.log(`${job.id}.${step.name}: start (${wd})`);
       const process = await executeStep(step, job, wd);
-      console.log(`${job.id}.${step.name}: end ${process.code}`);
     } catch (e) {
       console.log(`${job.id}.${step.name}: failed`, e);
     }
@@ -30,10 +28,13 @@ export async function executeStep(step, job, wd) {
   if (step.executable) {
     console.log(`${job.id}.${step.name}: ${step.executable} ${step.args.join(" ")}`);
     job.log(`${step.executable} ${step.args.join(" ")}`);
-    const proc = execa(step.executable, step.args, step.options);
+    let proc = execa(step.executable, step.args, step.options);
 
     streamIntoJob(proc.stdout, job);
     streamIntoJob(proc.stderr, job);
+
+    proc = await proc;
+    console.log(`${job.id}.${step.name}: end ${proc.code}`);
 
     return proc;
   }
