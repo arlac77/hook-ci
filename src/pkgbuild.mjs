@@ -1,16 +1,14 @@
 import { join, dirname } from "path";
-import globby from "globby";
-import { utf8Encoding, createStep } from "./util.mjs";
+import { createStep } from "./util.mjs";
 
-export async function pkgbuildAnalyse(config, wd) {
+export async function pkgbuildAnalyse(branch, job, config, wd) {
   const steps = [];
+  const requirements = [];
 
-  for (const pkg of await globby(
-    ["**/PKGBUILD", ...config.analyse.entries.exclude],
-    {
-      cwd: wd
-    }
-  )) {
+  for await (const entry of branch.entries([
+    "**/PKGBUILD",
+    ...config.analyse.entries.exclude
+  ])) {
     steps.push(
       createStep({
         name: "build",
@@ -20,6 +18,5 @@ export async function pkgbuildAnalyse(config, wd) {
       })
     );
   }
-
   return steps;
 }

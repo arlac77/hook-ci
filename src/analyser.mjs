@@ -42,7 +42,7 @@ export async function analyseJob(job, config, queues, repositories) {
   const regex = new RegExp(config.analyse.refs.exclude);
 
   if(data.request.ref.match(regex)) {
-    console.log("analyse:", data.event, url, "skipping tags", data.request.ref);
+    console.log("analyse:", data.event, url, "skipping refs", data.request.ref);
     return undefined;
   }
 
@@ -95,8 +95,6 @@ export async function analyseJob(job, config, queues, repositories) {
 
   delete data.request;
   const newData = { ...data, steps, wd };
-
-  //await queues.process.add(newData);
 
   job.progress(100);
 

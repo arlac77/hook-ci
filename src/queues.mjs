@@ -64,6 +64,10 @@ export async function createQueues(config, repositories) {
       if (qt === undefined) {
         console.log(`no queue type for ${name}`);
       } else {
+        if (cq.clean !== undefined) {
+          queue.clean(cq.clean);
+        }
+
         queue.process(async job => qt(job, config, queues, repositories));
 
         queue.on("error", error => {
