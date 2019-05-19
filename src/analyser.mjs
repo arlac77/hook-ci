@@ -37,7 +37,7 @@ export async function analyseJob(job, config, queues, repositories) {
 
   data.repository = data.request.repository;
 
-  const url = data.repository.url;
+  const url = data.repository.url || data.repository.clone_url;
 
   const regex = new RegExp(config.analyse.refs.exclude);
 
