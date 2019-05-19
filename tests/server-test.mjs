@@ -295,7 +295,10 @@ test("github push", async t => {
 
   t.is(response.statusCode, 200);
   t.is(payload.event, "push");
-  t.is(payload.repository.full_name, "arlac77/npm-template-sync-github-hook");
+  t.is(
+    payload.request.repository.full_name,
+    "arlac77/npm-template-sync-github-hook"
+  );
   t.is(payload.request.ref, "refs/heads/template-sync-1");
 
   server.close();
