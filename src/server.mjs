@@ -53,6 +53,14 @@ export async function createServer(config, sd, queues, repositories) {
   server.on("error", err => console.log(err));
   const router = Router();
 
+  router.addRoute("GET", "/authorize", async (ctx, next) => {
+    body = {
+      ...config.oauth2
+    };
+    return next();
+  });
+
+
   router.addRoute("GET", "/state", async (ctx, next) => {
     ctx.body = [
       {
