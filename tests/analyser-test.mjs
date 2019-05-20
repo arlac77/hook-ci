@@ -1,8 +1,6 @@
 import test from "ava";
-import { join, dirname } from "path";
 import { defaultRepositoriesConfig } from "../src/repositories.mjs";
 import { analyseJob, defaultAnalyserConfig } from "../src/analyser.mjs";
-import { processJob } from "../src/processor.mjs";
 import { GithubProvider } from "github-repository-provider";
 import { makeJob } from "./util.mjs";
 

@@ -1,5 +1,4 @@
 import { join } from "path";
-import globby from "globby";
 import { createStep } from "./util.mjs";
 import { npmAnalyse } from "./npm.mjs";
 import { pkgbuildAnalyse } from "./pkgbuild.mjs";

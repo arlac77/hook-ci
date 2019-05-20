@@ -1,5 +1,4 @@
 import test from "ava";
-import { join, dirname } from "path";
 import {
   defaultRepositoriesConfig,
   createRepositories

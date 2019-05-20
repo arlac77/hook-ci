@@ -1,4 +1,3 @@
-import execa from "execa";
 import { GithubProvider } from "github-repository-provider";
 import { LocalProvider } from "local-repository-provider";
 import { AggregationProvider } from "aggregation-repository-provider";

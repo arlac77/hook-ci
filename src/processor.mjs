@@ -1,7 +1,5 @@
-import { join } from "path";
-import fs, { createWriteStream } from "fs";
 import execa from "execa";
-import { utf8Encoding, streamIntoJob } from "./util.mjs";
+import { streamIntoJob } from "./util.mjs";
 
 export const defaultProcessorConfig = {};
 

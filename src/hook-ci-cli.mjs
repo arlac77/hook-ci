@@ -1,10 +1,8 @@
-import { join, dirname, resolve } from "path";
-import fs from "fs";
+import { resolve } from "path";
 import { version, description } from "../package.json";
 import program from "commander";
 import { expand } from "config-expander";
 import { removeSensibleValues } from "remove-sensible-values";
-import { utf8Encoding } from "./util.mjs";
 import { defaultServerConfig, createServer } from "./server.mjs";
 import { defaultQueuesConfig, createQueues } from "./queues.mjs";
 import { defaultAnalyserConfig } from "./analyser.mjs";
