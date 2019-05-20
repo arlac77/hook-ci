@@ -12,6 +12,7 @@ export async function processJob(job, config, queues, repositories) {
   if (Array.isArray(data.steps)) {
     for (const step of data.steps) {
       try {
+        step.node = config.nodename;
         step.started = new Date();
         const process = await executeStep(step, job, wd);
       } catch (e) {
