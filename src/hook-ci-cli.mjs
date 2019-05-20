@@ -9,6 +9,7 @@ import { defaultServerConfig, createServer } from "./server.mjs";
 import { defaultQueuesConfig, createQueues } from "./queues.mjs";
 import { defaultAnalyserConfig } from "./analyser.mjs";
 import { defaultProcessorConfig } from "./processor.mjs";
+import { defaultAuthConfig } from "./auth.mjs";
 import { defaultRepositoriesConfig, createRepositories } from "./repositories.mjs";
 
 program
@@ -35,6 +36,7 @@ program
       default: {
         version,
         nodename: "${os.hostname}",
+        ...defaultAuthConfig,
         ...defaultRepositoriesConfig,
         ...defaultServerConfig,
         ...defaultProcessorConfig,
