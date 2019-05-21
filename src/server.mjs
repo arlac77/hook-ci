@@ -75,6 +75,12 @@ export async function createServer(config, sd, queues, repositories) {
     return next();
   });
 
+  router.addRoute("POST", "/restart", async (ctx, next) => {
+    setTimeout(() => { process.exit(0); }, 500);
+    ctx.body = {};
+    return next();
+  });
+
   router.addRoute("GET", "/repositories", async (ctx, next) => {
     const rs = [];
 
