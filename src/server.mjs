@@ -186,6 +186,7 @@ export async function createServer(config, sd, queues, repositories) {
   });
 
   router.addRoute("GET", "/queue/:queue/job/:job/log", async (ctx, next) => {
+    console.log("GET LOG", ctx.params.queue, ctx.params.job, ctx.query.start, ctx.query.end);
     const queue = getQueue(queues, ctx.params.queue, ctx);
     ctx.body = await queue.getJobLogs(
       ctx.params.job,
