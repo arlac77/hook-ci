@@ -1,3 +1,5 @@
+import execa from "execa";
+
 export const defaultNodesConfig = {
     nodes: {
     }
@@ -11,7 +13,10 @@ export async function createNodes(config) {
 
 export class Node {
     constructor(name, options) {
-        Object.defineProperties(this, { name: { value: name }, version: { value: options.version } });
+        Object.defineProperties(this, {
+            name: { value: name }, version: { value: options.version },
+            capabilities: { value: {} }
+        });
     }
 
     async state() {
@@ -42,7 +47,50 @@ export class LocalNode extends Node {
             versions: process.versions,
             platform: process.platform,
             uptime: process.uptime(),
-            memory: process.memoryUsage()
+            memory: process.memoryUsage(),
+            capabilities: await detectCapabilities()
         };
     }
 }
+
+async function detectCapabilities() {
+    return (await Promise.all(detectors.map(async step => {
+        try {
+            const proc = await execa(step.executable, step.args);
+            return { executable: step.executable, version: proc.stdout };
+        }
+        catch (error) {
+        }
+
+        return undefined;
+    }))).filter(x => x !== undefined);
+}
+
+const detectors = [
+    {
+        executable: "node",
+        args: ["--version"]
+    },
+    {
+        executable: "npm",
+        args: ["--version"]
+    },
+    {
+        executable: "uname",
+        args: ["-a"]
+    },
+    {
+        executable: "gcc",
+        args: ["--version"]
+    },
+    {
+        executable: "clang",
+        args: ["--version"]
+    }, {
+        executable: "makepkg",
+        args: ["--version"]
+    }, {
+        executable: "java",
+        args: ["--version"]
+    }
+];

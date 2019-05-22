@@ -265,6 +265,7 @@ test("get nodes state", async t => {
   t.true(json[0].versions.node.length > 2);
   t.true(json[0].uptime > 0.001);
 
+  //console.log(json[0].capabilities);
   server.close();
 });
 
