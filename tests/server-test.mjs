@@ -7,10 +7,20 @@ import { LocalNode } from "../src/nodes.mjs";
 
 const hook = "webhook";
 const secret = "aSecret";
-const sd = { notify: () => {}, listeners: () => [] };
+const sd = { notify: () => { }, listeners: () => [] };
 
 const queues = {
   incoming: {
+    async getJobLogs(job,from=0,to=10) {
+      const lines = [];
+
+      while(from < to) {
+        lines.push(`line ${from}`);
+        from++;
+      }
+
+      return { lines };
+    },
     async getJobs() {
       return [
         {
@@ -157,8 +167,32 @@ test("incoming queue", async t => {
   server.close();
 });
 
-test("pause/resume/empty queues", async t => {
+test("incoming job logs", async t => {
   const port = 3153;
+
+  const server = await createServer(
+    {
+      version: 99,
+      http: {
+        port
+      }
+    },
+    sd,
+    queues
+  );
+
+  const response = await got.get(`http://localhost:${port}/queue/incoming/job/1/log?start=1&end=3`);
+
+  t.is(response.statusCode, 200);
+
+  const json = JSON.parse(response.body);
+  t.deepEqual(json, { lines: ["line 1", "line 2"] });
+
+  server.close();
+});
+
+test("pause/resume/empty queues", async t => {
+  const port = 3154;
   let paused, resumed, empty;
 
   queues.incoming.pause = async () => {
@@ -202,7 +236,7 @@ test("pause/resume/empty queues", async t => {
 });
 
 test("get nodes state", async t => {
-  const port = 3154;
+  const port = 3155;
 
   const config = {
     version: 99,
@@ -216,7 +250,7 @@ test("get nodes state", async t => {
     sd,
     queues,
     undefined,
-    [new LocalNode('local',{ config })]
+    [new LocalNode('local', { config })]
   );
 
   const response = await got.get(`http://localhost:${port}/nodes/state`);
@@ -233,7 +267,7 @@ test("get nodes state", async t => {
 });
 
 test("github push", async t => {
-  const port = 3155;
+  const port = 3156;
 
   let payload;
 
