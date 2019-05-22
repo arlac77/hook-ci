@@ -22,10 +22,9 @@ export function createHooks(hooks, router, queues) {
       handler(
         {
           push: async (request, event) => {
-            await queue.add({
-              event,
-              ...stripUnusedDataFromHookRequest(request)
-            });
+            request = stripUnusedDataFromHookRequest(request);
+            request.event = event;
+            await queue.add(request);
             return { ok: true };
           },
           pull_request: async (request, event) => {

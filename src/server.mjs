@@ -2,6 +2,7 @@ import { createServer as httpCreateServer } from "http";
 import { createServer as httpsCreateServer } from "https";
 import Koa from "koa";
 import Router from "koa-better-router";
+import BodyParser from 'koa-bodyparser';
 import { createHooks } from "./hooks.mjs";
 
 export const defaultServerConfig = {
@@ -117,6 +118,16 @@ export async function createServer(config, sd, queues, repositories, nodes) {
       ctx.params.queue,
       getQueue(queues, ctx.params.queue, ctx)
     );
+    return next();
+  });
+
+  router.addRoute("POST", "/queue/:queue/add", async (ctx, next) => {
+    const queue = getQueue(queues, ctx.params.queue, ctx);
+
+      //app.use(BodyParser());
+
+    await queue.add(ctx.request.body);
+    ctx.body = {};
     return next();
   });
 

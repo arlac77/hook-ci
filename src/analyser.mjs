@@ -38,24 +38,28 @@ export async function analyseJob(job, config, queues, repositories) {
 
   const url = data.repository.url || data.repository.clone_url;
 
-  const regex = new RegExp(config.analyse.refs.exclude);
+  if(data.ref) {
+    const regex = new RegExp(config.analyse.refs.exclude);
 
-  if(data.ref.match(regex)) {
-    console.log("analyse:", data.event, url, "skipping refs", data.ref);
-    return undefined;
+    if(data.ref.match(regex)) {
+      console.log("analyse:", data.event, url, "skipping refs", data.ref);
+      return undefined;
+    }
+
+    newData.branch = data.ref.substring("/refs/heads".length);
+  }
+  else {
+    newData.branch = 'master';
   }
 
-  const branch_name = data.ref.substring("/refs/heads".length);
-  newData.branch = branch_name;
-
-  console.log("analyse:", data.event, url, branch_name);
+  console.log("analyse:", data.event, url, newData.branch);
 
   job.progress(5);
 
-  const branch = await repositories.branch(`${url}#${branch_name}`);
+  const branch = await repositories.branch(`${url}#${newData.branch}`);
 
   if (branch === undefined) {
-    throw new Error(`No such branch: ${url} ${branch_name}`);
+    throw new Error(`No such branch: ${url} ${newData.branch}`);
   }
 
   job.progress(10);
@@ -82,7 +86,7 @@ export async function analyseJob(job, config, queues, repositories) {
         "--depth",
         config.git.clone.depth,
         "-b",
-        branch_name,
+        newData.branch,
         url,
         wd
       ]

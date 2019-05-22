@@ -21,6 +21,8 @@ const queues = {
 
       return { lines };
     },
+    async add(data) {
+    },
     async getJobs() {
       return [
         {
@@ -266,8 +268,8 @@ test("get nodes state", async t => {
   server.close();
 });
 
-test("github push", async t => {
-  const port = 3156;
+test.only("github push", async t => {
+  const port = 3155;
 
   let payload;
 
