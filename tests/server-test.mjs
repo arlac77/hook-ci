@@ -268,8 +268,8 @@ test("get nodes state", async t => {
   server.close();
 });
 
-test.only("github push", async t => {
-  const port = 3155;
+test("github push", async t => {
+  const port = 3156;
 
   let payload;
 

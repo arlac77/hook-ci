@@ -121,10 +121,8 @@ export async function createServer(config, sd, queues, repositories, nodes) {
     return next();
   });
 
-  router.addRoute("POST", "/queue/:queue/add", async (ctx, next) => {
+  router.addRoute("POST", "/queue/:queue/add", BodyParser(), async (ctx, next) => {
     const queue = getQueue(queues, ctx.params.queue, ctx);
-
-      //app.use(BodyParser());
 
     await queue.add(ctx.request.body);
     ctx.body = {};
