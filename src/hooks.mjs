@@ -39,7 +39,7 @@ export function createHooks(hooks, router, queues) {
           },
           ping: async (request, event) => {
             console.log(
-              "Received a ping %s for %s#%s",
+              "Received a %s event for %s#%s",
               event,
               request.repository.full_name,
               request.ref
