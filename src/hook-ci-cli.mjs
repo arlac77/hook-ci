@@ -16,12 +16,12 @@ program
   .description(description)
   .option("-c, --config <dir>", "use config directory")
   .action(async () => {
-    let sd = { notify: () => {}, listeners: () => [] };
+    let sd = { notify: () => { }, listeners: () => [] };
 
     try {
       sd = require("sd-daemon");
       //sd = await import("sd-daemon");
-    } catch (e) {}
+    } catch (e) { }
 
     sd.notify("READY=1\nSTATUS=starting");
 
@@ -51,8 +51,7 @@ program
     console.log(removeSensibleValues(config));
 
     try {
-      const nodes = await createNodes(config);
-      const repositories = await createRepositories(config);
+      const [nodes, repositories] = await Promise.all([createNodes(config), createRepositories(config)]);
       const queues = await createQueues(config, repositories);
       const server = await createServer(config, sd, queues, repositories, nodes);
     } catch (error) {
