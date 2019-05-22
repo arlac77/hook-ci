@@ -16,7 +16,7 @@ export class Node {
 
     async state() {
         return {
-            name: this.name,
+            name: this.name
         };
     }
 }
@@ -29,6 +29,10 @@ export class LocalNode extends Node {
     constructor(name, options) {
         super(name, options);
         Object.defineProperties(this, { config: { value: options.config } });
+    }
+
+    async restart() {
+        setTimeout(() => { process.exit(0); }, 500);
     }
 
     async state() {

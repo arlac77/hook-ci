@@ -201,7 +201,7 @@ test("pause/resume/empty queues", async t => {
   server.close();
 });
 
-test.only("get nodes state", async t => {
+test("get nodes state", async t => {
   const port = 3154;
 
   const config = {

@@ -43,6 +43,15 @@ function getQueue(queues, name, ctx) {
   return queue;
 }
 
+function getNode(nodes, name, ctx) {
+  const node = nodes.find(name => node.name === name);
+  if (!node) {
+    ctx.throw(500, `Node ${name} not found`);
+  }
+
+  return node;
+}
+
 
 export async function createServer(config, sd, queues, repositories, nodes) {
   const app = new Koa();
@@ -66,8 +75,15 @@ export async function createServer(config, sd, queues, repositories, nodes) {
     return next();
   });
 
-  router.addRoute("POST", "/restart", async (ctx, next) => {
-    setTimeout(() => { process.exit(0); }, 500);
+  router.addRoute("GET", "/node/:node/state", async (ctx, next) => {
+    const node = getNode(nodes, ctx.params.node, ctx);
+    ctx.body = await node.state();
+    return next();
+  });
+
+  router.addRoute("POST", "/node/:node/restart", async (ctx, next) => {
+    const node = getNode(nodes, ctx.params.node, ctx);
+    await node.restart();
     ctx.body = {};
     return next();
   });
@@ -177,7 +193,7 @@ export async function createServer(config, sd, queues, repositories, nodes) {
   });
 
   router.addRoute("GET", "/queue/:queue/job/:job/log", async (ctx, next) => {
-    console.log("GET LOG", ctx.params.queue, ctx.params.job, ctx.query.start, ctx.query.end);
+    console.log("GET LOG", ctx.params.queue, ctx.params.job, ctx.query.start, ctx.query.end, ctx.query, ctx.querystring);
     const queue = getQueue(queues, ctx.params.queue, ctx);
     ctx.body = await queue.getJobLogs(
       ctx.params.job,
