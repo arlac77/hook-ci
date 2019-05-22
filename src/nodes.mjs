@@ -5,7 +5,7 @@ export const defaultNodesConfig = {
 
 
 export async function createNodes(config) {
-    return [new LocalNode(node.name, { config })];
+    return [new LocalNode(config.nodename, { config })];
 }
 
 
