@@ -28,7 +28,7 @@ const queues = {
           data: {
             event: "push",
             repository: { full_name: "repo1" },
-            request: { ref: "refs/heads/template-sync-1" }
+            ref: "refs/heads/template-sync-1"
           }
         },
         {
@@ -36,7 +36,7 @@ const queues = {
           data: {
             event: "push",
             repository: { full_name: "repo2" },
-            request: { ref: "refs/heads/template-sync-2" }
+            ref: "refs/heads/template-sync-2"
           }
         }
       ];
@@ -314,10 +314,10 @@ test("github push", async t => {
   t.is(response.statusCode, 200);
   t.is(payload.event, "push");
   t.is(
-    payload.request.repository.full_name,
+    payload.repository.full_name,
     "arlac77/npm-template-sync-github-hook"
   );
-  t.is(payload.request.ref, "refs/heads/template-sync-1");
+  t.is(payload.ref, "refs/heads/template-sync-1");
 
   server.close();
 });

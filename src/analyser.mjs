@@ -34,19 +34,19 @@ export const defaultAnalyserConfig = {
 export async function analyseJob(job, config, queues, repositories) {
   const data = job.data;
 
-  data.repository = data.request.repository;
+  const newData = { repository : data.repository };
 
   const url = data.repository.url || data.repository.clone_url;
 
   const regex = new RegExp(config.analyse.refs.exclude);
 
-  if(data.request.ref.match(regex)) {
-    console.log("analyse:", data.event, url, "skipping refs", data.request.ref);
+  if(data.ref.match(regex)) {
+    console.log("analyse:", data.event, url, "skipping refs", data.ref);
     return undefined;
   }
 
-  const branch_name = data.request.ref.substring("/refs/heads".length);
-  data.branch = branch_name;
+  const branch_name = data.ref.substring("/refs/heads".length);
+  newData.branch = branch_name;
 
   console.log("analyse:", data.event, url, branch_name);
 
@@ -62,8 +62,8 @@ export async function analyseJob(job, config, queues, repositories) {
 
   let wd;
 
-  if (data.request && data.request.head_commit) {
-    const commit = data.request.head_commit.id;
+  if (data.head_commit) {
+    const commit = data.head_commit.id;
     if (commit) {
       wd = join(config.workspace.dir, commit);
     }
@@ -73,7 +73,7 @@ export async function analyseJob(job, config, queues, repositories) {
     wd = join(config.workspace.dir, String(job.id));
   }
 
-  const steps = [
+  newData.steps = [
     createStep({
       name: "git clone",
       executable: "git",
@@ -90,10 +90,7 @@ export async function analyseJob(job, config, queues, repositories) {
     ...(await npmAnalyse(branch, job, config, wd))
   ];
 
-  job.progress(90);
-
-  delete data.request;
-  const newData = { ...data, steps, wd };
+  newData.wd = wd;
 
   job.progress(100);
 

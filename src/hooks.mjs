@@ -24,7 +24,7 @@ export function createHooks(hooks, router, queues) {
           push: async (request, event) => {
             await queue.add({
               event,
-              request: stripUnusedDataFromHookRequest(request)
+              ...stripUnusedDataFromHookRequest(request)
             });
             return { ok: true };
           },

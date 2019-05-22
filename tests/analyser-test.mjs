@@ -14,13 +14,11 @@ test("analyser", async t => {
   const job = makeJob(1, {
     event: "push",
 
-    request: {
-      ref: "refs/heads/master",
-      repository: {
-        full_name: "arlac77/npm-template-sync-github-hook",
+    ref: "refs/heads/master",
+    repository: {
+      full_name: "arlac77/npm-template-sync-github-hook",
 
-        url: "https://github.com/arlac77/npm-template-sync-github-hook"
-      }
+      url: "https://github.com/arlac77/npm-template-sync-github-hook"
     }
   });
 
@@ -45,7 +43,6 @@ test("analyser", async t => {
 
   t.deepEqual(processData, {
     branch: "master",
-    event: "push",
     wd: "/tmp/1",
     repository: {
       full_name: "arlac77/npm-template-sync-github-hook",
