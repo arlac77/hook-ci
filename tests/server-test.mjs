@@ -3,6 +3,7 @@ import got from "got";
 import { GithubProvider } from "github-repository-provider";
 import signer from "x-hub-signature/src/signer";
 import { createServer } from "../src/server.mjs";
+import { LocalNode } from "../src/nodes.mjs";
 
 const hook = "webhook";
 const secret = "aSecret";
@@ -200,21 +201,25 @@ test("pause/resume/empty queues", async t => {
   server.close();
 });
 
-test("get state", async t => {
+test.only("get nodes state", async t => {
   const port = 3154;
 
+  const config = {
+    version: 99,
+    http: {
+      port
+    }
+  };
+
   const server = await createServer(
-    {
-      version: 99,
-      http: {
-        port
-      }
-    },
+    config,
     sd,
-    queues
+    queues,
+    undefined,
+    [new LocalNode('local',{ config })]
   );
 
-  const response = await got.get(`http://localhost:${port}/state`);
+  const response = await got.get(`http://localhost:${port}/nodes/state`);
 
   t.is(response.statusCode, 200);
 

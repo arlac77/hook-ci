@@ -9,6 +9,7 @@ import { defaultAnalyserConfig } from "./analyser.mjs";
 import { defaultProcessorConfig } from "./processor.mjs";
 import { defaultAuthConfig } from "./auth.mjs";
 import { defaultRepositoriesConfig, createRepositories } from "./repositories.mjs";
+import { defaultNodesConfig, createNodes } from "./nodes.mjs";
 
 program
   .version(version)
@@ -34,6 +35,7 @@ program
       default: {
         version,
         nodename: "${os.hostname}",
+        ...defaultNodesConfig,
         ...defaultAuthConfig,
         ...defaultRepositoriesConfig,
         ...defaultServerConfig,
@@ -49,9 +51,10 @@ program
     console.log(removeSensibleValues(config));
 
     try {
+      const nodes = await createNodes(config);
       const repositories = await createRepositories(config);
       const queues = await createQueues(config, repositories);
-      const server = await createServer(config, sd, queues, repositories);
+      const server = await createServer(config, sd, queues, repositories, nodes);
     } catch (error) {
       console.log(error);
     }

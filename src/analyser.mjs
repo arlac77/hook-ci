@@ -26,7 +26,7 @@ export const defaultAnalyserConfig = {
 
 /**
  * analyse the incoming job and prepare the steps to be executet in the processing queue(s)
- * @param {Object} job
+ * @param {Job} job
  * @param {Object} config
  * @param {Object} queues
  * @param {RepositoryProvider} repositories

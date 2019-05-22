@@ -44,7 +44,7 @@ function getQueue(queues, name, ctx) {
 }
 
 
-export async function createServer(config, sd, queues, repositories) {
+export async function createServer(config, sd, queues, repositories, nodes) {
   const app = new Koa();
 
   const server = config.http.cert
@@ -61,17 +61,8 @@ export async function createServer(config, sd, queues, repositories) {
   });
 
 
-  router.addRoute("GET", "/state", async (ctx, next) => {
-    ctx.body = [
-      {
-        name: config.nodename,
-        version: config.version,
-        versions: process.versions,
-        platform: process.platform,
-        uptime: process.uptime(),
-        memory: process.memoryUsage()
-      }
-    ];
+  router.addRoute("GET", "/nodes/state", async (ctx, next) => {
+    ctx.body = await Promise.all(nodes.map(node => node.state()));
     return next();
   });
 
