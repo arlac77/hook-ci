@@ -1,0 +1,27 @@
+language: node_js
+node_js:
+  - 10.15.3
+  - 12.2.0
+cache: npm
+jobs:
+  include:
+    - stage: test
+      skip_cleanup: 'true'
+      script:
+        - npm run cover
+        - npx codecov
+        - cat ./build/coverage/lcov.info | npx coveralls
+    - stage: doc
+      node_js: lts/*
+      skip_cleanup: 'true'
+      script:
+        - npm run lint
+        - npm run docs
+    - stage: release
+      node_js: lts/*
+      script: skip
+      deploy:
+        provider: script
+        skip_cleanup: 'true'
+        script:
+          - npx semantic-release

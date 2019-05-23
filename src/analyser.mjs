@@ -77,6 +77,8 @@ export async function analyseJob(job, config, queues, repositories) {
     wd = join(config.workspace.dir, String(job.id));
   }
 
+  //const s1 = await travisAnalyse(branch, job, config, wd);
+
   newData.steps = [
     createStep({
       name: "git clone",
