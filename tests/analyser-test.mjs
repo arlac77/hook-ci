@@ -66,7 +66,7 @@ test("analyser", async t => {
       {
         name: "prepare",
         executable: "npm",
-        args: ["install"],
+        args: ["ci"],
         options: {
           cwd: "/tmp/1"
         },

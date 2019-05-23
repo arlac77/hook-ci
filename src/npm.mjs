@@ -2,6 +2,7 @@ import { join, dirname } from "path";
 import { createStep } from "./util.mjs";
 
 const wellKnownScripts = new Set([
+  "ci",
   "install",
   "test",
   "pack",
@@ -38,7 +39,7 @@ export async function npmAnalyse(branch, job, config, wd) {
       createStep({
         name: "prepare",
         executable: "npm",
-        args: scriptArgs("install"),
+        args: scriptArgs("ci"),
         options,
         requirements
       })
