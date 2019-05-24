@@ -35,11 +35,18 @@ export async function npmAnalyse(branch, job, config, wd) {
       }
     }
 
+    let packageLock = false;
+
+    try {
+      packageLock = await branch.entry(entry.name.replace(/.json$/, '-lock.json'));
+    }
+    catch (err) { }
+
     steps.push(
       createStep({
         name: "prepare",
         executable: "npm",
-        args: scriptArgs("ci"),
+        args: scriptArgs(packageLock ? "ci" : "install"),
         options,
         requirements
       })
