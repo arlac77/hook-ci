@@ -1,13 +1,32 @@
 import execa from "execa";
+import nbonjour from "nbonjour";
+
 
 export const defaultNodesConfig = {
     nodes: {
+        mdns: {
+        }
     }
 };
 
 
 export async function createNodes(config) {
-    return [new LocalNode(config.nodename, { config })];
+
+    const nodes = [new LocalNode(config.nodename, { config })];
+
+    if (config.nodes.mdns) {
+        const bonjour = nbonjour.create();
+
+        bonjour.publish({ name: config.nodename, type: 'http', port: 3000 });
+
+        const browser = bonjour.find({ type: 'http' }, service => {
+            console.log("FIND", service);
+        });
+
+        browser.start();
+    }
+
+    return nodes;
 }
 
 
