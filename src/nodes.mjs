@@ -17,10 +17,11 @@ export async function createNodes(config) {
     if (config.nodes.mdns) {
         const bonjour = nbonjour.create();
 
-        bonjour.publish({ name: config.nodename, type: 'http', port: 3000 });
+        bonjour.publish({ name: config.nodename, type: 'hook-ci', port: 3000 });
 
-        const browser = bonjour.find({ type: 'http' }, service => {
+        const browser = bonjour.find({ type: 'hook-ci' }, service => {
             console.log("FIND", service);
+            nodes.push(new Node(service.name));
         });
 
         browser.start();
