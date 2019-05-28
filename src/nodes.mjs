@@ -17,10 +17,16 @@ export async function createNodes(config) {
     if (config.nodes.mdns) {
         const bonjour = nbonjour.create();
 
-        bonjour.publish({ name: config.nodename, type: 'http', port: 3000 });
+        const type = 'hook-ci';
 
-        const browser = bonjour.find({ type: 'http' }, service => {
+        bonjour.publish({ name: config.nodename, type, port: 3000 });
+
+        const browser = bonjour.find({ type }, service => {
             console.log("FIND", service);
+
+            if(!nodes.find(node => node.name === service.name)) {
+                nodes.push(new Node(service.name));
+            }
         });
 
         browser.start();
@@ -34,7 +40,7 @@ export async function createNodes(config) {
 export class Node {
     constructor(name, options) {
         Object.defineProperties(this, {
-            name: { value: name }, version: { value: options.version },
+            name: { value: name },
             capabilities: { value: {} }
         });
     }
