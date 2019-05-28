@@ -82,7 +82,7 @@ export class LocalNode extends Node {
 }
 
 async function detectCapabilities() {
-    return (await Promise.all(detectors.map(async step => {
+    return (await Promise.all(CapabilitiyDetectors.map(async step => {
         try {
             const proc = await execa(step.executable, step.args);
             let version = proc.stdout;
@@ -103,7 +103,7 @@ async function detectCapabilities() {
     }))).filter(x => x !== undefined);
 }
 
-const detectors = [
+export const CapabilitiyDetectors = [
     {
         executable: "node",
         args: ["--version"]
@@ -120,7 +120,7 @@ const detectors = [
         executable: "gcc",
         args: ["--version"],
         // gcc (GCC) 8.2.1 20181127\nCopyright (C) 2018 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
-        regex : /gcc\s+\(\w+\)\s+(?<version>\[\d\.]+)/
+        regex : /gcc\s+\(\w+\)\s+(?<version>[\d\.]+)/
     },
     {
         executable: "clang",
@@ -129,7 +129,7 @@ const detectors = [
         executable: "makepkg",
         args: ["--version"],
         // makepkg (pacman) 5.1.3\nCopyright (c) 2006-2018 Pacman Development Team <pacman-dev@archlinux.org>.\nCopyright (C) 2002-2006 Judd Vinet <jvinet@zeroflux.org>.\n\nThis is free software; see the source for copying conditions.\nThere is NO WARRANTY, to the extent permitted by law.
-        regex : /makepkg\s+\(\w+\)\s+(?<version>\[\d\.]+)/
+        regex : /makepkg\s+\(\w+\)\s+(?<version>[\d\.]+)/
     }, {
         executable: "java",
         args: ["--version"]
