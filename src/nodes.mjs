@@ -85,22 +85,22 @@ async function detectCapabilities() {
     return (await Promise.all(CapabilitiyDetectors.map(async step => {
         try {
             const proc = await execa(step.executable, step.args);
-            let version = proc.stdout;
-
-            if (step.regex) {
-                const m = proc.stdout.match(step.regex);
-                if (m) {
-                    version = m.groups.version;
-                }
-            }
-
-            return { executable: step.executable, version };
+            return detectCapabilitiesFrom(step, proc.sdout);
         }
         catch (error) {
         }
 
         return undefined;
     }))).filter(x => x !== undefined);
+}
+
+export function detectCapabilitiesFrom(step, stdout) {
+    const m = stdout.match(step.regex);
+    if (m) {
+        return { executable: step.executable, ...m.groups };
+    }
+
+    return { executable: step.executable, version: stdout };
 }
 
 export const CapabilitiyDetectors = [
@@ -114,9 +114,10 @@ export const CapabilitiyDetectors = [
     },
     {
         executable: "uname",
-        args: ["-a"]
+        args: ["-a"],
         // Darwin pro.mf.de 18.6.0 Darwin Kernel Version 18.6.0: Tue May  7 22:54:55 PDT 2019; root:xnu-4903.270.19.100.1~2/RELEASE_X86_64 x86_64
         // Linux pine1 5.1.5-1-ARCH #1 SMP Sat May 25 13:23:49 MDT 2019 aarch64 GNU/Linux
+        regex: /^(?<os>\w+)\s+[\w\.]+\s+(?<version>[\d\.]+[\-\w]*)/
     },
     {
         executable: "gcc",
