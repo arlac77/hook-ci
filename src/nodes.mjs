@@ -24,6 +24,7 @@ export async function createNodes(config) {
         });
 
         browser.start();
+        console.log("START BROSE");
     }
 
     return nodes;
