@@ -30,7 +30,6 @@ export async function createNodes(config) {
         });
 
         browser.start();
-        console.log("START BROSE");
     }
 
     return nodes;
@@ -47,7 +46,10 @@ export class Node {
 
     async state() {
         return {
-            name: this.name
+            name: this.name,
+            versions: {},
+            memory: {},
+            capabilities: {}
         };
     }
 }
@@ -83,7 +85,16 @@ async function detectCapabilities() {
     return (await Promise.all(detectors.map(async step => {
         try {
             const proc = await execa(step.executable, step.args);
-            return { executable: step.executable, version: proc.stdout };
+            let version = proc.stdout;
+
+            if(step.regex) {
+                const m = proc.stdout.match(step.regex);
+                if(m) {
+                    version = m.groups.version;
+                }
+            }
+
+            return { executable: step.executable, version };
         }
         catch (error) {
         }
@@ -107,14 +118,18 @@ const detectors = [
     },
     {
         executable: "gcc",
-        args: ["--version"]
+        args: ["--version"],
+        // gcc (GCC) 8.2.1 20181127\nCopyright (C) 2018 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
+        regex : /gcc\s+\(\w+\)\s+(?<version>\[\d\.]+)/
     },
     {
         executable: "clang",
         args: ["--version"]
     }, {
         executable: "makepkg",
-        args: ["--version"]
+        args: ["--version"],
+        // makepkg (pacman) 5.1.3\nCopyright (c) 2006-2018 Pacman Development Team <pacman-dev@archlinux.org>.\nCopyright (C) 2002-2006 Judd Vinet <jvinet@zeroflux.org>.\n\nThis is free software; see the source for copying conditions.\nThere is NO WARRANTY, to the extent permitted by law.
+        regex : /makepkg\s+\(\w+\)\s+(?<version>\[\d\.]+)/
     }, {
         executable: "java",
         args: ["--version"]
