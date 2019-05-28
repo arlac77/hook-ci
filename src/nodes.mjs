@@ -24,7 +24,7 @@ export async function createNodes(config) {
         const browser = bonjour.find({ type }, service => {
             console.log("FIND", service);
 
-            if(!nodes.find(node => node.name === service.name)) {
+            if (!nodes.find(node => node.name === service.name)) {
                 nodes.push(new Node(service.name));
             }
         });
@@ -87,9 +87,9 @@ async function detectCapabilities() {
             const proc = await execa(step.executable, step.args);
             let version = proc.stdout;
 
-            if(step.regex) {
+            if (step.regex) {
                 const m = proc.stdout.match(step.regex);
-                if(m) {
+                if (m) {
                     version = m.groups.version;
                 }
             }
@@ -115,12 +115,14 @@ export const CapabilitiyDetectors = [
     {
         executable: "uname",
         args: ["-a"]
+        // Darwin pro.mf.de 18.6.0 Darwin Kernel Version 18.6.0: Tue May  7 22:54:55 PDT 2019; root:xnu-4903.270.19.100.1~2/RELEASE_X86_64 x86_64
+        // Linux pine1 5.1.5-1-ARCH #1 SMP Sat May 25 13:23:49 MDT 2019 aarch64 GNU/Linux
     },
     {
         executable: "gcc",
         args: ["--version"],
         // gcc (GCC) 8.2.1 20181127\nCopyright (C) 2018 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
-        regex : /gcc\s+\(\w+\)\s+(?<version>[\d\.]+)/
+        regex: /gcc\s+\(\w+\)\s+(?<version>[\d\.]+)/
     },
     {
         executable: "clang",
@@ -129,9 +131,45 @@ export const CapabilitiyDetectors = [
         executable: "makepkg",
         args: ["--version"],
         // makepkg (pacman) 5.1.3\nCopyright (c) 2006-2018 Pacman Development Team <pacman-dev@archlinux.org>.\nCopyright (C) 2002-2006 Judd Vinet <jvinet@zeroflux.org>.\n\nThis is free software; see the source for copying conditions.\nThere is NO WARRANTY, to the extent permitted by law.
-        regex : /makepkg\s+\(\w+\)\s+(?<version>[\d\.]+)/
+        regex: /makepkg\s+\(\w+\)\s+(?<version>[\d\.]+)/
     }, {
         executable: "java",
         args: ["--version"]
+    },
+    {
+        executable: "make",
+        args: ["--version"],
+        // GNU Make 3.81
+        regex: /\w+\s+\w+\s+(?<version>[\d\.]+)/
+    },
+    {
+        executable: "cmake",
+        args: ["--version"],
+        // cmake version 3.14.4
+        regex: /\w+\s+\w+\s+(?<version>[\d\.]+)/
+    },
+    {
+        executable: "rustc",
+        args: ["--version"],
+        // rustc 1.35.0
+        regex: /\w+\s+(?<version>[\d\.]+)/
+    },
+    {
+        executable: "go",
+        args: ["version"],
+        // go version go1.12.5 darwin/amd64
+        regex: /go\s+version\s+(?<version>[go\d\.]+)/
+    },
+    {
+        executable: "gradle",
+        args: ["--version"],
+        // Welcome to Gradle 5.4.1!
+        regex: /to\s+Gradle\s+(?<version>[\d\.]+)/
+    },
+    {
+        executable: "saxon",
+        args: ["-?"],
+        // Saxon-HE 9.9.0.1J from Saxonica
+        regex: /Saxon(-\w+)?\s+(?<version>[\d\.\w]+)/
     }
 ];
