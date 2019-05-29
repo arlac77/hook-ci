@@ -27,4 +27,9 @@ test("detectors", t => {
 
   t.deepEqual(detect('uname',
     "Linux pine1 5.1.5-1-ARCH #1 SMP Sat May 25 13:23:49 MDT 2019 aarch64 GNU/Linux"), { os: 'Linux', version: "5.1.5-1-ARCH" });
-});
+
+    t.deepEqual(detect('git',
+    "git version 2.21.0"),
+    { version: "2.21.0" });
+
+  });

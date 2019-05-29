@@ -105,6 +105,12 @@ export function detectCapabilitiesFrom(step, stdout) {
 
 export const CapabilitiyDetectors = [
     {
+        executable: "git",
+        args: ["--version"],
+        // git version 2.21.0
+        regex: /git\s+\w+\s+(?<version>[\d\.]+)/
+    },
+    {
         executable: "node",
         args: ["--version"]
     },

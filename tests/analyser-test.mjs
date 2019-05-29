@@ -35,7 +35,7 @@ test("analyser", async t => {
   const requirements = [
     {
       executable: "node",
-      version: ">=10.15.3"
+      version: ">=10.16.0"
     }
   ];
 
