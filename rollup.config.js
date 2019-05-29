@@ -12,8 +12,10 @@ const external = [
   "bull",
   "sd-daemon",
   "koa-better-router",
+  "node-fetch",
+
   "bufferutil",
-  "node-fetch"
+  "utf-8-validate"
 ];
 
 export default Object.keys(pkg.bin || {}).map(name => {

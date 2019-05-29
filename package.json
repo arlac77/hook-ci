@@ -45,7 +45,8 @@
     "koa-websocket": "^5.0.1",
     "local-repository-provider": "^6.4.0",
     "nbonjour": "^3.6.3",
-    "remove-sensible-values": "^1.0.2"
+    "remove-sensible-values": "^1.0.2",
+    "utf-8-validate": "^5.0.2"
   },
   "devDependencies": {
     "@semantic-release/exec": "^3.3.3",

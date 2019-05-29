@@ -6,6 +6,7 @@ import Router from "koa-better-router";
 import BodyParser from 'koa-bodyparser';
 import { createHooks } from "./hooks.mjs";
 import bufferutil from 'bufferutil';
+import utf8Validate from 'utf-8-validate';
 
 export const defaultServerConfig = {
   http: {
