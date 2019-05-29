@@ -81,13 +81,14 @@ export class LocalNode extends Node {
     }
 }
 
-async function detectCapabilities() {
+export async function detectCapabilities() {
     return (await Promise.all(CapabilitiyDetectors.map(async step => {
         try {
             const proc = await execa(step.executable, step.args);
-            return detectCapabilitiesFrom(step, proc.sdout);
+            return detectCapabilitiesFrom(step, proc.stdout);
         }
         catch (error) {
+            console.log(error);
         }
 
         return undefined;
@@ -141,7 +142,18 @@ export const CapabilitiyDetectors = [
         regex: /makepkg\s+\(\w+\)\s+(?<version>[\d\.]+)/
     }, {
         executable: "java",
-        args: ["--version"]
+        args: ["-version"],
+
+        /*
+        openjdk version "11.0.3" 2019-04-16
+        OpenJDK Runtime Environment (build 11.0.3+4)
+        OpenJDK Server VM (build 11.0.3+4, mixed mode)
+
+        java version "1.8.0_201"
+        Java(TM) SE Runtime Environment (build 1.8.0_201-b09)
+        Java HotSpot(TM) 64-Bit Server VM (build 25.201-b09, mixed mode)
+        */
+        regex: /(?<product>\w+)\s+version\s+"(?<version>[^\"]+)"/
     },
     {
         executable: "make",

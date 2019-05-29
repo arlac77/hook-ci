@@ -1,5 +1,5 @@
 import test from "ava";
-import { createNodes, defaultNodesConfig, detectCapabilitiesFrom, CapabilitiyDetectors } from "../src/nodes.mjs";
+import { createNodes, defaultNodesConfig, detectCapabilities, detectCapabilitiesFrom, CapabilitiyDetectors } from "../src/nodes.mjs";
 
 test("create nodes", async t => {
   const nodes = await createNodes({ ...defaultNodesConfig, nodename: 'local' }
@@ -11,7 +11,7 @@ test("create nodes", async t => {
 
 function detect(executable, stdout) {
   const d = detectCapabilitiesFrom(CapabilitiyDetectors.find(c => c.executable === executable), stdout);
-  if(d) {
+  if (d) {
     delete d.executable;
   }
   return d;
@@ -28,8 +28,18 @@ test("detectors", t => {
   t.deepEqual(detect('uname',
     "Linux pine1 5.1.5-1-ARCH #1 SMP Sat May 25 13:23:49 MDT 2019 aarch64 GNU/Linux"), { os: 'Linux', version: "5.1.5-1-ARCH" });
 
-    t.deepEqual(detect('git',
+  t.deepEqual(detect('git',
     "git version 2.21.0"),
     { version: "2.21.0" });
 
-  });
+});
+
+
+test.only("detect capabilities", async t => {
+  const caps = await detectCapabilities();
+
+  //console.log(caps);
+  t.true(caps.length > 1)
+}
+
+);
