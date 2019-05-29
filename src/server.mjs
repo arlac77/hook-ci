@@ -1,6 +1,7 @@
 import { createServer as httpCreateServer } from "http";
 import { createServer as httpsCreateServer } from "https";
 import Koa from "koa";
+import websockify from "koa-websocket";
 import Router from "koa-better-router";
 import BodyParser from 'koa-bodyparser';
 import { createHooks } from "./hooks.mjs";
@@ -55,12 +56,21 @@ function getNode(nodes, name, ctx) {
 
 
 export async function createServer(config, sd, queues, repositories, nodes) {
-  const app = new Koa();
+  const app = websockify(new Koa());
+
+  app.ws.use((ctx) => {
+    ctx.websocket.send('Hello World');
+    ctx.websocket.on('message', (message) => {
+      console.log(message);
+    });
+  });
 
   const server = config.http.cert
     ? httpsCreateServer(config.http, app.callback())
     : httpCreateServer(app.callback());
   server.on("error", err => console.log(err));
+
+
   const router = Router();
 
   router.addRoute("GET", "/authorize", async (ctx, next) => {
