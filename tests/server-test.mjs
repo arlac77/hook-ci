@@ -9,6 +9,14 @@ const hook = "webhook";
 const secret = "aSecret";
 const sd = { notify: () => { }, listeners: () => [] };
 
+
+let _port = 3149;
+
+function nextPort()
+{
+  return _port++;
+}
+
 const queues = {
   incoming: {
     async getJobLogs(job,from=0,to=10) {
@@ -65,7 +73,7 @@ const queues = {
 };
 
 test("incoming jobs", async t => {
-  const port = 3149;
+  const port = nextPort();
 
   const server = await createServer(
     {
@@ -93,7 +101,7 @@ test("incoming jobs", async t => {
 });
 
 test("request repositories", async t => {
-  const port = 3150;
+  const port = nextPort();
 
   const server = await createServer(
     {
@@ -121,7 +129,7 @@ test("request repositories", async t => {
 });
 
 test("request queues", async t => {
-  const port = 3151;
+  const port = nextPort();
 
   const server = await createServer(
     {
@@ -146,7 +154,7 @@ test("request queues", async t => {
 });
 
 test("incoming queue", async t => {
-  const port = 3152;
+  const port = nextPort();
 
   const server = await createServer(
     {
@@ -170,7 +178,7 @@ test("incoming queue", async t => {
 });
 
 test("incoming job logs", async t => {
-  const port = 3153;
+  const port = nextPort();
 
   const server = await createServer(
     {
@@ -194,7 +202,7 @@ test("incoming job logs", async t => {
 });
 
 test("pause/resume/empty queues", async t => {
-  const port = 3154;
+  const port = nextPort();
   let paused, resumed, empty;
 
   queues.incoming.pause = async () => {
@@ -238,7 +246,7 @@ test("pause/resume/empty queues", async t => {
 });
 
 test("get nodes state", async t => {
-  const port = 3155;
+  const port = nextPort();
 
   const config = {
     version: 99,
@@ -270,7 +278,7 @@ test("get nodes state", async t => {
 });
 
 test("github push", async t => {
-  const port = 3156;
+  const port = nextPort();
 
   let payload;
 
