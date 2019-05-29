@@ -12,6 +12,7 @@ const external = [
   "bull",
   "sd-daemon",
   "koa-better-router",
+  "bufferutil",
   "node-fetch"
 ];
 

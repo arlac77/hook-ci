@@ -5,6 +5,7 @@ import websockify from "koa-websocket";
 import Router from "koa-better-router";
 import BodyParser from 'koa-bodyparser';
 import { createHooks } from "./hooks.mjs";
+import bufferutil from 'bufferutil';
 
 export const defaultServerConfig = {
   http: {
