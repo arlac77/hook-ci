@@ -19,7 +19,7 @@ export async function createNodes(config) {
 
         const type = 'hook-ci';
 
-        bonjour.publish({ name: config.nodename, type, port: 3000 });
+        bonjour.publish({ name: config.nodename, type, port: 3000, url: `https://${config.nodename}/services/ci/api` });
 
         const browser = bonjour.find({ type }, service => {
             console.log("FIND", service);
@@ -49,7 +49,7 @@ export class Node {
             name: this.name,
             versions: {},
             memory: {},
-            capabilities: {}
+            capabilities: []
         };
     }
 }
