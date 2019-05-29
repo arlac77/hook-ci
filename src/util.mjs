@@ -41,85 +41,89 @@ export function stripUnusedDataFromHookRequest(request) {
   const repository = request.repository;
 
   if (repository) {
-    delete repository.private;
-    delete repository.owner;
-    delete repository.fork;
-    delete repository.keys_url;
-    delete repository.forks_url;
-    delete repository.collaborators_url;
-    delete repository.teams_url;
-    delete repository.hooks_url;
-    delete repository.issue_events_url;
-    delete repository.events_url;
-    delete repository.assignees_url;
-    delete repository.branches_url;
-    delete repository.tags_url;
-    delete repository.blobs_url;
-    delete repository.git_tags_url;
-    delete repository.git_refs_url;
-    delete repository.trees_url;
-    delete repository.statuses_url;
-    delete repository.languages_url;
-    delete repository.stargazers_url;
-    delete repository.contributors_url;
-    delete repository.subscribers_url;
-    delete repository.subscription_url;
-    delete repository.commits_url;
-    delete repository.git_commits_url;
-    delete repository.comments_url;
-    delete repository.issue_comment_url;
-    delete repository.contents_url;
-    delete repository.compare_url;
-    delete repository.merges_url;
-    delete repository.archive_url;
-    delete repository.downloads_url;
-    delete repository.issues_url;
-    delete repository.pulls_url;
-    delete repository.milestones_url;
-    delete repository.notifications_url;
-    delete repository.labels_url;
-    delete repository.releases_url;
-    delete repository.deployments_url;
-    delete repository.git_url;
-    delete repository.svn_url;
-    delete repository.clone_url;
-    delete repository.ssh_url;
-    delete repository.stargazers_count;
-    delete repository.forks_count;
-    delete repository.mirror_url;
-    delete repository.archived;
-    delete repository.disabled;
-    delete repository.open_issues_count;
-    delete repository.forks;
-    delete repository.open_issues;
-    delete repository.watchers;
-    delete repository.default_branch;
-    delete repository.stargazers;
-    delete repository.license;
-    delete repository.has_issues;
-    delete repository.has_projects;
-    delete repository.has_downloads;
-    delete repository.has_wiki;
-    delete repository.has_pages;
-    delete repository.html_url;
-    delete repository.homepage;
+    [
+      "private",
+      "owner",
+      "fork",
+      "keys_url",
+      "forks_url",
+      "collaborators_url",
+      "teams_url",
+      "hooks_url",
+      "issue_events_url",
+      "events_url",
+      "assignees_url",
+      "branches_url",
+      "tags_url",
+      "blobs_url",
+      "git_tags_url",
+      "git_refs_url",
+      "trees_url",
+      "statuses_url",
+      "languages_url",
+      "stargazers_url",
+      "contributors_url",
+      "subscribers_url",
+      "subscription_url",
+      "commits_url",
+      "git_commits_url",
+      "comments_url",
+      "issue_comment_url",
+      "contents_url",
+      "compare_url",
+      "merges_url",
+      "archive_url",
+      "downloads_url",
+      "issues_url",
+      "pulls_url",
+      "milestones_url",
+      "notifications_url",
+      "labels_url",
+      "releases_url",
+      "deployments_url",
+      "git_url",
+      "svn_url",
+      "clone_url",
+      "ssh_url",
+      "stargazers_count",
+      "forks_count",
+      "mirror_url",
+      "archived",
+      "disabled",
+      "open_issues_count",
+      "forks",
+      "open_issues",
+      "watchers",
+      "default_branch",
+      "stargazers",
+      "license",
+      "has_issues",
+      "has_projects",
+      "has_downloads",
+      "has_wiki",
+      "has_pages",
+      "html_url",
+      "homepage"
+    ].forEach(key => delete repository[key]);
   }
 
   const sender = request.sender;
   if (sender) {
-    delete sender.avatar_url;
-    delete sender.gravatar_id;
-    delete sender.url;
-    delete sender.html_url;
-    delete sender.followers_url;
-    delete sender.following_url;
-    delete sender.gists_url;
-    delete sender.starred_url;
-    delete sender.subscriptions_url;
-    delete sender.organizations_url;
-    delete sender.repos_url;
-    delete sender.events_url;
-    delete sender.received_events_url;
+    [
+      "avatar_url",
+      "gravatar_id",
+      "url",
+      "html_url",
+      "followers_url",
+      "following_url",
+      "gists_url",
+      "starred_url",
+      "subscriptions_url",
+      "organizations_url",
+      "repos_url",
+      "events_url",
+      "received_events_url"
+    ].forEach(key => delete sender[key]);
   }
 
   return request;
