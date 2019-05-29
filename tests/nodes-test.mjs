@@ -39,7 +39,7 @@ test.only("detect capabilities", async t => {
   const caps = await detectCapabilities();
 
   //console.log(caps);
-  t.true(caps.length > 1)
+  t.true(caps.length > 1);
 }
 
 );
