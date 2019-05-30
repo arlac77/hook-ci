@@ -88,7 +88,7 @@ export async function detectCapabilities() {
             return detectCapabilitiesFrom(step, proc.stdout);
         }
         catch (error) {
-            console.log(error);
+            //console.log(error);
         }
 
         return undefined;
