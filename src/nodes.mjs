@@ -11,7 +11,8 @@ export const defaultNodesConfig = {
 };
 
 
-export async function createNodes(config) {
+export async function initializeNodes(bus) {
+    const config = bus.config;
 
     const nodes = [new LocalNode(config.nodename, { config })];
 
@@ -33,7 +34,7 @@ export async function createNodes(config) {
         browser.start();
     }
 
-    return nodes;
+    bus.nodes = nodes;
 }
 
 

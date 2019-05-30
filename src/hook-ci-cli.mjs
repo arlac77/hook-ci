@@ -3,13 +3,14 @@ import { version, description } from "../package.json";
 import program from "commander";
 import { expand } from "config-expander";
 import { removeSensibleValues } from "remove-sensible-values";
-import { defaultServerConfig, createServer } from "./server.mjs";
-import { defaultQueuesConfig, createQueues } from "./queues.mjs";
+import { defaultServerConfig, initializeServer } from "./server.mjs";
+import { initializeWebsocketServer } from "./websockets.mjs";
+import { defaultQueuesConfig, initializeQueues } from "./queues.mjs";
 import { defaultAnalyserConfig } from "./analyser.mjs";
 import { defaultProcessorConfig } from "./processor.mjs";
 import { defaultAuthConfig } from "./auth.mjs";
-import { defaultRepositoriesConfig, createRepositories } from "./repositories.mjs";
-import { defaultNodesConfig, createNodes } from "./nodes.mjs";
+import { defaultRepositoriesConfig, initializeRepositories } from "./repositories.mjs";
+import { defaultNodesConfig, initializeNodes } from "./nodes.mjs";
 
 program
   .version(version)
@@ -50,10 +51,13 @@ program
 
     console.log(removeSensibleValues(config));
 
+    const bus = { sd, config };
+
     try {
-      const [nodes, repositories] = await Promise.all([createNodes(config), createRepositories(config)]);
-      const queues = await createQueues(config, repositories);
-      const server = await createServer(config, sd, queues, repositories, nodes);
+      await Promise.all([initializeNodes(bus), initializeRepositories(bus)]);
+      await initializeQueues(bus);
+      await initializeServer(bus);
+      await initializeWebsockets(bus);
     } catch (error) {
       console.log(error);
     }

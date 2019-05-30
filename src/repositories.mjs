@@ -15,7 +15,9 @@ export const defaultRepositoriesConfig = {
   ]
 };
 
-export async function createRepositories(config) {
+export async function initializeRepositories(bus) {
+  const config = bus.config;
+
   const logger = function logger(...args) {
     console.log(...args);
   };
@@ -37,7 +39,5 @@ export async function createRepositories(config) {
     })
   );
 
-  const aggregationProvider = new AggregationProvider(providers, { logger });
-
-  return aggregationProvider;
+  bus.repositories = new AggregationProvider(providers, { logger });
 }

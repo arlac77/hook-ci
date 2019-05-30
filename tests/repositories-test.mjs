@@ -1,16 +1,18 @@
 import test from "ava";
 import {
   defaultRepositoriesConfig,
-  createRepositories
+  initializeRepositories
 } from "../src/repositories.mjs";
 
 test("repositories", async t => {
-  const config = {
-    ...defaultRepositoriesConfig
+  const bus = {
+    config: {
+      ...defaultRepositoriesConfig
+    }
   };
 
-  const repositories = await createRepositories(config);
+  await initializeRepositories(bus);
 
-  t.truthy(repositories);
-  t.is(repositories.providers[0].name, "GithubProvider");
+  t.truthy(bus.repositories);
+  t.is(bus.repositories.providers[0].name, "GithubProvider");
 });

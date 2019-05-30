@@ -2,7 +2,7 @@ import test from "ava";
 import got from "got";
 import { GithubProvider } from "github-repository-provider";
 import signer from "x-hub-signature/src/signer";
-import { createServer } from "../src/server.mjs";
+import { initializeServer } from "../src/server.mjs";
 import { LocalNode } from "../src/nodes.mjs";
 
 const hook = "webhook";
@@ -74,9 +74,8 @@ const queues = {
 
 test("incoming jobs", async t => {
   const port = nextPort();
-
-  const server = await createServer(
-    {
+  const bus = {
+    config: {
       version: 99,
       http: {
         port
@@ -84,7 +83,9 @@ test("incoming jobs", async t => {
     },
     sd,
     queues
-  );
+  };
+
+  await initializeServer(bus);
 
   const response = await got.get(
     `http://localhost:${port}/queue/incoming/jobs`
@@ -97,14 +98,13 @@ test("incoming jobs", async t => {
   t.is(json[0].id, "job1");
   t.is(json[1].repository.full_name, "repo2");
 
-  server.close();
+  bus.server.close();
 });
 
 test("request repositories", async t => {
   const port = nextPort();
-
-  const server = await createServer(
-    {
+  const bus = {
+    config: {
       version: 99,
       http: {
         port
@@ -112,8 +112,11 @@ test("request repositories", async t => {
     },
     sd,
     queues,
-    new GithubProvider(GithubProvider.optionsFromEnvironment(process.env))
-  );
+    repositories: new GithubProvider(GithubProvider.optionsFromEnvironment(process.env))
+  };
+
+  await initializeServer(bus);
+
 
   const response = await got.get(
     `http://localhost:${port}/repositories?pattern=arlac77/sync-test*`
@@ -125,14 +128,13 @@ test("request repositories", async t => {
   t.true(json.length >= 1);
   t.is(json[0].name, "sync-test-repository");
 
-  server.close();
+  bus.server.close();
 });
 
 test("request queues", async t => {
   const port = nextPort();
-
-  const server = await createServer(
-    {
+  const bus = {
+    config: {
       version: 99,
       http: {
         port
@@ -140,7 +142,9 @@ test("request queues", async t => {
     },
     sd,
     queues
-  );
+  };
+
+  await initializeServer(bus);
 
   const response = await got.get(`http://localhost:${port}/queues`);
 
@@ -150,14 +154,13 @@ test("request queues", async t => {
   t.true(json.length >= 1);
   t.is(json[0].name, "incoming");
 
-  server.close();
+  bus.server.close();
 });
 
 test("incoming queue", async t => {
   const port = nextPort();
-
-  const server = await createServer(
-    {
+  const bus = {
+    config: {
       version: 99,
       http: {
         port
@@ -165,7 +168,9 @@ test("incoming queue", async t => {
     },
     sd,
     queues
-  );
+  };
+
+  await initializeServer(bus);
 
   const response = await got.get(`http://localhost:${port}/queue/incoming`);
 
@@ -174,14 +179,13 @@ test("incoming queue", async t => {
   const json = JSON.parse(response.body);
   t.is(json.name, "incoming");
 
-  server.close();
+  bus.server.close();
 });
 
 test("incoming job logs", async t => {
   const port = nextPort();
-
-  const server = await createServer(
-    {
+  const bus = {
+    config: {
       version: 99,
       http: {
         port
@@ -189,7 +193,9 @@ test("incoming job logs", async t => {
     },
     sd,
     queues
-  );
+  };
+
+  await initializeServer(bus);
 
   const response = await got.get(`http://localhost:${port}/queue/incoming/job/1/log?start=1&end=3`);
 
@@ -198,7 +204,7 @@ test("incoming job logs", async t => {
   const json = JSON.parse(response.body);
   t.deepEqual(json, { lines: ["line 1", "line 2"] });
 
-  server.close();
+  bus.server.close();
 });
 
 test("pause/resume/empty queues", async t => {
@@ -217,8 +223,8 @@ test("pause/resume/empty queues", async t => {
     empty = true;
   };
 
-  const server = await createServer(
-    {
+  const bus = {
+    config: {
       version: 99,
       http: {
         port
@@ -226,7 +232,9 @@ test("pause/resume/empty queues", async t => {
     },
     sd,
     queues
-  );
+  };
+
+  await initializeServer(bus);
 
   let response = await got.post(
     `http://localhost:${port}/queue/incoming/pause`
@@ -242,12 +250,11 @@ test("pause/resume/empty queues", async t => {
   t.is(response.statusCode, 200);
   t.true(empty);
 
-  server.close();
+  bus.server.close();
 });
 
 test("get nodes state", async t => {
   const port = nextPort();
-
   const config = {
     version: 99,
     http: {
@@ -255,13 +262,14 @@ test("get nodes state", async t => {
     }
   };
 
-  const server = await createServer(
+  const bus = {
     config,
     sd,
     queues,
-    undefined,
-    [new LocalNode('local', { config })]
-  );
+    nodes: [new LocalNode('local', { config })]
+  };
+
+  await initializeServer(bus);
 
   const response = await got.get(`http://localhost:${port}/nodes/state`);
 
@@ -274,16 +282,14 @@ test("get nodes state", async t => {
   t.true(json[0].uptime > 0.001);
 
   //console.log(json[0].capabilities);
-  server.close();
+  bus.server.close();
 });
 
 test("github push", async t => {
   const port = nextPort();
-
-  let payload;
-
-  const server = await createServer(
-    {
+  const bus = {
+    config: {
+      version: 99,
       http: {
         port,
         hooks: {
@@ -296,14 +302,18 @@ test("github push", async t => {
       }
     },
     sd,
-    {
+    queues:     {
       incoming: {
         add(job) {
           payload = job;
         }
       }
     }
-  );
+  };
+
+  await initializeServer(bus);
+
+  let payload;
 
   const sign = signer({ algorithm: "sha1", secret });
   const signature = sign(new Buffer(pushBody));
@@ -330,7 +340,7 @@ test("github push", async t => {
   );
   t.is(payload.ref, "refs/heads/template-sync-1");
 
-  server.close();
+  bus.server.close();
 });
 
 const pushBody = JSON.stringify({

@@ -1,11 +1,16 @@
 import test from "ava";
-import { createNodes, defaultNodesConfig, detectCapabilities, detectCapabilitiesFrom, CapabilitiyDetectors } from "../src/nodes.mjs";
+import { initializeNodes, defaultNodesConfig, detectCapabilities, detectCapabilitiesFrom, CapabilitiyDetectors } from "../src/nodes.mjs";
 
-test("create nodes", async t => {
-  const nodes = await createNodes({ ...defaultNodesConfig, nodename: 'local' }
-  );
+test("initialize nodes", async t => {
+  const bus = {
+   config: {
+     ...defaultNodesConfig, nodename: 'local'
+   }
+  };
 
-  t.is(nodes[0].name, 'local');
+  await initializeNodes(bus);
+
+  t.is(bus.nodes[0].name, 'local');
 });
 
 
@@ -35,11 +40,9 @@ test("detectors", t => {
 });
 
 
-test.only("detect capabilities", async t => {
+test("detect capabilities", async t => {
   const caps = await detectCapabilities();
 
   //console.log(caps);
   t.true(caps.length > 1);
-}
-
-);
+});

@@ -50,7 +50,9 @@ const queueTypes = {
   process: processJob
 };
 
-export async function createQueues(config, repositories) {
+export async function initializeQueues(bus) {
+  const config = bus.config;
+  
   const queues = Object.keys(config.queues).reduce((queues, name) => {
     queues[name] = new Queue(name, config.redis.url);
     return queues;
@@ -102,7 +104,7 @@ export async function createQueues(config, repositories) {
     }
   });
 
-  return queues;
+  bus.queues = queues;
 }
 
 async function cleanupJob(job, config, queues, repositories) {
