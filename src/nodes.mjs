@@ -5,6 +5,7 @@ import nbonjour from "nbonjour";
 export const defaultNodesConfig = {
     nodes: {
         mdns: {
+            type: 'hook-ci'
         }
     }
 };
@@ -17,7 +18,7 @@ export async function createNodes(config) {
     if (config.nodes.mdns) {
         const bonjour = nbonjour.create();
 
-        const type = 'hook-ci';
+        const type = config.nodes.mdns.type;
 
         bonjour.publish({ name: config.nodename, type, port: 3000, url: `https://${config.nodename}/services/ci/api` });
 
