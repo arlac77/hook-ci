@@ -1,12 +1,13 @@
 import { createServer as httpCreateServer } from "http";
 import { createServer as httpsCreateServer } from "https";
 import Koa from "koa";
-import websockify from "koa-websocket";
 import Router from "koa-better-router";
-import BodyParser from 'koa-bodyparser';
+import BodyParser from "koa-bodyparser";
 import { createHooks } from "./hooks.mjs";
-import bufferutil from 'bufferutil';
-import utf8Validate from 'utf-8-validate';
+
+import WebSocket from "ws";
+import bufferutil from "bufferutil";
+import utf8Validate from "utf-8-validate";
 
 export const defaultServerConfig = {
   http: {
@@ -56,22 +57,23 @@ function getNode(nodes, name, ctx) {
   return node;
 }
 
-
 export async function createServer(config, sd, queues, repositories, nodes) {
-  const app = websockify(new Koa());
-
-  app.ws.use((ctx) => {
-    ctx.websocket.send('Hello World');
-    ctx.websocket.on('message', (message) => {
-      console.log(message);
-    });
-  });
+  const app = new Koa();
 
   const server = config.http.cert
     ? httpsCreateServer(config.http, app.callback())
     : httpCreateServer(app.callback());
   server.on("error", err => console.log(err));
 
+  const wss = new WebSocket.Server({ server });
+
+  wss.on("connection", ws => {
+    ws.on("message", message => {
+      console.log("received: %s", message);
+    });
+
+    ws.send("something");
+  });
 
   const router = Router();
 
@@ -81,7 +83,6 @@ export async function createServer(config, sd, queues, repositories, nodes) {
     };
     return next();
   });
-
 
   router.addRoute("GET", "/nodes/state", async (ctx, next) => {
     ctx.body = await Promise.all(nodes.map(node => node.state()));
@@ -133,13 +134,18 @@ export async function createServer(config, sd, queues, repositories, nodes) {
     return next();
   });
 
-  router.addRoute("POST", "/queue/:queue/add", BodyParser(), async (ctx, next) => {
-    const queue = getQueue(queues, ctx.params.queue, ctx);
+  router.addRoute(
+    "POST",
+    "/queue/:queue/add",
+    BodyParser(),
+    async (ctx, next) => {
+      const queue = getQueue(queues, ctx.params.queue, ctx);
 
-    await queue.add(ctx.request.body);
-    ctx.body = {};
-    return next();
-  });
+      await queue.add(ctx.request.body);
+      ctx.body = {};
+      return next();
+    }
+  );
 
   router.addRoute("POST", "/queue/:queue/pause", async (ctx, next) => {
     const queue = getQueue(queues, ctx.params.queue, ctx);
@@ -214,7 +220,13 @@ export async function createServer(config, sd, queues, repositories, nodes) {
   });
 
   router.addRoute("GET", "/queue/:queue/job/:job/log", async (ctx, next) => {
-    console.log("GET LOG", ctx.params.queue, ctx.params.job, ctx.query.start, ctx.query.end);
+    console.log(
+      "GET LOG",
+      ctx.params.queue,
+      ctx.params.job,
+      ctx.query.start,
+      ctx.query.end
+    );
     const queue = getQueue(queues, ctx.params.queue, ctx);
     ctx.body = await queue.getJobLogs(
       ctx.params.job,
@@ -228,7 +240,7 @@ export async function createServer(config, sd, queues, repositories, nodes) {
 
   app.use(router.middleware());
 
-  const listener = app.listen(config.http.port, () => {
+  const listener = server.listen(config.http.port, () => {
     console.log("listen on", listener.address());
     sd.notify("READY=1\nSTATUS=running");
   });
