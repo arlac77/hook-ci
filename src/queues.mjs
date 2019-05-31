@@ -70,7 +70,7 @@ export async function initializeQueues(bus) {
           queue.clean(cq.clean);
         }
 
-        queue.process(async job => qt(job, config, queues, repositories));
+        queue.process(async job => qt(job, bus));
 
         queue.on("error", error => {
           console.log("ERROR", error);
@@ -107,7 +107,7 @@ export async function initializeQueues(bus) {
   bus.queues = queues;
 }
 
-async function cleanupJob(job, config, queues, repositories) {
+async function cleanupJob(job, bus) {
   const wd = job.data.wd;
   if (wd !== undefined) {
     const proc = await execa("rm", ["-rf", wd]);

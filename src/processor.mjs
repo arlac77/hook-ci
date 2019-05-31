@@ -3,14 +3,14 @@ import { streamIntoJob } from "./util.mjs";
 
 export const defaultProcessorConfig = {};
 
-export async function processJob(job, config, queues, repositories) {
+export async function processJob(job, bus) {
   const data = job.data;
   const wd = data.wd;
 
   if (Array.isArray(data.steps)) {
     for (const step of data.steps) {
       try {
-        step.node = config.nodename;
+        step.node = bus.config.nodename;
         step.started = new Date();
         const process = await executeStep(step, job, wd);
       } catch (e) {

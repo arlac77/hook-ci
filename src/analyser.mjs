@@ -27,11 +27,11 @@ export const defaultAnalyserConfig = {
 /**
  * analyse the incoming job and prepare the steps to be executet in the processing queue(s)
  * @param {Job} job
- * @param {Object} config
- * @param {Object} queues
- * @param {RepositoryProvider} repositories
+ * @param {Object} bus
  */
-export async function analyseJob(job, config, queues, repositories) {
+export async function analyseJob(job, bus) {
+  const config = bus.config;
+
   const data = job.data;
 
   const newData = { repository : data.repository };
@@ -56,7 +56,7 @@ export async function analyseJob(job, config, queues, repositories) {
 
   job.progress(5);
 
-  const branch = await repositories.branch(`${url}#${newData.branch}`);
+  const branch = await bus.repositories.branch(`${url}#${newData.branch}`);
 
   if (branch === undefined) {
     throw new Error(`No such branch: ${url} ${newData.branch}`);
@@ -69,7 +69,7 @@ export async function analyseJob(job, config, queues, repositories) {
   if (data.head_commit) {
     const commit = data.head_commit.id;
     if (commit) {
-      wd = join(config.workspace.dir, commit);
+      wd = join(bus.config.workspace.dir, commit);
     }
   }
 
