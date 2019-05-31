@@ -1,6 +1,9 @@
 import { join, dirname } from "path";
 import { createStep } from "./util.mjs";
 
+/**
+ * npm buildin scripts
+ */
 const wellKnownScripts = new Set([
   "ci",
   "install",
@@ -35,18 +38,13 @@ export async function npmAnalyse(branch, job, config, wd) {
       }
     }
 
-    let packageLock = false;
-
-    try {
-      packageLock = await branch.entry(entry.name.replace(/.json$/, '-lock.json'));
-    }
-    catch (err) { }
+    const packageLock = await branch.maybeEntry(entry.name.replace(/.json$/, '-lock.json'));
 
     steps.push(
       createStep({
         name: "prepare",
         executable: "npm",
-        args: scriptArgs(packageLock ? "ci" : "install"),
+        args: scriptArgs(packageLock === undefined ? "install" : "ci"),
         options,
         requirements
       })
