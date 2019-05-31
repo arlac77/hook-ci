@@ -4,7 +4,7 @@ import program from "commander";
 import { expand } from "config-expander";
 import { removeSensibleValues } from "remove-sensible-values";
 import { defaultServerConfig, initializeServer } from "./server.mjs";
-import { initializeWebsocketServer } from "./websockets.mjs";
+import { initializeWebsockets } from "./websockets.mjs";
 import { defaultQueuesConfig, initializeQueues } from "./queues.mjs";
 import { defaultAnalyserConfig } from "./analyser.mjs";
 import { defaultProcessorConfig } from "./processor.mjs";
