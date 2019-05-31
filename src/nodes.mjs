@@ -192,5 +192,11 @@ export const CapabilitiyDetectors = [
         args: ["-?"],
         // Saxon-HE 9.9.0.1J from Saxonica
         regex: /Saxon(-\w+)?\s+(?<version>[\d\.\w]+)/
+    },
+    {
+        executable: "rsync",
+        args: ["--version"],
+        // rsync  version 2.6.9  protocol version 29
+        regex: /rsync(-\w+)?\s+(?<version>[\d\.]+)\s+protocol\s+version\s+(?<protocol>[\d\.]+)/
     }
 ];
