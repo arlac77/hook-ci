@@ -16,6 +16,4 @@ export async function initializeWebsockets(bus) {
   });
 
   bus.wss = wss;
-
-  return wss;
 }
