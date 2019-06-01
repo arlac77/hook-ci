@@ -72,6 +72,17 @@ export async function npmAnalyse(branch, job, config, wd) {
           })
         );
       }
+      if (json.scripts.lint) {
+        steps.push(
+          createStep({
+            name: "lint",
+            executable: "npm",
+            args: scriptArgs("lint"),
+            options,
+            requirements
+          })
+        );
+      }
       if (json.scripts.docs) {
         steps.push(
           createStep({
@@ -82,6 +93,10 @@ export async function npmAnalyse(branch, job, config, wd) {
             requirements
           })
         );
+
+        if(json.scripts.docs.match(/documentation\s+readme/)) {
+          // make pull request adding differences README.md
+        }
       }
     }
 

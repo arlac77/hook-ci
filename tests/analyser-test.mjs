@@ -80,6 +80,15 @@ test("analyser", async t => {
         requirements
       },
       {
+        name: "lint",
+        executable: "npm",
+        args: ["run", "lint"],
+        options: {
+          cwd: "/tmp/1"
+        },
+        requirements
+      },
+      {
         name: "documentation",
         executable: "npm",
         args: ["run", "docs"],
