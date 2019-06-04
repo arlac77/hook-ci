@@ -31,7 +31,7 @@
   "dependencies": {
     "aggregation-repository-provider": "^2.4.5",
     "bufferutil": "^4.0.1",
-    "bull": "^3.9.1",
+    "bull": "^3.10.0",
     "commander": "^2.20.0",
     "config-expander": "^11.0.3",
     "execa": "^1.0.0",
