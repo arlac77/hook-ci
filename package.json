@@ -35,7 +35,7 @@
     "commander": "^2.20.0",
     "config-expander": "^11.0.3",
     "execa": "^1.0.0",
-    "github-repository-provider": "^7.3.2",
+    "github-repository-provider": "^7.3.3",
     "globby": "^9.2.0",
     "js-yaml": "^3.13.1",
     "koa": "^2.7.0",
