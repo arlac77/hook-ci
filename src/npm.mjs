@@ -37,6 +37,18 @@ export async function npmAnalyse(branch, job, config, wd) {
         });
       }
     }
+    
+    if (json.cpu) {
+      json.cpu.forEach(cpu => {
+        requirements.push({ cpu });
+      });
+    }
+
+    if (json.os) {
+      json.os.forEach(os => {
+        requirements.push({ os });
+      });
+    }
 
     const packageLock = await branch.maybeEntry(entry.name.replace(/.json$/, '-lock.json'));
 
@@ -94,7 +106,7 @@ export async function npmAnalyse(branch, job, config, wd) {
           })
         );
 
-        if(json.scripts.docs.match(/documentation\s+readme/)) {
+        if (json.scripts.docs.match(/documentation\s+readme/)) {
           // make pull request adding differences README.md
         }
       }
