@@ -1,8 +1,9 @@
 import { GithubProvider } from "github-repository-provider";
+import { GiteaProvider } from "gitea-repository-provider";
 import { LocalProvider } from "local-repository-provider";
 import { AggregationProvider } from "aggregation-repository-provider";
 
-const pl = { "github-repository-provider": GithubProvider, "local-repository-provider": LocalProvider };
+const pl = { "github-repository-provider": GithubProvider, "gitea-repository-provider": GiteaProvider, "local-repository-provider": LocalProvider };
 
 export const defaultRepositoriesConfig = {
   git: {
