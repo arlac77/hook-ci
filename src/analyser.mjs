@@ -36,7 +36,12 @@ export async function analyseJob(job, bus) {
 
   const newData = { repository : data.repository };
 
-  const url = data.repository.url || data.repository.clone_url;
+  const url = data.repository.url || data.repository.clone_url;
+
+  if(url === undefined) {
+    console.log("REPOSITORY",data.repository);
+    throw new Error("unknow repository");
+  }
 
   if(data.ref) {
     const regex = new RegExp(config.analyse.refs.exclude);
