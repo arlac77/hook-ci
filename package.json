@@ -35,7 +35,7 @@
     "commander": "^2.20.0",
     "config-expander": "^11.0.3",
     "execa": "^2.0.1",
-    "gitea-repository-provider": "^1.6.1",
+    "gitea-repository-provider": "^1.6.2",
     "github-repository-provider": "^7.3.10",
     "globby": "^9.2.0",
     "js-yaml": "^3.13.1",
