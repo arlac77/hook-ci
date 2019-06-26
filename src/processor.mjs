@@ -40,9 +40,9 @@ export async function executeStep(step, job, wd) {
     streamIntoJob(proc.stderr, job);
 
     proc = await proc;
-    step.code = proc.code;
+    step.exitCode = proc.exitCode;
 
-    console.log(`${job.id}.${step.name}: end ${step.code}`);
+    console.log(`${job.id}.${step.name}: end ${step.exitCode}`);
 
     return proc;
   }

@@ -14,6 +14,6 @@ test("executeStep", async t => {
     "/tmp"
   );
 
-  t.is(proc.code, 0);
+  t.is(proc.exitCode, 0);
   t.regex(proc.stdout, /\d+\.\d+\.\d+/);
 });

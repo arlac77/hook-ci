@@ -34,7 +34,7 @@
     "bull": "^3.10.0",
     "commander": "^2.20.0",
     "config-expander": "^11.0.3",
-    "execa": "^2.0.0",
+    "execa": "^2.0.1",
     "gitea-repository-provider": "^1.6.1",
     "github-repository-provider": "^7.3.10",
     "globby": "^9.2.0",
@@ -50,7 +50,7 @@
     "ws": "^7.0.1"
   },
   "devDependencies": {
-    "@semantic-release/exec":"^3.3.4",
+    "@semantic-release/exec": "^3.3.4",
     "ava": "^2.1.0",
     "builtin-modules": "^3.1.0",
     "c8": "^5.0.2",
