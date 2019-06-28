@@ -110,7 +110,6 @@ export function stripUnusedDataFromHookRequest(request) {
       "deployments_url",
       "git_url",
       "svn_url",
-      "clone_url",
       "ssh_url",
       "stargazers_count",
       "forks_count",
