@@ -34,19 +34,19 @@ export async function analyseJob(job, bus) {
 
   const data = job.data;
 
-  const newData = { repository : data.repository };
+  const newData = { repository: data.repository };
 
   const url = data.repository.url || data.repository.clone_url;
 
-  if(url === undefined) {
-    console.log("REPOSITORY",data.repository);
-    throw new Error("unknow repository");
+  if (url === undefined) {
+    console.log("REPOSITORY", data.repository);
+    throw new Error("Unknown repository");
   }
 
-  if(data.ref) {
+  if (data.ref) {
     const regex = new RegExp(config.analyse.refs.exclude);
 
-    if(data.ref.match(regex)) {
+    if (data.ref.match(regex)) {
       console.log("analyse:", data.event, url, "skipping refs", data.ref);
       return undefined;
     }
