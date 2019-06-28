@@ -21,6 +21,13 @@ export function createHooks(hooks, router, queues) {
       hook.path,
       handler(
         {
+          delete: async (request, event) => {
+            console.log(
+              "Received a %s event for %s",
+              event,
+              request
+            );
+          },
           push: async (request, event) => {
             request = stripUnusedDataFromHookRequest(request);
             request.event = event;
