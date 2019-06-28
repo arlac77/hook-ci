@@ -6,11 +6,25 @@ export function createStep(step) {
 }
 
 /**
+ * extract ci notification from line
+ * @param {string} line
+ * @return {string} notification body or undefined 
+ */
+function extractCINotification(line) {
+  const m = line.match(/^#<CI>\s*(.*)/);
+  if (m) {
+    return m[1];
+  }
+  return undefined;
+}
+
+/**
  * add log entries to a job
  * @param {ReadableStream} stream
  * @param {Job} job
+ * @param {Function} notificationHandler
  */
-export async function streamIntoJob(stream, job) {
+export async function streamIntoJob(stream, job, notificationHandler) {
   let remainder = "";
 
   for await (const chunk of stream) {
@@ -22,13 +36,26 @@ export async function streamIntoJob(stream, job) {
       remainder = lines.pop();
 
       for (const line of lines) {
-        job.log(line);
+
+        const ci = extractCINotification(line);
+        if (ci === undefined) {
+          job.log(line);
+        }
+        else {
+          notificationHandler(ci);
+        }
       }
     }
   }
 
   if (remainder.length > 0) {
-    job.log(remainder);
+    const ci = extractCINotification(remainder);
+    if (ci === undefined) {
+      job.log(remainder);
+    }
+    else {
+      notificationHandler(ci);
+    }
   }
 }
 

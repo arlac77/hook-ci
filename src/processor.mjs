@@ -36,8 +36,18 @@ export async function executeStep(step, job, wd) {
     job.log(`### ${step.name}: ${step.executable} ${step.args.join(" ")}`);
     let proc = execa(step.executable, step.args, step.options);
 
-    streamIntoJob(proc.stdout, job);
-    streamIntoJob(proc.stderr, job);
+    const notificatioHandler = (body) => {
+      const m = body.match(/publish\s+(.*)/)
+      if(m) {
+        console.log("PUBLISH", m[1]);
+      }
+      else {
+        console.log("NOTIFICATION", body);
+      }
+    };
+
+    streamIntoJob(proc.stdout, job, notificatioHandler);
+    streamIntoJob(proc.stderr, job, notificatioHandler);
 
     proc = await proc;
     step.exitCode = proc.exitCode;
