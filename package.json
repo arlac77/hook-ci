@@ -36,7 +36,7 @@
     "config-expander": "^11.0.4",
     "execa": "^2.0.1",
     "gitea-repository-provider": "^1.6.2",
-    "github-repository-provider": "^7.3.11",
+    "github-repository-provider": "^7.3.12",
     "globby": "^9.2.0",
     "js-yaml": "^3.13.1",
     "koa": "^2.7.0",
