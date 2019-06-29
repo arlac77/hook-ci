@@ -37,7 +37,7 @@
     "execa": "^2.0.1",
     "gitea-repository-provider": "^1.6.3",
     "github-repository-provider": "^7.3.12",
-    "globby": "^9.2.0",
+    "globby": "^10.0.0",
     "js-yaml": "^3.13.1",
     "koa": "^2.7.0",
     "koa-better-router": "^2.1.1",
