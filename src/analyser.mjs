@@ -25,7 +25,7 @@ export const defaultAnalyserConfig = {
 };
 
 /**
- * analyse the incoming job and prepare the steps to be executet in the processing queue(s)
+ * analyse the incoming job and prepare the steps to be executed in the processing queue(s)
  * @param {Job} job
  * @param {Object} bus
  */
@@ -98,7 +98,8 @@ export async function analyseJob(job, bus) {
         wd
       ]
     }),
-    ...(await npmAnalyse(branch, job, config, wd))
+    ...(await npmAnalyse(branch, job, config, wd)),
+    ...(await pkgbuildAnalyse(branch, job, config, wd))
   ];
 
   newData.wd = wd;

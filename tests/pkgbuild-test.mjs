@@ -27,7 +27,12 @@ test("pkgbuild", async t => {
       name: "build",
       executable: "makepkg",
       args: [],
-      options: { cwd: "/tmp" }
+      options: { cwd: "/tmp" },
+      requirements: [
+        {
+          executable: "makepkg"
+        }
+      ]
     }
   ]);
 });

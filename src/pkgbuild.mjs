@@ -3,7 +3,6 @@ import { createStep } from "./util.mjs";
 
 export async function pkgbuildAnalyse(branch, job, config, wd) {
   const steps = [];
-  const requirements = [];
 
   for await (const entry of branch.entries([
     "**/PKGBUILD",
@@ -14,7 +13,10 @@ export async function pkgbuildAnalyse(branch, job, config, wd) {
         name: "build",
         executable: "makepkg",
         args: [],
-        options: { cwd: join(wd, dirname(entry.name)) }
+        options: { cwd: join(wd, dirname(entry.name)) },
+        requirements: [{
+          executable: "makepkg"
+        }]
       })
     );
   }
