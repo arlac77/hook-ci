@@ -5,15 +5,15 @@ import { GithubProvider } from "github-repository-provider";
 import { makeJob } from "./util.mjs";
 
 test("analyser", async t => {
-  const bus = { config : {
-    ...defaultRepositoriesConfig,
-    ...defaultAnalyserConfig,
-    workspace: { dir: "/tmp" }
-  }, queues: {},
-  repositories: new GithubProvider(
-    GithubProvider.optionsFromEnvironment(process.env)
-  )
-};
+  const bus = {
+    config: {
+      ...defaultRepositoriesConfig,
+      ...defaultAnalyserConfig,
+      workspace: { dir: "/tmp" }
+    },
+    queues: {},
+    repositories: GithubProvider.initialize(undefined, process.env)
+  };
 
   const job = makeJob(1, {
     event: "push",

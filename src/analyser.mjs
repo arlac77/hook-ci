@@ -83,6 +83,14 @@ export async function analyseJob(job, bus) {
   }
 
   //const s1 = await travisAnalyse(branch, job, config, wd);
+  const realSteps = [
+    ...(await npmAnalyse(branch, job, config, wd)),
+    ...(await pkgbuildAnalyse(branch, job, config, wd))
+  ];
+
+  if(realSteps.length === 0) {
+    throw new Error("Unable to detect any executable steps");
+  }
 
   newData.steps = [
     createStep({
@@ -98,8 +106,7 @@ export async function analyseJob(job, bus) {
         wd
       ]
     }),
-    ...(await npmAnalyse(branch, job, config, wd)),
-    ...(await pkgbuildAnalyse(branch, job, config, wd))
+    ...realSteps
   ];
 
   newData.wd = wd;
