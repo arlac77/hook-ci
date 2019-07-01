@@ -25,7 +25,7 @@ export async function npmAnalyse(branch, job, config, wd) {
     "**/package.json",
     ...config.analyse.entries.exclude
   ])) {
-    const json = JSON.parse(await (await branch.entry(entry.name)).getString());
+    const json = JSON.parse(await entry.getString());
     const directory = dirname(entry.name);
     const options = { cwd: join(wd, directory) };
 
