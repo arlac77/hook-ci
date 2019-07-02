@@ -5,7 +5,6 @@ import Router from "koa-better-router";
 import BodyParser from "koa-bodyparser";
 import { createHooks } from "./hooks.mjs";
 
-
 export const defaultServerConfig = {
   http: {
     port: "${first(env.PORT,8093)}",
@@ -46,14 +45,17 @@ function getQueue(queues, name, ctx) {
 }
 
 function getNode(nodes, name, ctx) {
-  const node = nodes.find(name => { return (name === 'local' && config.nodename === node.name) || node.name === name; });
+  const node = nodes.find(name => {
+    return (
+      (name === "local" && config.nodename === node.name) || node.name === name
+    );
+  });
   if (!node) {
     ctx.throw(500, `Node ${name} not found`);
   }
 
   return node;
 }
-
 
 export async function initializeServer(bus) {
   const config = bus.config;
@@ -65,7 +67,12 @@ export async function initializeServer(bus) {
     : httpCreateServer(app.callback());
   server.on("error", err => console.log(err));
 
-  const router = Router();
+  const router = Router({
+    notFound: async (ctx, next) => {
+      console.log("route not found", ctx.request.url);
+      return next();
+    }
+  });
 
   router.addRoute("GET", "/authorize", async (ctx, next) => {
     body = {
