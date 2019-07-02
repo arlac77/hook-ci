@@ -6,7 +6,7 @@ After=network-online.target
 Type=notify
 
 ExecStart={{installdir}}/bin/{{name}}
-#ExecStop={{installdir}}/bin/{{name}} stop
+#ExecStop=/usr/bin/curl -XPOST --unix-socket /run/{{name}}/socket http:/node/local/stop
 TimeoutStartSec=40
 StandardOutput=syslog
 User={{name}}
