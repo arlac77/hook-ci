@@ -52,9 +52,8 @@ export async function analyseJob(job, bus) {
     }
 
     newData.branch = data.ref.substring("/refs/heads".length);
-  }
-  else {
-    newData.branch = 'master';
+  } else {
+    newData.branch = "master";
   }
 
   console.log("analyse:", data.event, url, newData.branch);
@@ -83,12 +82,16 @@ export async function analyseJob(job, bus) {
   }
 
   //const s1 = await travisAnalyse(branch, job, config, wd);
-  const realSteps = [
-    ...(await npmAnalyse(branch, job, config, wd)),
-    ...(await pkgbuildAnalyse(branch, job, config, wd))
-  ];
 
-  if(realSteps.length === 0) {
+  const realSteps = (await Promise.all(
+    [npmAnalyse, pkgbuildAnalyse].map(a => a(branch, job, config, wd))
+  )).reduce((a, c) => {
+    a.push(...c);
+    return a;
+  }, []);
+
+
+  if (realSteps.length === 0) {
     throw new Error("Unable to detect any executable steps");
   }
 
