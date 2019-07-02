@@ -46,7 +46,7 @@ function getQueue(queues, name, ctx) {
 }
 
 function getNode(nodes, name, ctx) {
-  const node = nodes.find(name => node.name === name);
+  const node = nodes.find(name => { return (name === 'local' && config.nodename === node.name) || node.name === name; });
   if (!node) {
     ctx.throw(500, `Node ${name} not found`);
   }
@@ -88,6 +88,13 @@ export async function initializeServer(bus) {
   router.addRoute("POST", "/node/:node/restart", async (ctx, next) => {
     const node = getNode(bus.nodes, ctx.params.node, ctx);
     await node.restart();
+    ctx.body = {};
+    return next();
+  });
+
+  router.addRoute("POST", "/node/:node/stop", async (ctx, next) => {
+    const node = getNode(bus.nodes, ctx.params.node, ctx);
+    await node.stop();
     ctx.body = {};
     return next();
   });

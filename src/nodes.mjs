@@ -70,6 +70,11 @@ export class LocalNode extends Node {
         setTimeout(() => { process.exit(0); }, 500);
     }
 
+    async stop() {
+        console.log("STOP");
+        process.exit(0);
+    }
+
     async state() {
         return {
             name: this.name,
