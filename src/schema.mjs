@@ -45,8 +45,27 @@ export const Schema = buildSchema(`
     hooks: [Hook]
   }
 
+  type Job {
+    id: String!
+    state: String
+  }
+
+  type Queue {
+    name: String!
+    jobs: [Job]
+  }
+
+  type Node {
+    name: String!
+    version: String
+    platform: String
+    uptime: String
+  }
+
   type Query {
     repository(name: String): Repository
     group(name: String): RepositoryGroup
+    node(name: String): Node 
+    queue(name: String): Queue 
   }
 `);
