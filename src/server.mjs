@@ -4,6 +4,7 @@ import Koa from "koa";
 import Router from "koa-better-router";
 import BodyParser from "koa-bodyparser";
 import { createHooks } from "./hooks.mjs";
+import { initGraphQL } from "./graphql.mjs";
 
 export const defaultServerConfig = {
   http: {
@@ -62,9 +63,14 @@ export async function initializeServer(bus) {
 
   const app = new Koa();
 
+  bus.app = app;
+
   const server = config.http.cert
     ? httpsCreateServer(config.http, app.callback())
     : httpCreateServer(app.callback());
+
+  bus.server = server;
+
   server.on("error", err => console.log(err));
 
   const router = Router({
@@ -244,12 +250,12 @@ export async function initializeServer(bus) {
 
   createHooks(config.http.hooks, router, bus.queues);
 
+  initGraphQL(bus);
+
   app.use(router.middleware());
 
   const listener = server.listen(config.http.port, () => {
     console.log("listen on", listener.address());
     bus.sd.notify("READY=1\nSTATUS=running");
   });
-
-  bus.server = server;
 }
