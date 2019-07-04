@@ -22,7 +22,9 @@ export function initGraphQL(bus) {
     },
     group: async (params) => bus.repositories.repositoryGroup(params.name),
     node: async (params) => bus.nodes.find(node => node.name === params.name),
-    queue: async (params) => bus.queues[params.name]
+    nodes: async () => bus.nodes,
+    queue: async (params) => bus.queues[params.name],
+    queues: async () => Object.values(bus.queues)
   };
 
   bus.app.use(

@@ -44,6 +44,10 @@ export class Node {
         });
     }
 
+    get version() {
+        return "unknown";
+    }
+
     async state() {
         return {
             name: this.name,
@@ -71,6 +75,10 @@ export class LocalNode extends Node {
     async stop() {
         console.log("STOP");
         process.exit(0);
+    }
+
+    get version() {
+        return this.config.version;
     }
 
     async state() {

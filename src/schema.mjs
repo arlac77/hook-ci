@@ -74,15 +74,12 @@ export const Schema = buildSchema(`
 
   type Queue {
     name: String!
-    active: Boolean
     jobs: [Job]
   }
 
   type Node {
     name: String!
-    version: String
-    platform: String
-    uptime: String
+    version: String!
   }
 
   type Query {
@@ -91,6 +88,8 @@ export const Schema = buildSchema(`
     group(name: String): RepositoryGroup
     groups(name: String): [RepositoryGroup]
     node(name: String): Node 
+    nodes: [Node] 
     queue(name: String): Queue 
+    queues: [Queue] 
   }
 `);
