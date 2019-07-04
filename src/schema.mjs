@@ -3,6 +3,8 @@ import { buildSchema } from "graphql";
 export const Schema = buildSchema(`
   type Entry {
     name: String!
+    isCollection: Boolean
+    isBlob: Boolean
     content: String!
   }
 
@@ -22,6 +24,8 @@ export const Schema = buildSchema(`
 
   type Branch {
     name: String!
+    entries: [Entry]
+    entry(name: String): Entry
   }
 
   type RepositoryGroup {
@@ -45,13 +49,28 @@ export const Schema = buildSchema(`
     hooks: [Hook]
   }
 
+  type Requirement {
+    executable: String
+    version: String
+  }
+
+  type Step {
+    name: String!
+    executable: String
+    args: [String]
+    requirements: [Requirement]
+  }
+
   type Job {
     id: String!
     state: String
+    attemptsMade: Int,
+    steps: [Step]
   }
 
   type Queue {
     name: String!
+    active: Boolean
     jobs: [Job]
   }
 

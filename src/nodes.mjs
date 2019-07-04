@@ -24,8 +24,6 @@ export async function initializeNodes(bus) {
         bonjour.publish({ name: config.nodename, type, port: 3000, url: `https://${config.nodename}/services/ci/api` });
 
         const browser = bonjour.find({ type }, service => {
-            console.log("FIND", service);
-
             if (!nodes.find(node => node.name === service.name)) {
                 nodes.push(new Node(service.name));
             }
