@@ -83,7 +83,9 @@ export const Schema = buildSchema(`
 
   type Query {
     repository(name: String): Repository
+    repositories(name: String): [Repository]
     group(name: String): RepositoryGroup
+    groups(name: String): [RepositoryGroup]
     node(name: String): Node 
     queue(name: String): Queue 
   }

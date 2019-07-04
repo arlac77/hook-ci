@@ -4,8 +4,23 @@ import { Schema } from "./schema.mjs";
 
 export function initGraphQL(bus) {
   const root = {
+    repositories: async ({name}) => {
+      const result = [];
+      for await (const r of bus.repositories.repositories(name)) {
+        result.push(r);
+      }
+      return result;
+    },
     repository: async (params) => bus.repositories.repository(params.name),
-    group: async (params) => bus.repositories.repositoryGroups(params.name),
+
+    groups: async ({name}) => {
+      const result = [];
+      for await (const r of bus.repositories.repositoryGroups(name)) {
+        result.push(r);
+      }
+      return result;
+    },
+    group: async (params) => bus.repositories.repositoryGroup(params.name),
     node: async (params) => bus.nodes.find(node => node.name === params.name),
     queue: async (params) => bus.queues[params.name]
   };
