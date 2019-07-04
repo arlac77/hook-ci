@@ -9,15 +9,18 @@ export const Schema = buildSchema(`
   }
 
   type PullRequest {
-    name: String!
     id: String
+    name: String!
     title: String
     source: Branch
     destination: Branch
+    merged: Boolean
+    locked: Boolean
   }
 
   type Hook {
     id: String!
+    active: Boolean!
     url: String!
     events: [String]
   }
@@ -29,17 +32,18 @@ export const Schema = buildSchema(`
   }
 
   type RepositoryGroup {
-    name: String!
     id: String
+    name: String!
     description: String
     repositories: [Repository]
     repository(name: String): Repository
   }
 
   type Repository {
+    id: String
     name: String!
     fullName: String!
-    id: String
+    condensedName: String!
     description: String
     defaultBranchName: String
     owner: RepositoryGroup
