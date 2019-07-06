@@ -14,6 +14,7 @@ export const Schema = buildSchema(`
     title: String
     source: Branch
     destination: Branch
+    state: String!
     merged: Boolean
     locked: Boolean
   }
@@ -43,6 +44,7 @@ export const Schema = buildSchema(`
     id: String
     name: String!
     fullName: String!
+    urls: [String]
     condensedName: String!
     description: String
     defaultBranchName: String
