@@ -121,7 +121,7 @@
     }
   },
   "config": {
-    "urlPrefix": "/services/ci/api/"
+    "urlPrefix": "/services/ci/api"
   },
   "pacman": {
     "groups": "webhook",
@@ -129,7 +129,7 @@
     "backup": "etc/${name}/config.json",
     "depends": {
       "redis": ">=5.0.5-1",
-      "systemd": ">=242.0"
+      "systemd": ">=242.32"
     },
     "installdir": "/services/${name}",
     "content": {
