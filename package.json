@@ -120,10 +120,10 @@
       "url": "https://github.com/arlac77/npm-package-template.git"
     }
   },
+  "config": {
+    "urlPrefix": "/services/ci/api/"
+  },
   "pacman": {
-    "properties": {
-      "urlPrefix": "/services/ci/api/"
-    },
     "groups": "webhook",
     "install": "pacman/install.sh",
     "backup": "etc/${name}/config.json",
