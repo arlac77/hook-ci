@@ -121,7 +121,8 @@
     }
   },
   "config": {
-    "urlPrefix": "/services/ci/api"
+    "urlPrefix": "/services/ci/api",
+    "socket" : "/run/{{name}}/socket"
   },
   "pacman": {
     "groups": "webhook",
