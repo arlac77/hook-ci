@@ -10,8 +10,9 @@ export const Schema = buildSchema(`
 
   type PullRequest {
     id: String
-    name: String!
+    number: String!
     title: String
+    body: String
     source: Branch
     destination: Branch
     state: String!
