@@ -21,7 +21,7 @@
     "hook-ci": "bin/hook-ci"
   },
   "scripts": {
-    "cover": "c8 --temp-directory build/tmp ava && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
+    "cover": "c8 -x tests/** --temp-directory build/tmp ava && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
     "docs": "documentation readme src/hook-ci-cli.mjs --section=API",
     "lint": "documentation lint src/hook-ci-cli.mjs",
     "package": "npm-pkgbuild --npm-dist --npm-modules pkgbuild pacman makepkg",
@@ -94,6 +94,21 @@
     "urlPrefix": "/services/ci/api",
     "socket": "/run/${name}/socket"
   },
+  "pacman": {
+    "groups": "webhook",
+    "install": "pacman/install.sh",
+    "backup": "etc/${name}/config.json",
+    "depends": {
+      "redis": ">=5.0.5-1",
+      "systemd": ">=242.32"
+    },
+    "installdir": "/services/${name}",
+    "content": {
+      "/usr/lib/tmpfiles.d/${name}.conf": "pacman/tmpfiles.conf",
+      "/etc/${name}/config.json": "config/config.json",
+      "/etc/nginx/config.d/${name}.conf": "pacman/nginx.conf"
+    }
+  },
   "release": {
     "plugins": [
       "@semantic-release/commit-analyzer",
@@ -122,21 +137,6 @@
   "template": {
     "repository": {
       "url": "https://github.com/arlac77/npm-package-template.git"
-    }
-  },
-  "pacman": {
-    "groups": "webhook",
-    "install": "pacman/install.sh",
-    "backup": "etc/${name}/config.json",
-    "depends": {
-      "redis": ">=5.0.5-1",
-      "systemd": ">=242.32"
-    },
-    "installdir": "/services/${name}",
-    "content": {
-      "/usr/lib/tmpfiles.d/${name}.conf": "pacman/tmpfiles.conf",
-      "/etc/${name}/config.json": "config/config.json",
-      "/etc/nginx/config.d/${name}.conf": "pacman/nginx.conf"
     }
   },
   "systemd": {
