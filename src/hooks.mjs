@@ -4,7 +4,6 @@ import {
   createGiteaHookHandler
 } from "koa-github-hook-handler";
 
-
 export function createHooks(hooks, router, queues) {
   if (hooks === undefined) {
     return;
@@ -22,16 +21,13 @@ export function createHooks(hooks, router, queues) {
       handler(
         {
           delete: async (request, event) => {
-            console.log(
-              "Received a %s event for %s",
-              event,
-              request
-            );
+            console.log("Received a %s event for %s", event, request);
           },
           push: async (request, event) => {
             request = stripUnusedDataFromHookRequest(request);
             request.event = event;
-            await queue.add(request);
+            const job = await queue.add(request);
+            console.log("push", job);
             return { ok: true };
           },
           pull_request: async (request, event) => {
