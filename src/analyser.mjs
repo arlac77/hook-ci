@@ -2,6 +2,7 @@ import { join } from "path";
 import { createStep } from "./util.mjs";
 import { npmAnalyse } from "./npm.mjs";
 import { pkgbuildAnalyse } from "./pkgbuild.mjs";
+import { buildAnalyse } from "./buildAnalyse.mjs";
 
 export const defaultAnalyserConfig = {
   workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp/hook-ci')}" },
@@ -84,7 +85,7 @@ export async function analyseJob(job, bus) {
   //const s1 = await travisAnalyse(branch, job, config, wd);
 
   const realSteps = (await Promise.all(
-    [npmAnalyse, pkgbuildAnalyse].map(a => a(branch, job, config, wd))
+    [npmAnalyse, pkgbuildAnalyse, buildAnalyse].map(a => a(branch, job, config, wd))
   )).reduce((a, c) => {
     a.push(...c);
     return a;
