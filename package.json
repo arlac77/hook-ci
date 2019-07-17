@@ -102,7 +102,7 @@
   },
   "pacman": {
     "groups": "webhook",
-    "install": "pacman/install.sh",
+    "hooks": "pacman/install.sh",
     "backup": "etc/${name}/config.json",
     "depends": {
       "redis": ">=5.0.5-1",
