@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "aggregation-repository-provider": "^2.6.23",
+    "bitbucket-repository-provider": "^3.3.21",
     "bufferutil": "^4.0.1",
     "bull": "^3.10.0",
     "commander": "^2.20.0",

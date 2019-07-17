@@ -1,7 +1,7 @@
 {
   "git": {
     "clone": {
-      "depth": 5
+      "depth": 3
     }
   },
   "providers": [
@@ -11,6 +11,10 @@
     },
     {
       "type": "gitea-repository-provider",
+      "logLevel": "debug"
+    },
+    {
+      "type": "bitbucket-repository-provider",
       "logLevel": "debug"
     }
   ]

@@ -23,31 +23,21 @@ simple ci to be triggered by git hooks
 
 ### Table of Contents
 
--   [streamIntoJob](#streamintojob)
-    -   [Parameters](#parameters)
--   [stripUnusedDataFromHookRequest](#stripunuseddatafromhookrequest)
-    -   [Parameters](#parameters-1)
 -   [defaultQueuesConfig](#defaultqueuesconfig)
 -   [queueTypes](#queuetypes)
--   [analyseJob](#analysejob)
+-   [extractCINotification](#extractcinotification)
+    -   [Parameters](#parameters)
+-   [streamIntoJob](#streamintojob)
+    -   [Parameters](#parameters-1)
+-   [stripUnusedDataFromHookRequest](#stripunuseddatafromhookrequest)
     -   [Parameters](#parameters-2)
-
-## streamIntoJob
-
-add log entries to a job
-
-### Parameters
-
--   `stream` **ReadableStream** 
--   `job` **Job** 
-
-## stripUnusedDataFromHookRequest
-
-strip away currently unused request data
-
-### Parameters
-
--   `request` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** decodec webhook request data
+-   [analyseJob](#analysejob)
+    -   [Parameters](#parameters-3)
+-   [wellKnownScripts](#wellknownscripts)
+-   [buildAnalyse](#buildanalyse)
+    -   [Parameters](#parameters-4)
+-   [LocalNode](#localnode)
+    -   [Parameters](#parameters-5)
 
 ## defaultQueuesConfig
 
@@ -58,13 +48,65 @@ default configuration for queues
 map queue names
 to processing
 
-## analyseJob
+## extractCINotification
 
-analyse the incoming job and prepare the steps to be executet in the processing queue(s)
+extract ci notification from line
 
 ### Parameters
 
--   `job` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
--   `config` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
--   `queues` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
--   `repositories` **RepositoryProvider** 
+-   `line` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** notification body or undefined
+
+## streamIntoJob
+
+add log entries to a job
+
+### Parameters
+
+-   `stream` **ReadableStream** 
+-   `job` **Job** 
+-   `notificationHandler` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+
+## stripUnusedDataFromHookRequest
+
+strip away currently unused request data
+
+### Parameters
+
+-   `request` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** decodec webhook request data
+
+## analyseJob
+
+analyse the incoming job and prepare the steps to be executed in the processing queue(s)
+
+### Parameters
+
+-   `job` **Job** 
+-   `bus` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+## wellKnownScripts
+
+npm buildin scripts
+
+## buildAnalyse
+
+search for build.sh
+
+### Parameters
+
+-   `branch`  
+-   `job`  
+-   `config`  
+-   `wd`  
+
+## LocalNode
+
+**Extends Node**
+
+the node we are ourselfs
+
+### Parameters
+
+-   `name`  
+-   `options`  
