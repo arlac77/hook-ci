@@ -36,7 +36,7 @@ export function createHooks(hooks, router, queues) {
           'repo:push': async (request, event) => {
             request.event = event;
             if(request.repository && request.repository.links && request.repository.links.html) {
-              request.repository.url = request.repository.links.html.href . '.git';
+              request.repository.url = request.repository.links.html.href + '.git';
             }
 
             const job = await queue.add(request);
