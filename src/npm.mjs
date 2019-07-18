@@ -40,7 +40,7 @@ export async function npmAnalyse(branch, job, config, wd) {
     
     if (json.cpu) {
       json.cpu.forEach(cpu => {
-        requirements.push({ cpu });
+        requirements.push({ architecture: cpu });
       });
     }
 
