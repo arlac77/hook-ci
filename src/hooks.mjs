@@ -33,6 +33,11 @@ export function createHooks(hooks, router, queues) {
           delete: async (request, event) => {
             console.log("Received a %s event for %s", event, request);
           },
+          'repo:push': async (request, event) => {
+            request.event = event;
+            const job = await queue.add(request);
+            return { queued: { id: job.id, queue: job.queue.name } };
+          },
           push: async (request, event) => {
             request = stripUnusedDataFromHookRequest(request);
             request.event = event;
