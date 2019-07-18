@@ -27,8 +27,7 @@ export function createHooks(hooks, router, queues) {
             request = stripUnusedDataFromHookRequest(request);
             request.event = event;
             const job = await queue.add(request);
-            console.log("push", job);
-            return { ok: true };
+            return { queued: { id: job.id, queue: job.queue.name } };
           },
           pull_request: async (request, event) => {
             console.log(
