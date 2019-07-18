@@ -86,6 +86,8 @@ export const Schema = buildSchema(`
   }
 
   type Query {
+    branch(name: String): Branch
+    branches(name: String): [Branch]
     repository(name: String): Repository
     repositories(name: String): [Repository]
     group(name: String): RepositoryGroup
