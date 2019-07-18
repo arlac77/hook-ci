@@ -31,6 +31,9 @@ test("pkgbuild", async t => {
       requirements: [
         {
           executable: "makepkg"
+        },
+        {
+          architecture: "aarch64"
         }
       ]
     }
