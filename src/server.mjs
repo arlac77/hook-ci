@@ -15,6 +15,10 @@ export const defaultServerConfig = {
         secret: "${env.WEBHOOK_SECRET}",
         queue: "incoming"
       },
+      bitbucket: {
+        path: "/bitbucket",
+        queue: "incoming"
+      },
       github: {
         path: "/webhook",
         secret: "${env.WEBHOOK_SECRET}",

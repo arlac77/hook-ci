@@ -1,20 +1,30 @@
 import { stripUnusedDataFromHookRequest } from "./util.mjs";
 import {
   createGithubHookHandler,
-  createGiteaHookHandler
+  createGiteaHookHandler,
+  createBitbucketHookHandler
 } from "koa-github-hook-handler";
 
+const types = {
+  "gitea" : createGiteaHookHandler,
+  "github" : createGithubHookHandler,
+  "bitbucket" : createBitbucketHookHandler
+}
 export function createHooks(hooks, router, queues) {
   if (hooks === undefined) {
     return;
   }
 
   for (const t of Object.keys(hooks)) {
+    const handler = types[t];
+    if(handler === undefined) {
+      console.log(`No webhook handler for ${t}`);
+      continue;
+    }
+
     const hook = hooks[t];
     const queue = queues[hook.queue];
 
-    const handler =
-      t === "gitea" ? createGiteaHookHandler : createGithubHookHandler;
     router.addRoute(
       "POST",
       hook.path,

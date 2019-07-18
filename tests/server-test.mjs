@@ -7,22 +7,20 @@ import { LocalNode } from "../src/nodes.mjs";
 
 const hook = "webhook";
 const secret = "aSecret";
-const sd = { notify: () => { }, listeners: () => [] };
-
+const sd = { notify: () => {}, listeners: () => [] };
 
 let _port = 3149;
 
-function nextPort()
-{
+function nextPort() {
   return _port++;
 }
 
 const queues = {
   incoming: {
-    async getJobLogs(job,from=0,to=10) {
+    async getJobLogs(job, from = 0, to = 10) {
       const lines = [];
 
-      while(from < to) {
+      while (from < to) {
         lines.push(`line ${from}`);
         from++;
       }
@@ -30,6 +28,7 @@ const queues = {
       return { lines };
     },
     async add(data) {
+      return { id: 77, queue: { name: "incoming", data } };
     },
     async getJobs() {
       return [
@@ -112,11 +111,12 @@ test("request repositories", async t => {
     },
     sd,
     queues,
-    repositories: new GithubProvider(GithubProvider.optionsFromEnvironment(process.env))
+    repositories: new GithubProvider(
+      GithubProvider.optionsFromEnvironment(process.env)
+    )
   };
 
   await initializeServer(bus);
-
 
   const response = await got.get(
     `http://localhost:${port}/repositories?pattern=arlac77/sync-test*`
@@ -197,7 +197,9 @@ test("incoming job logs", async t => {
 
   await initializeServer(bus);
 
-  const response = await got.get(`http://localhost:${port}/queue/incoming/job/1/log?start=1&end=3`);
+  const response = await got.get(
+    `http://localhost:${port}/queue/incoming/job/1/log?start=1&end=3`
+  );
 
   t.is(response.statusCode, 200);
 
@@ -266,7 +268,7 @@ test("get nodes state", async t => {
     config,
     sd,
     queues,
-    nodes: [new LocalNode('local', { config })]
+    nodes: [new LocalNode("local", { config })]
   };
 
   await initializeServer(bus);
@@ -302,10 +304,11 @@ test("github push", async t => {
       }
     },
     sd,
-    queues:     {
+    queues: {
       incoming: {
         add(job) {
           payload = job;
+          return { id: 77, queue: { name: "incoming" } };
         }
       }
     }
@@ -334,10 +337,7 @@ test("github push", async t => {
 
   t.is(response.statusCode, 200);
   t.is(payload.event, "push");
-  t.is(
-    payload.repository.full_name,
-    "arlac77/npm-template-sync-github-hook"
-  );
+  t.is(payload.repository.full_name, "arlac77/npm-template-sync-github-hook");
   t.is(payload.ref, "refs/heads/template-sync-1");
 
   bus.server.close();
