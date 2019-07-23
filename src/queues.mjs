@@ -33,6 +33,10 @@ export const defaultQueuesConfig = {
         completed: "cleanup"
       }
     },
+    publish: {
+      active: false,
+      clean: 36000000,
+    },
     cleanup: {
       clean: 36000000,
       active: true
@@ -47,7 +51,8 @@ export const defaultQueuesConfig = {
 const queueTypes = {
   incoming: analyseJob,
   cleanup: cleanupJob,
-  process: processJob
+  process: processJob,
+  publish: publishJob
 };
 
 export async function initializeQueues(bus) {
@@ -114,4 +119,7 @@ async function cleanupJob(job, bus) {
     streamIntoJob(proc.stdout, job);
     streamIntoJob(proc.stderr, job);
   }
+}
+
+async function publishJob(job, bus) {
 }

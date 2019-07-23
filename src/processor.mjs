@@ -7,6 +7,16 @@ export async function processJob(job, bus) {
   const data = job.data;
   const wd = data.wd;
 
+  const notificatioHandler = body => {
+    const m = body.match(/publish\s+(.*)/);
+    if (m) {
+      console.log("PUBLISH", m[1]);
+      bus.publush.add({ artifact: m[1], wd });
+    } else {
+      console.log("NOTIFICATION", body);
+    }
+  };
+
   if (Array.isArray(data.steps)) {
     for (const step of data.steps) {
       try {
@@ -28,23 +38,13 @@ export async function processJob(job, bus) {
   return data;
 }
 
-export async function executeStep(step, job, wd) {
+export async function executeStep(step, job, notificatioHandler) {
   if (step.executable) {
     console.log(
       `${job.id}.${step.name}: ${step.executable} ${step.args.join(" ")}`
     );
     job.log(`### ${step.name}: ${step.executable} ${step.args.join(" ")}`);
     let proc = execa(step.executable, step.args, step.options);
-
-    const notificatioHandler = (body) => {
-      const m = body.match(/publish\s+(.*)/)
-      if(m) {
-        console.log("PUBLISH", m[1]);
-      }
-      else {
-        console.log("NOTIFICATION", body);
-      }
-    };
 
     streamIntoJob(proc.stdout, job, notificatioHandler);
     streamIntoJob(proc.stderr, job, notificatioHandler);
