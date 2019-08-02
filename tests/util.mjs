@@ -6,3 +6,19 @@ export function makeJob(id, data={}) {
     data
   };
 }
+
+
+export function makeConfig(port)
+{
+  return {
+    version: 99,
+    http: {
+      port
+    },
+    auth: {
+      jwt: {
+      }
+    }
+  };
+}
+

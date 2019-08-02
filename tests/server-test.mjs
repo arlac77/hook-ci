@@ -4,6 +4,7 @@ import { GithubProvider } from "github-repository-provider";
 import signer from "x-hub-signature/src/signer";
 import { initializeServer } from "../src/server.mjs";
 import { LocalNode } from "../src/nodes.mjs";
+import { makeConfig } from "./util.mjs";
 
 const hook = "webhook";
 const secret = "aSecret";
@@ -71,15 +72,11 @@ const queues = {
   }
 };
 
+
 test("incoming jobs", async t => {
   const port = nextPort();
   const bus = {
-    config: {
-      version: 99,
-      http: {
-        port
-      }
-    },
+    config: makeConfig(port),
     sd,
     queues
   };
@@ -103,12 +100,7 @@ test("incoming jobs", async t => {
 test("request repositories", async t => {
   const port = nextPort();
   const bus = {
-    config: {
-      version: 99,
-      http: {
-        port
-      }
-    },
+    config: makeConfig(port),
     sd,
     queues,
     repositories: new GithubProvider(
@@ -134,12 +126,7 @@ test("request repositories", async t => {
 test("request queues", async t => {
   const port = nextPort();
   const bus = {
-    config: {
-      version: 99,
-      http: {
-        port
-      }
-    },
+    config: makeConfig(port),
     sd,
     queues
   };
@@ -160,12 +147,7 @@ test("request queues", async t => {
 test("incoming queue", async t => {
   const port = nextPort();
   const bus = {
-    config: {
-      version: 99,
-      http: {
-        port
-      }
-    },
+    config: makeConfig(port),
     sd,
     queues
   };
@@ -185,12 +167,7 @@ test("incoming queue", async t => {
 test("incoming job logs", async t => {
   const port = nextPort();
   const bus = {
-    config: {
-      version: 99,
-      http: {
-        port
-      }
-    },
+    config: makeConfig(port),
     sd,
     queues
   };
@@ -226,12 +203,7 @@ test("pause/resume/empty queues", async t => {
   };
 
   const bus = {
-    config: {
-      version: 99,
-      http: {
-        port
-      }
-    },
+    config: makeConfig(port),
     sd,
     queues
   };
@@ -257,19 +229,14 @@ test("pause/resume/empty queues", async t => {
 
 test("get nodes state", async t => {
   const port = nextPort();
-  const config = {
-    version: 99,
-    http: {
-      port
-    }
-  };
 
   const bus = {
-    config,
+    config: makeConfig(port),
     sd,
     queues,
-    nodes: [new LocalNode("local", { config })]
+    nodes: []
   };
+  bus.nodes.push(new LocalNode("local", bus ));
 
   await initializeServer(bus);
 
@@ -290,19 +257,7 @@ test("get nodes state", async t => {
 test("github push", async t => {
   const port = nextPort();
   const bus = {
-    config: {
-      version: 99,
-      http: {
-        port,
-        hooks: {
-          github: {
-            path: hook,
-            secret,
-            queue: "incoming"
-          }
-        }
-      }
-    },
+    config: makeConfig(port),
     sd,
     queues: {
       incoming: {
@@ -311,6 +266,14 @@ test("github push", async t => {
           return { id: 77, queue: { name: "incoming" } };
         }
       }
+    }
+  };
+
+  bus.config.http.hooks = {
+    github: {
+      path: hook,
+      secret,
+      queue: "incoming"
     }
   };
 

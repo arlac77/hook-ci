@@ -1,7 +1,8 @@
 import test from "ava";
+import WebSocket from "ws";
 import { initializeServer } from "../src/server.mjs";
 import { initializeWebsockets } from "../src/websockets.mjs";
-import WebSocket from "ws";
+import { makeConfig } from "./util.mjs";
 
 const sd = { notify: () => {}, listeners: () => [] };
 
@@ -25,13 +26,7 @@ test.cb("websocket", t => {
   async function setupServer() {
     const port = nextPort();
     const bus = {
-      config: 
-        {
-          version: 99,
-          http: {
-            port
-          }
-        },
+      config: makeConfig(port),
         sd,
         queues
     };
