@@ -2,6 +2,7 @@ import { createServer as httpCreateServer } from "http";
 import { createServer as httpsCreateServer } from "https";
 import Koa from "koa";
 import KoaJWT from "koa-jwt";
+import jsonwebtoken from "jsonwebtoken";
 import Router from "koa-better-router";
 import BodyParser from "koa-bodyparser";
 import { createHooks } from "./hooks.mjs";
