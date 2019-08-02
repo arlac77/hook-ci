@@ -111,7 +111,9 @@ export async function initializeServer(bus) {
 
   router.addRoute("POST", "/node/:node/stop", async (ctx, next) => {
     const node = getNode(bus.nodes, ctx.params.node, ctx);
-    await node.stop();
+
+    node.stop();
+
     ctx.body = {};
     return next();
   });
