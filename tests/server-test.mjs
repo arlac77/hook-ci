@@ -4,11 +4,10 @@ import { GithubProvider } from "github-repository-provider";
 import signer from "x-hub-signature/src/signer";
 import { initializeServer } from "../src/server.mjs";
 import { LocalNode } from "../src/nodes.mjs";
-import { makeConfig } from "./util.mjs";
+import { makeConfig, sd } from "./util.mjs";
 
 const hook = "webhook";
 const secret = "aSecret";
-const sd = { notify: () => {}, listeners: () => [] };
 
 let _port = 3149;
 

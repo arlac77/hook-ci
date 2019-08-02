@@ -1,4 +1,5 @@
 import ldapts from "ldapts";
+import jsonwebtoken from "jsonwebtoken";
 
 export const defaultAuthConfig = {
   auth: {
@@ -29,7 +30,20 @@ export const defaultAuthConfig = {
   }
 };
 
-export async function authenticate(config, username, password) {
+/**
+ * authorize user / password
+ * @param {Object} config
+ * @param {string} username
+ * @param {string} password
+ * @param entitlementFilter
+ * @return {Set<string>} entitlements
+ */
+export async function authenticate(
+  config,
+  username,
+  password,
+  entitlementFilter = e => true
+) {
   const auth = config.auth;
 
   const entitlements = new Set();
@@ -45,7 +59,7 @@ export async function authenticate(config, username, password) {
     }
 
     try {
-      console.log("BIND", inject(ldap.bindDN));
+      //console.log("BIND", inject(ldap.bindDN));
       await client.bind(inject(ldap.bindDN), password);
 
       const { searchEntries } = await client.search(
@@ -56,9 +70,12 @@ export async function authenticate(config, username, password) {
           attributes: [ldap.entitlements.attribute]
         }
       );
-      searchEntries.forEach(e =>
-        entitlements.add(e[ldap.entitlements.attribute])
-      );
+      searchEntries.forEach(e => {
+        const entitlement = e[ldap.entitlements.attribute];
+        if (entitlementFilter(entitlement)) {
+          entitlements.add(entitlement);
+        }
+      });
     } catch (ex) {
       console.log(ex);
     } finally {
@@ -74,4 +91,38 @@ export async function authenticate(config, username, password) {
   }
 
   return { entitlements };
+}
+
+export function accessTokenGenerator(config,
+  entitlementFilter = e => true) {
+  return async (ctx, next) => {
+    const q = ctx.request.body;
+
+    const { entitlements } = await authenticate(
+      config,
+      q.username,
+      q.password,
+      entitlementFilter
+    );
+
+    if (entitlements.size > 0) {
+      const claims = {
+        entitlements: [...entitlements].join(",")
+      };
+
+      const token = jsonwebtoken.sign(
+        claims,
+        config.auth.jwt.private,
+        config.auth.jwt.options
+      );
+
+      ctx.body = {
+        token
+      };
+    } else {
+      ctx.throw(401, "Authentication failed");
+    }
+
+    return next();
+  };
 }
