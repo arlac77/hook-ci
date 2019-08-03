@@ -35,15 +35,9 @@ export const defaultAuthConfig = {
  * @param {Object} config
  * @param {string} username
  * @param {string} password
- * @param entitlementFilter
  * @return {Set<string>} entitlements
  */
-export async function authenticate(
-  config,
-  username,
-  password,
-  entitlementFilter = e => true
-) {
+export async function authenticate(config, username, password) {
   const auth = config.auth;
 
   const entitlements = new Set();
@@ -72,12 +66,8 @@ export async function authenticate(
       );
       searchEntries.forEach(e => {
         const entitlement = e[ldap.entitlements.attribute];
-        if (entitlementFilter(entitlement)) {
-          entitlements.add(entitlement);
-        }
+        entitlements.add(entitlement);
       });
-    } catch (ex) {
-      console.log(ex);
     } finally {
       await client.unbind();
     }
@@ -85,33 +75,47 @@ export async function authenticate(
 
   if (auth.users !== undefined) {
     const user = auth.users[username];
-    if (user !== undefined && user.password === password) {
-      user.entitlements.forEach(e => entitlements.add(e));
+    if (user !== undefined) {
+      if (user.password === password) {
+        user.entitlements.forEach(e => entitlements.add(e));
+      }
+      else {
+        throw new Error("Wrong password");
+      }
     }
   }
 
   return { entitlements };
 }
 
-export function accessTokenGenerator(config,
-  entitlementFilter = e => true) {
+/**
+ * Geenrate a request handler to deliver JWT access tokens
+ * @param {Object} config
+ * @param {Function} entitlementFilter
+ * @return request handler return jwt token
+ */
+export function accessTokenGenerator(config, entitlementFilter) {
   return async (ctx, next) => {
     const q = ctx.request.body;
 
-    const { entitlements } = await authenticate(
-      config,
-      q.username,
-      q.password,
-      entitlementFilter
-    );
+    let entitlements;
 
-    if (entitlements.size > 0) {
-      const claims = {
-        entitlements: [...entitlements].join(",")
-      };
+    try {
+      const x = await authenticate(config, q.username, q.password);
+      entitlements = x.entitlements;
+    } catch (e) {
+      console.log(e);
+      ctx.throw(401, "Authentication failed");
+    }
 
+    const e =
+      entitlementFilter === undefined
+        ? [...entitlements]
+        : [...entitlements].filter(e => entitlementFilter(e));
+
+    if (e.length > 0) {
       const token = jsonwebtoken.sign(
-        claims,
+        { entitlements: e.join(",") },
         config.auth.jwt.private,
         config.auth.jwt.options
       );
@@ -119,10 +123,9 @@ export function accessTokenGenerator(config,
       ctx.body = {
         token
       };
+      return next();
     } else {
-      ctx.throw(401, "Authentication failed");
+      ctx.throw(403, "Not authorized");
     }
-
-    return next();
   };
 }

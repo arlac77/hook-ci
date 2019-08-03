@@ -27,7 +27,12 @@ export function makeConfig(port)
         user1: {
           password: "secret",
           entitlements: ["ci","ci.nodes.read"]
+        },
+        user2: {
+          password: "secret",
+          entitlements: ["unknown"]
         }
+
       },
       jwt: {
         public: readFileSync(join(here, "fixtures", "demo.rsa.pub")),
