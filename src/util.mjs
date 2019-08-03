@@ -62,7 +62,7 @@ export async function streamIntoJob(stream, job, notificationHandler) {
 /**
  * strip away currently unused request data
  * @param {Object} request decodec webhook request data
- @ @return {Object} stipped down request data
+ * @return {Object} stipped down request data
  */
 export function stripUnusedDataFromHookRequest(request) {
   const repository = request.repository;

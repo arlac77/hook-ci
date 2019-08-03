@@ -36,8 +36,12 @@ simple ci to be triggered by git hooks
 -   [wellKnownScripts](#wellknownscripts)
 -   [buildAnalyse](#buildanalyse)
     -   [Parameters](#parameters-4)
--   [LocalNode](#localnode)
+-   [authenticate](#authenticate)
     -   [Parameters](#parameters-5)
+-   [accessTokenGenerator](#accesstokengenerator)
+    -   [Parameters](#parameters-6)
+-   [LocalNode](#localnode)
+    -   [Parameters](#parameters-7)
 
 ## defaultQueuesConfig
 
@@ -76,6 +80,8 @@ strip away currently unused request data
 
 -   `request` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** decodec webhook request data
 
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** stipped down request data
+
 ## analyseJob
 
 analyse the incoming job and prepare the steps to be executed in the processing queue(s)
@@ -99,6 +105,29 @@ search for build.sh
 -   `job`  
 -   `config`  
 -   `wd`  
+
+## authenticate
+
+authorize user / password
+
+### Parameters
+
+-   `config` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `username` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `password` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** entitlements
+
+## accessTokenGenerator
+
+Geenrate a request handler to deliver JWT access tokens
+
+### Parameters
+
+-   `config` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `entitlementFilter` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+
+Returns **any** request handler return jwt token
 
 ## LocalNode
 
