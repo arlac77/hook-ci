@@ -80,7 +80,7 @@ export async function authenticate(config, username, password) {
         user.entitlements.forEach(e => entitlements.add(e));
       }
       else {
-        throw new Error("Wrong password");
+        throw new Error("Wrong credentials");
       }
     }
   }
