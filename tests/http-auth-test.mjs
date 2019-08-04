@@ -27,10 +27,10 @@ test("authenticate positive", async t => {
   });
 
   t.is(response.statusCode, 200);
-  t.truthy(response.body.token.length > 10);
+  t.truthy(response.body.access_token.length > 10);
 
-  const token = response.body.token;
-  const data = JSON.parse(Buffer.from(token.split(".")[1], "base64"));
+  const access_token = response.body.access_token;
+  const data = JSON.parse(Buffer.from(access_token.split(".")[1], "base64"));
   t.deepEqual(data.entitlements.split(/,/), ["ci", "ci.nodes.read"]);
 
   bus.server.close();
@@ -84,8 +84,8 @@ test("authenticate no entitlements", async t => {
     t.log(response.body);
     t.fail("should throw 403");
 
-    const token = response.body.token;
-    const data = JSON.parse(Buffer.from(token.split(".")[1], "base64"));
+    const access_token = response.body.access_token;
+    const data = JSON.parse(Buffer.from(access_token.split(".")[1], "base64"));
     t.log(data);
   } catch (error) {
     t.is(error.statusCode, 403);

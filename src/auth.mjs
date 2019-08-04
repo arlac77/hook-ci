@@ -11,13 +11,13 @@ export const defaultAuthConfig = {
     },
     ldap: {
       url: "ldap://ldap.mf.de",
-      bindDN: "uid={{user}},ou=accounts,dc=mf,dc=de",
+      bindDN: "uid={{username}},ou=accounts,dc=mf,dc=de",
       entitlements: {
         base: "ou=groups,dc=mf,dc=de",
         attribute: "cn",
         scope: "sub",
         filter:
-          "(&(objectclass=groupOfUniqueNames)(uniqueMember=uid={{user}},ou=accounts,dc=mf,dc=de))"
+          "(&(objectclass=groupOfUniqueNames)(uniqueMember=uid={{username}},ou=accounts,dc=mf,dc=de))"
       }
     },
     jwt: {
@@ -49,7 +49,7 @@ export async function authenticate(config, username, password) {
     });
 
     function inject(str) {
-      return str.replace(/\{\{user\}\}/, username);
+      return str.replace(/\{\{username\}\}/, username);
     }
 
     try {
@@ -114,14 +114,14 @@ export function accessTokenGenerator(config, entitlementFilter) {
         : [...entitlements].filter(e => entitlementFilter(e));
 
     if (e.length > 0) {
-      const token = jsonwebtoken.sign(
+      const access_token = jsonwebtoken.sign(
         { entitlements: e.join(",") },
         config.auth.jwt.private,
         config.auth.jwt.options
       );
 
       ctx.body = {
-        token
+        access_token
       };
       return next();
     } else {
