@@ -48,19 +48,23 @@ export async function authenticate(config, username, password) {
       url: ldap.url
     });
 
-    function inject(str) {
-      return str.replace(/\{\{username\}\}/, username);
+    const values = {
+      username
+    };
+
+    function expand(str) {
+      return str.replace(/\{\{(\w+)\}\}/, (match, g1) => values[g1] ? values[g1] : g1);
     }
 
     try {
-      //console.log("BIND", inject(ldap.bindDN));
-      await client.bind(inject(ldap.bindDN), password);
+      console.log("BIND", expand(ldap.bindDN));
+      await client.bind(expand(ldap.bindDN), password);
 
       const { searchEntries } = await client.search(
-        inject(ldap.entitlements.base),
+        expand(ldap.entitlements.base),
         {
           scope: ldap.entitlements.scope,
-          filter: inject(ldap.entitlements.filter),
+          filter: expand(ldap.entitlements.filter),
           attributes: [ldap.entitlements.attribute]
         }
       );
