@@ -45,8 +45,8 @@ export const Schema = buildSchema(`
     id: String
     name: String!
     fullName: String!
-    urls: [String]
     condensedName: String!
+    urls: [String]
     description: String
     defaultBranchName: String
     owner: RepositoryGroup
