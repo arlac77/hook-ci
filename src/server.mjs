@@ -1,5 +1,3 @@
-import { createServer as httpCreateServer } from "http";
-import { createServer as httpsCreateServer } from "https";
 import Koa from "koa";
 import KoaJWT from "koa-jwt";
 import Router from "koa-better-router";
@@ -10,7 +8,7 @@ import { accessTokenGenerator } from "./auth.mjs";
 
 export const defaultServerConfig = {
   http: {
-    port: "${first(env.PORT,8093)}",
+    port: "${first(env.PORT,8094)}",
     hooks: {
       gitea: {
         path: "/gitea",
@@ -70,14 +68,6 @@ export async function initializeServer(bus) {
   const app = new Koa();
 
   bus.app = app;
-
-  const server = config.http.cert
-    ? httpsCreateServer(config.http, app.callback())
-    : httpCreateServer(app.callback());
-
-  bus.server = server;
-
-  server.on("error", err => console.log(err));
 
   const router = Router({
     notFound: async (ctx, next) => {
@@ -275,8 +265,8 @@ export async function initializeServer(bus) {
 
   app.use(router.middleware());
 
-  const listener = server.listen(config.http.port, () => {
-    console.log("listen on", listener.address());
+  bus.server = app.listen(config.http.port, () => {
+    console.log("listen on", bus.server.address());
     bus.sd.notify("READY=1\nSTATUS=running");
   });
 }
