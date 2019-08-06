@@ -27,7 +27,7 @@ export async function initializeNodes(bus) {
     });
 
     const browser = bonjour.find({ type }, service => {
-      if (!nodes.find(node => node.name === service.name)) {
+      if (service.name !== undefined && !nodes.find(node => node.name === service.name)) {
         nodes.push(new Node(service.name));
       }
     });
