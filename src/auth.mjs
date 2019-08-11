@@ -93,7 +93,7 @@ export async function authenticate(config, username, password) {
 }
 
 /**
- * Geenrate a request handler to deliver JWT access tokens
+ * Generate a request handler to deliver JWT access tokens
  * @param {Object} config
  * @param {Function} entitlementFilter
  * @return request handler return jwt token
