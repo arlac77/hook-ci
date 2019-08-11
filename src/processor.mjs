@@ -21,13 +21,14 @@ export async function processJob(job, bus) {
     for (const step of data.steps) {
       try {
         step.node = bus.config.nodename;
-        step.started = new Date();
+        step.started = Date.now() / 1000;
         const process = await executeStep(step, job, wd);
       } catch (e) {
         step.error = e;
         console.log(`${job.id}.${step.name}: failed`, e);
       } finally {
-        step.ended = new Date();
+        step.ended = Date.now() / 1000;
+        valueOf()
         job.update(data);
       }
     }
