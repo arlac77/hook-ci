@@ -7,9 +7,13 @@ import { createStep } from "./util.mjs";
 const wellKnownScripts = new Set([
   "ci",
   "install",
+  "build",
+  "link",
   "test",
   "pack",
   "version",
+  "prune",
+  "outdate",
   "publish"
 ]);
 
