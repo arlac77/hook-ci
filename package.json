@@ -64,6 +64,7 @@
     "c8": "^5.0.2",
     "documentation": "^12.1.1",
     "esm": "^3.2.25",
+    "fstream": "^1.0.12",
     "got": "^9.6.0",
     "markdown-doctest": "^0.9.1",
     "mock-repository-provider": "^5.1.21",
