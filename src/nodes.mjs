@@ -86,6 +86,10 @@ export class LocalNode extends Node {
     return true;
   }
 
+  get config() {
+    return this.bus.config;
+  }
+
   get version() {
     return this.config.version;
   }
