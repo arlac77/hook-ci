@@ -83,6 +83,7 @@ export const Schema = buildSchema(`
   type Node {
     name: String!
     version: String!
+    uptime: Float!
   }
 
   type Query {
