@@ -54,6 +54,10 @@ export class Node {
     return "unknown";
   }
 
+  get uptime() {
+    return -1;
+  }
+
   async state() {
     return {
       name: this.name,
@@ -92,6 +96,10 @@ export class LocalNode extends Node {
 
   get version() {
     return this.config.version;
+  }
+
+  get uptime() {
+    return process.uptime();
   }
 
   async state() {

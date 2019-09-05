@@ -62,6 +62,12 @@ function getNode(nodes, name, ctx) {
   return node;
 }
 
+function setNoCacheHeaders(ctx) {
+  ctx.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+  ctx.set('Pragma', 'no-cache');
+  ctx.set('Expires', 0);
+}
+
 export async function initializeServer(bus) {
   const config = bus.config;
 
@@ -97,11 +103,13 @@ export async function initializeServer(bus) {
   });
 
   router.addRoute("GET", "/nodes/state", async (ctx, next) => {
+    setNoCacheHeaders(ctx);
     ctx.body = await Promise.all(bus.nodes.map(node => node.state()));
     return next();
   });
 
   router.addRoute("GET", "/node/:node/state", async (ctx, next) => {
+    setNoCacheHeaders(ctx);
     const node = getNode(bus.nodes, ctx.params.node, ctx);
     ctx.body = await node.state();
     return next();
@@ -124,6 +132,8 @@ export async function initializeServer(bus) {
   });
 
   router.addRoute("GET", "/repositories", async (ctx, next) => {
+    setNoCacheHeaders(ctx);
+
     const rs = [];
 
     for await (const repository of bus.repositories.repositories(
@@ -138,6 +148,8 @@ export async function initializeServer(bus) {
   });
 
   router.addRoute("GET", "/queues", async (ctx, next) => {
+    setNoCacheHeaders(ctx);
+
     ctx.body = await Promise.all(
       Object.keys(bus.queues).map(async name => {
         const queue = bus.queues[name];
@@ -148,6 +160,8 @@ export async function initializeServer(bus) {
   });
 
   router.addRoute("GET", "/queue/:queue", async (ctx, next) => {
+    setNoCacheHeaders(ctx);
+
     ctx.body = await queueDetails(
       ctx.params.queue,
       getQueue(bus.queues, ctx.params.queue, ctx)
@@ -190,6 +204,8 @@ export async function initializeServer(bus) {
   });
 
   router.addRoute("GET", "/queue/:queue/jobs", async (ctx, next) => {
+    setNoCacheHeaders(ctx);
+
     //ctx.query.states;
     const queue = getQueue(bus.queues, ctx.params.queue, ctx);
     ctx.body = (await queue.getJobs(
@@ -226,6 +242,8 @@ export async function initializeServer(bus) {
   );
 
   router.addRoute("GET", "/queue/:queue/job/:job", async (ctx, next) => {
+    setNoCacheHeaders(ctx);
+
     const queue = getQueue(bus.queues, ctx.params.queue, ctx);
     const job = await queue.getJob(ctx.params.job);
     //console.log(job);
@@ -241,6 +259,8 @@ export async function initializeServer(bus) {
   });
 
   router.addRoute("GET", "/queue/:queue/job/:job/log", async (ctx, next) => {
+    setNoCacheHeaders(ctx);
+
     console.log(
       "GET LOG",
       ctx.params.queue,
