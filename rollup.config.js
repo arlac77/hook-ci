@@ -13,7 +13,8 @@ const external = [
   "sd-daemon",
   "koa-better-router",
   "node-fetch",
-
+  "universal-user-agent",
+  
   "bufferutil",
   "utf-8-validate"
 ];
