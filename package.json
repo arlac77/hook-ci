@@ -67,7 +67,7 @@
     "got": "^9.6.0",
     "markdown-doctest": "^0.9.1",
     "mock-repository-provider": "^5.1.22",
-    "npm-pkgbuild": "^6.9.0",
+    "npm-pkgbuild": "^6.9.1",
     "rollup": "^1.20.3",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-commonjs": "^10.1.0",
