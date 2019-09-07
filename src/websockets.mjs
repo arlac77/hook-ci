@@ -3,7 +3,6 @@ import bufferutil from "bufferutil";
 import utf8Validate from "utf-8-validate";
 
 
-
 export async function initializeWebsockets(bus) {
   const wss = new WebSocket.Server({ server: bus.server });
 

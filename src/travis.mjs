@@ -1,4 +1,3 @@
-import { createStep } from "./util.mjs";
 import yaml from "js-yaml";
 
 export async function travisAnalyse(branch, job, config, wd) {
