@@ -22,7 +22,9 @@ export async function processJob(job, bus) {
       try {
         step.node = bus.config.nodename;
         step.started = Date.now();
-        const process = await executeStep(step, job, wd);
+        const process = executeStep(step, job, wd);
+
+        await process;
       } catch (e) {
         step.error = e;
         console.log(`${job.id}.${step.name}: failed`, e);
@@ -49,10 +51,20 @@ export async function executeStep(step, job, notificatioHandler) {
     streamIntoJob(proc.stdout, job, notificatioHandler);
     streamIntoJob(proc.stderr, job, notificatioHandler);
 
+    let timeout = setTimeout(() => {
+      timeout = undefined;
+      console.log(`timeout waiting for ${step.executable}`);
+      proc.cancel();
+    }, step.timeout);
+
     proc = await proc;
     step.exitCode = proc.exitCode;
 
     console.log(`${job.id}.${step.name}: end ${step.exitCode}`);
+
+    if (timeout) {
+      clearTimeout(timeout);
+    }
 
     return proc;
   }

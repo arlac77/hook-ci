@@ -5,6 +5,7 @@ import { makeJob } from './util.mjs';
 test("executeStep", async t => {
   const proc = await executeStep(
     {
+      timeout: 10000,
       name: "echo",
       directory: ".",
       executable: "npm",

@@ -48,6 +48,7 @@ test("analyser", async t => {
     },
     steps: [
       {
+        timeout: 1800000,
         name: "git clone",
         executable: "git",
         args: [
@@ -62,6 +63,7 @@ test("analyser", async t => {
         options: {}
       },
       {
+        timeout: 1800000,
         name: "prepare",
         executable: "npm",
         args: ["install"],
@@ -71,6 +73,7 @@ test("analyser", async t => {
         requirements
       },
       {
+        timeout: 1800000,
         name: "test",
         executable: "npm",
         args: ["run", "cover"],
@@ -80,6 +83,7 @@ test("analyser", async t => {
         requirements
       },
       {
+        timeout: 1800000,
         name: "lint",
         executable: "npm",
         args: ["run", "lint"],
@@ -89,6 +93,7 @@ test("analyser", async t => {
         requirements
       },
       {
+        timeout: 1800000,
         name: "documentation",
         executable: "npm",
         args: ["run", "docs"],
@@ -98,6 +103,7 @@ test("analyser", async t => {
         requirements
       },
       {
+        timeout: 1800000,
         name: "deploy",
         executable: "npx",
         args: ["semantic-release"],

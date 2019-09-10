@@ -24,6 +24,7 @@ test("pkgbuild", async t => {
 
   t.deepEqual(steps, [
     {
+      timeout: 1800000,
       name: "build",
       executable: "makepkg",
       args: [],

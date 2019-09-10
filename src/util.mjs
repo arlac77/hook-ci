@@ -1,14 +1,13 @@
-
 export const utf8Encoding = { encoding: "utf8" };
 
 export function createStep(step) {
-  return { name: "unnamed", args: [], options: {}, ...step };
+  return { name: "unnamed", timeout: 1800000, args: [], options: {}, ...step };
 }
 
 /**
  * extract ci notification from line
  * @param {string} line
- * @return {string} notification body or undefined 
+ * @return {string} notification body or undefined
  */
 function extractCINotification(line) {
   const m = line.match(/^#<CI>\s*(.*)/);
@@ -36,12 +35,10 @@ export async function streamIntoJob(stream, job, notificationHandler) {
       remainder = lines.pop();
 
       for (const line of lines) {
-
         const ci = extractCINotification(line);
         if (ci === undefined) {
           job.log(line);
-        }
-        else {
+        } else {
           notificationHandler(ci);
         }
       }
@@ -52,8 +49,7 @@ export async function streamIntoJob(stream, job, notificationHandler) {
     const ci = extractCINotification(remainder);
     if (ci === undefined) {
       job.log(remainder);
-    }
-    else {
+    } else {
       notificationHandler(ci);
     }
   }
