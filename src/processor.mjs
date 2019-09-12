@@ -27,10 +27,15 @@ export async function processJob(job, bus) {
         await process;
       } catch (e) {
         step.error = e;
+        step.ok = false;
         console.log(`${job.id}.${step.name}: failed`, e);
       } finally {
         step.ended = Date.now();
         job.update(data);
+        if(!step.ok) {
+          console.log(`${job.id}.${step.name}: terminate sequence`);
+          break;
+        }
       }
     }
   } else {
@@ -55,13 +60,14 @@ export async function executeStep(step, job, notificatioHandler) {
       timeout = undefined;
       console.log(`timeout waiting for ${step.executable}`);
       proc.cancel();
+      step.ok = false;
     }, step.timeout);
 
     proc = await proc;
     step.exitCode = proc.exitCode;
-
-    console.log(`${job.id}.${step.name}: end ${step.exitCode}`);
-
+    step.ok = step.exitCode === 0;
+    
+    console.log(`${job.id}.${step.name}: end ${step.exitCode} (${step.ok ? 'OK' : 'NOT OK'})`);
     if (timeout) {
       clearTimeout(timeout);
     }
