@@ -66,12 +66,14 @@ export const Schema = buildSchema(`
     executable: String
     args: [String]
     requirements: [Requirement]
+    exitCode: Int
+    node: Node
   }
 
   type Job {
     id: String!
     state: String
-    attemptsMade: Int,
+    attemptsMade: Int
     steps: [Step]
   }
 
