@@ -7,6 +7,8 @@ export async function processJob(job, bus) {
   const data = job.data;
   const wd = data.wd;
 
+  data.node = bus.config.nodename;
+  
   const notificatioHandler = body => {
     const m = body.match(/publish\s+(.*)/);
     if (m) {
