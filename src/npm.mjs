@@ -41,7 +41,7 @@ export async function npmAnalyse(branch, job, config, wd) {
         });
       }
     }
-    
+
     if (json.cpu) {
       json.cpu.forEach(cpu => {
         requirements.push({ architecture: cpu });
@@ -54,17 +54,34 @@ export async function npmAnalyse(branch, job, config, wd) {
       });
     }
 
-    const packageLock = await branch.maybeEntry(entry.name.replace(/.json$/, '-lock.json'));
-
-    steps.push(
-      createStep({
-        name: "prepare",
-        executable: "npm",
-        args: scriptArgs(packageLock === undefined ? "install" : "ci"),
-        options,
-        requirements
-      })
+    const packageLock = await branch.maybeEntry(
+      entry.name.replace(/.json$/, "-lock.json")
     );
+    const yarnLock = await branch.maybeEntry(
+      entry.name.replace("package.json", "yarn.lock")
+    );
+
+    if (yarnLock) {
+      steps.push(
+        createStep({
+          name: "prepare",
+          executable: "yarn",
+          args: ["install"],
+          options,
+          requirements
+        })
+      );
+    } else {
+      steps.push(
+        createStep({
+          name: "prepare",
+          executable: "npm",
+          args: scriptArgs(packageLock === undefined ? "install" : "ci"),
+          options,
+          requirements
+        })
+      );
+    }
 
     if (json.scripts) {
       if (json.scripts.cover) {
