@@ -3,16 +3,13 @@ import got from "got";
 import { initializeServer } from "../src/server.mjs";
 import { makeConfig, sd } from "./util.mjs";
 
-let _port = 3149;
-
-function nextPort() {
-  return _port++;
-}
+let port = 3159;
 
 test("authenticate positive", async t => {
-  const port = nextPort();
+  port++;
   const bus = {
     config: makeConfig(port),
+    queues: {},
     sd
   };
 
@@ -37,9 +34,10 @@ test("authenticate positive", async t => {
 });
 
 test("authenticate wrong credentials", async t => {
-  const port = nextPort();
+  port++;
   const bus = {
     config: makeConfig(port),
+    queues: {},
     sd
   };
 
@@ -64,9 +62,10 @@ test("authenticate wrong credentials", async t => {
 });
 
 test("authenticate no entitlements", async t => {
-  const port = nextPort();
+  port++;
   const bus = {
     config: makeConfig(port),
+    queues: {},
     sd
   };
 
