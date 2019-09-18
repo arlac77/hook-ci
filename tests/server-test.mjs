@@ -27,6 +27,16 @@ test.before(async t => {
   t.context.bus = bus;
 
   await initializeServer(bus);
+
+  const response = await got.post(`http://localhost:${port}/authenticate`, {
+    body: {
+      username: "user1",
+      password: "secret"
+    },
+    json: true
+  });
+
+  t.context.token = response.body.access_token;
 });
 
 test.after.always(async t => {
@@ -35,7 +45,12 @@ test.after.always(async t => {
 
 test("incoming jobs", async t => {
   const response = await got.get(
-    `http://localhost:${t.context.port}/queue/incoming/jobs`
+    `http://localhost:${t.context.port}/queue/incoming/jobs`,
+    {
+      headers: {
+        Authorization: `Bearer ${t.context.token}`
+      }
+    }
   );
 
   t.is(response.statusCode, 200);
@@ -48,7 +63,12 @@ test("incoming jobs", async t => {
 
 test("request repositories", async t => {
   const response = await got.get(
-    `http://localhost:${t.context.port}/repositories?pattern=arlac77/sync-test*`
+    `http://localhost:${t.context.port}/repositories?pattern=arlac77/sync-test*`,
+    {
+      headers: {
+        Authorization: `Bearer ${t.context.token}`
+      }
+    }
   );
 
   t.is(response.statusCode, 200);
@@ -59,7 +79,11 @@ test("request repositories", async t => {
 });
 
 test("request queues", async t => {
-  const response = await got.get(`http://localhost:${t.context.port}/queues`);
+  const response = await got.get(`http://localhost:${t.context.port}/queues`, {
+    headers: {
+      Authorization: `Bearer ${t.context.token}`
+    }
+  });
 
   t.is(response.statusCode, 200);
 
@@ -70,7 +94,12 @@ test("request queues", async t => {
 
 test("incoming queue", async t => {
   const response = await got.get(
-    `http://localhost:${t.context.port}/queue/incoming`
+    `http://localhost:${t.context.port}/queue/incoming`,
+    {
+      headers: {
+        Authorization: `Bearer ${t.context.token}`
+      }
+    }
   );
 
   t.is(response.statusCode, 200);
@@ -81,7 +110,12 @@ test("incoming queue", async t => {
 
 test("incoming job logs", async t => {
   const response = await got.get(
-    `http://localhost:${t.context.port}/queue/incoming/job/1/log?start=1&end=3`
+    `http://localhost:${t.context.port}/queue/incoming/job/1/log?start=1&end=3`,
+    {
+      headers: {
+        Authorization: `Bearer ${t.context.token}`
+      }
+    }
   );
 
   t.is(response.statusCode, 200);
@@ -108,19 +142,34 @@ test("pause/resume/empty queues", async t => {
   };
 
   let response = await got.post(
-    `http://localhost:${t.context.port}/queue/incoming/pause`
+    `http://localhost:${t.context.port}/queue/incoming/pause`,
+    {
+      headers: {
+        Authorization: `Bearer ${t.context.token}`
+      }
+    }
   );
   t.is(response.statusCode, 200);
   t.true(paused);
 
   response = await got.post(
-    `http://localhost:${t.context.port}/queue/incoming/resume`
+    `http://localhost:${t.context.port}/queue/incoming/resume`,
+    {
+      headers: {
+        Authorization: `Bearer ${t.context.token}`
+      }
+    }
   );
   t.is(response.statusCode, 200);
   t.true(resumed);
 
   response = await got.post(
-    `http://localhost:${t.context.port}/queue/incoming/empty`
+    `http://localhost:${t.context.port}/queue/incoming/empty`,
+    {
+      headers: {
+        Authorization: `Bearer ${t.context.token}`
+      }
+    }
   );
   t.is(response.statusCode, 200);
   t.true(empty);
@@ -131,7 +180,12 @@ test("get nodes state", async t => {
   bus.nodes.push(new LocalNode("local", bus));
 
   const response = await got.get(
-    `http://localhost:${t.context.port}/nodes/state`
+    `http://localhost:${t.context.port}/nodes/state`,
+    {
+      headers: {
+        Authorization: `Bearer ${t.context.token}`
+      }
+    }
   );
 
   t.is(response.statusCode, 200);

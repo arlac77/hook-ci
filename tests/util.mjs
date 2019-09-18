@@ -43,11 +43,14 @@ export function makeConfig(port) {
         }
       },
       jwt: {
+        options: {
+          algorithm: "RS256",
+          expiresIn: "12h"
+        },
         public: readFileSync(join(here, "fixtures", "demo.rsa.pub")),
         private: readFileSync(join(here, "fixtures", "demo.rsa"))
       }
     }
-
   };
 }
 
