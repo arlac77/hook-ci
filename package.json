@@ -109,7 +109,7 @@
     "backup": "etc/${name}/config.json",
     "depends": {
       "redis": ">=5.0.5-1",
-      "systemd": ">=243.0"
+      "systemd": ">=243.51"
     },
     "installdir": "/services/${name}",
     "content": {
