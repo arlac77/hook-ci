@@ -34,7 +34,7 @@
     "bitbucket-repository-provider": "^3.3.27",
     "bufferutil": "^4.0.1",
     "bull": "^3.11.0",
-    "commander": "^3.0.1",
+    "commander": "^3.0.2",
     "config-expander": "^11.0.5",
     "execa": "^2.0.4",
     "gitea-repository-provider": "^1.8.22",
