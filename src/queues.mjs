@@ -116,9 +116,9 @@ export async function initializeQueues(bus) {
 }
 
 async function cleanupJob(job, bus) {
-  if (data.node !== bus.config.nodename) {
+  if (job.data.node !== bus.config.nodename) {
     throw new Error(
-      `Unable to cleanup on ${bus.config.nodename} need to be run on ${data.node}`
+      `Unable to cleanup on ${bus.config.nodename} need to be run on ${job.data.node}`
     );
   }
 
