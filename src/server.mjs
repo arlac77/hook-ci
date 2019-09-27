@@ -242,6 +242,19 @@ export async function initializeServer(bus) {
     }
   );
 
+  router.addRoute(
+    "POST",
+    "/queue/:queue/job/:job/rerun",
+    restricted,
+    async (ctx, next) => {
+      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
+      const job = await queue.getJob(ctx.params.job);
+      await job.retry();
+
+      return next();
+    }
+  );
+
   router.addRoute("GET", "/queue/:queue/job/:job", restricted, async (ctx, next) => {
     setNoCacheHeaders(ctx);
 
