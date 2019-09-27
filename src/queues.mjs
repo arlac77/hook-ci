@@ -1,5 +1,6 @@
 import Queue from "bull";
 import execa from "execa";
+import fs from "fs";
 
 import { processJob } from "./processor.mjs";
 import { analyseJob } from "./analyser.mjs";
@@ -35,7 +36,7 @@ export const defaultQueuesConfig = {
     },
     publish: {
       active: false,
-      clean: 36000000,
+      clean: 36000000
     },
     cleanup: {
       clean: 36000000,
@@ -57,7 +58,7 @@ const queueTypes = {
 
 export async function initializeQueues(bus) {
   const config = bus.config;
-  
+
   const queues = Object.keys(config.queues).reduce((queues, name) => {
     queues[name] = new Queue(name, config.redis.url);
     return queues;
@@ -84,7 +85,9 @@ export async function initializeQueues(bus) {
         const propagator = event => {
           return (job, result) => {
             console.log(`${job.id}: ${event}`, result);
-            if(result === undefined) { return; }
+            if (result === undefined) {
+              return;
+            }
 
             if (cq.propagate && cq.propagate[event]) {
               console.log(`${job.id}: propagate to`, cq.propagate[event]);
@@ -113,13 +116,20 @@ export async function initializeQueues(bus) {
 }
 
 async function cleanupJob(job, bus) {
+  if (data.node !== bus.config.nodename) {
+    throw new Error(
+      `Unable to cleanup on ${bus.config.nodename} need to be run on ${data.node}`
+    );
+  }
+
   const wd = job.data.wd;
   if (wd !== undefined) {
-    const proc = await execa("rm", ["-rf", wd]);
+    await fs.promises.rmdir(wd, { recursive: true });
+    /*const proc = await execa("rm", ["-rf", wd]);
     streamIntoJob(proc.stdout, job);
     streamIntoJob(proc.stderr, job);
+    */
   }
 }
 
-async function publishJob(job, bus) {
-}
+async function publishJob(job, bus) {}
