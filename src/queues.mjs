@@ -1,10 +1,9 @@
-import Queue from "bull";
-import execa from "execa";
 import fs from "fs";
+import Queue from "bull";
+import Redis  from 'ioredis';
 
 import { processJob } from "./processor.mjs";
 import { analyseJob } from "./analyser.mjs";
-import { streamIntoJob } from "./util.mjs";
 
 /**
  * default configuration for queues
@@ -59,8 +58,24 @@ const queueTypes = {
 export async function initializeQueues(bus) {
   const config = bus.config;
 
+  const client = new Redis(config.redis.url);
+  const subscriber = new Redis(config.redis.url);
+
+  const queueOptions = {
+    createClient(type) {
+      switch (type) {
+        case 'client':
+          return client;
+        case 'subscriber':
+          return subscriber;
+        default:
+          return new Redis();
+      }
+    }
+  };
+  
   const queues = Object.keys(config.queues).reduce((queues, name) => {
-    queues[name] = new Queue(name, config.redis.url);
+    queues[name] = new Queue(name, queueOptions);
     return queues;
   }, {});
 
