@@ -235,8 +235,10 @@ export async function initializeServer(bus) {
     restricted,
     async (ctx, next) => {
       const queue = getQueue(bus.queues, ctx.params.queue, ctx);
-      //const job = await queue.getJob(ctx.params.job);
-      ctx.throw(500, `Unable to cancel job ${ctx.params.job}`);
+      const job = await queue.getJob(ctx.params.job);
+      await job.discard();
+
+      //ctx.throw(500, `Unable to cancel job ${ctx.params.job}`);
 
       return next();
     }
@@ -260,7 +262,6 @@ export async function initializeServer(bus) {
 
     const queue = getQueue(bus.queues, ctx.params.queue, ctx);
     const job = await queue.getJob(ctx.params.job);
-    //console.log(job);
     ctx.body = {
       id: job.id,
       state: await job.getState(),
