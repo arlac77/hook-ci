@@ -31,22 +31,22 @@
   },
   "dependencies": {
     "aggregation-repository-provider": "^2.6.23",
-    "bitbucket-repository-provider": "^3.3.26",
+    "bitbucket-repository-provider": "^3.3.27",
     "bufferutil": "^4.0.1",
-    "bull": "^3.10.0",
-    "commander": "^3.0.1",
+    "bull": "^3.11.0",
+    "commander": "^3.0.2",
     "config-expander": "^11.0.5",
     "execa": "^2.0.4",
-    "gitea-repository-provider": "^1.8.21",
-    "github-repository-provider": "^7.4.10",
+    "gitea-repository-provider": "^1.8.22",
+    "github-repository-provider": "^7.4.12",
     "globby": "^10.0.1",
-    "graphql": "^14.5.4",
+    "graphql": "^14.5.6",
     "js-yaml": "^3.13.1",
     "jsonwebtoken": "^8.5.1",
-    "koa": "^2.8.1",
+    "koa": "^2.8.2",
     "koa-better-router": "^2.1.1",
     "koa-bodyparser": "^4.2.1",
-    "koa-github-hook-handler": "^1.4.0",
+    "koa-github-hook-handler": "^1.4.1",
     "koa-graphql": "^0.8.0",
     "koa-jwt": "^3.6.0",
     "koa-mount": "^4.0.0",
@@ -58,8 +58,8 @@
     "ws": "^7.1.2"
   },
   "devDependencies": {
-    "@semantic-release/exec": "^3.3.6",
-    "ava": "^2.3.0",
+    "@semantic-release/exec": "^3.3.7",
+    "ava": "^2.4.0",
     "builtin-modules": "^3.1.0",
     "c8": "^5.0.4",
     "documentation": "^12.1.2",
@@ -67,8 +67,8 @@
     "got": "^9.6.0",
     "markdown-doctest": "^0.9.1",
     "mock-repository-provider": "^5.1.22",
-    "npm-pkgbuild": "^6.10.0",
-    "rollup": "^1.21.2",
+    "npm-pkgbuild": "^6.10.1",
+    "rollup": "^1.21.4",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-executable": "^1.5.0",
@@ -81,7 +81,7 @@
     "sd-daemon": "^1.0.1"
   },
   "engines": {
-    "node": ">=12.10.0"
+    "node": ">=12.11.0"
   },
   "repository": {
     "type": "git",
@@ -109,7 +109,7 @@
     "backup": "etc/${name}/config.json",
     "depends": {
       "redis": ">=5.0.5-1",
-      "systemd": ">=243.0"
+      "systemd": ">=243.51"
     },
     "installdir": "/services/${name}",
     "content": {

@@ -57,7 +57,6 @@ export async function authenticate(config, username, password) {
     }
 
     try {
-      console.log("BIND", expand(ldap.bindDN));
       await client.bind(expand(ldap.bindDN), password);
 
       const { searchEntries } = await client.search(

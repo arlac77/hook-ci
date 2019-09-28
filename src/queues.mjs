@@ -1,9 +1,9 @@
+import fs from "fs";
 import Queue from "bull";
-import execa from "execa";
+import Redis  from 'ioredis';
 
 import { processJob } from "./processor.mjs";
 import { analyseJob } from "./analyser.mjs";
-import { streamIntoJob } from "./util.mjs";
 
 /**
  * default configuration for queues
@@ -35,7 +35,7 @@ export const defaultQueuesConfig = {
     },
     publish: {
       active: false,
-      clean: 36000000,
+      clean: 36000000
     },
     cleanup: {
       clean: 36000000,
@@ -57,9 +57,27 @@ const queueTypes = {
 
 export async function initializeQueues(bus) {
   const config = bus.config;
+
+  const client = new Redis(config.redis.url);
+  client.setMaxListeners(20);
+  const subscriber = new Redis(config.redis.url);
+  subscriber.setMaxListeners(20);
+
+  const queueOptions = {
+    createClient(type) {
+      switch (type) {
+        case 'client':
+          return client;
+        case 'subscriber':
+          return subscriber;
+        default:
+          return new Redis();
+      }
+    }
+  };
   
   const queues = Object.keys(config.queues).reduce((queues, name) => {
-    queues[name] = new Queue(name, config.redis.url);
+    queues[name] = new Queue(name, queueOptions);
     return queues;
   }, {});
 
@@ -84,7 +102,9 @@ export async function initializeQueues(bus) {
         const propagator = event => {
           return (job, result) => {
             console.log(`${job.id}: ${event}`, result);
-            if(result === undefined) { return; }
+            if (result === undefined) {
+              return;
+            }
 
             if (cq.propagate && cq.propagate[event]) {
               console.log(`${job.id}: propagate to`, cq.propagate[event]);
@@ -113,13 +133,20 @@ export async function initializeQueues(bus) {
 }
 
 async function cleanupJob(job, bus) {
+  if (job.data.node !== bus.config.nodename) {
+    throw new Error(
+      `Unable to cleanup on ${bus.config.nodename} need to be run on ${job.data.node}`
+    );
+  }
+
   const wd = job.data.wd;
   if (wd !== undefined) {
-    const proc = await execa("rm", ["-rf", wd]);
+    await fs.promises.rmdir(wd, { recursive: true });
+    /*const proc = await execa("rm", ["-rf", wd]);
     streamIntoJob(proc.stdout, job);
     streamIntoJob(proc.stderr, job);
+    */
   }
 }
 
-async function publishJob(job, bus) {
-}
+async function publishJob(job, bus) {}
