@@ -7,6 +7,7 @@ Type=notify
 
 ExecStart={{installdir}}/bin/{{name}}
 ExecStop=/usr/bin/curl -s -XPOST --unix-socket {{socket}} http://localhost/node/local/stop
+ExecReload=/usr/bin/curl -s -XPOST --unix-socket {{socket}} http://localhost/node/local/reload
 TimeoutStartSec=40
 StandardOutput=syslog
 User={{name}}

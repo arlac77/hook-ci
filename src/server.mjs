@@ -130,6 +130,15 @@ export async function initializeServer(bus) {
     return next();
   });
 
+  router.addRoute("POST", "/node/:node/reload", restricted, async (ctx, next) => {
+    const node = getNode(bus.nodes, ctx.params.node, ctx);
+
+    node.reload();
+
+    ctx.body = {};
+    return next();
+  });
+
   router.addRoute("GET", "/repositories", restricted, async (ctx, next) => {
     setNoCacheHeaders(ctx);
 

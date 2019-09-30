@@ -87,6 +87,10 @@ export class LocalNode extends Node {
     process.exit(0);
   }
 
+  async reload() {
+    this.bus.sd.notify("RELOADING=1");  
+  }
+
   get isLocal() {
     return true;
   }
