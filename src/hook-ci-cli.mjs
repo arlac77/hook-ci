@@ -20,8 +20,8 @@ program
     let sd = { notify: () => { }, listeners: () => [] };
 
     try {
-      sd = require("sd-daemon");
-      //sd = await import("sd-daemon");
+      //sd = require("sd-daemon");
+      sd = await import("sd-daemon");
     } catch (e) { }
 
     sd.notify("READY=1\nSTATUS=starting");
