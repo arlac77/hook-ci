@@ -27,7 +27,10 @@ export async function initializeNodes(bus) {
     });
 
     const browser = bonjour.find({ type }, service => {
-      if (service.name !== undefined && !nodes.find(node => node.name === service.name)) {
+      if (
+        service.name !== undefined &&
+        !nodes.find(node => node.name === service.name)
+      ) {
         console.log(service);
         nodes.push(new Node(service.name));
       }
@@ -83,12 +86,12 @@ export class LocalNode extends Node {
   }
 
   async stop() {
-    this.bus.sd.notify("STOPPING=1");  
-    process.exit(0);
+    this.bus.sd.notify("STOPPING=1");
+    setImmediate(() => process.exit(0));
   }
 
   async reload() {
-    this.bus.sd.notify("RELOADING=1");  
+    this.bus.sd.notify("RELOADING=1");
   }
 
   get isLocal() {
