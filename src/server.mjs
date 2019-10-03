@@ -50,11 +50,10 @@ function getQueue(queues, name, ctx) {
 }
 
 function getNode(nodes, name, ctx) {
-  const node = nodes.find(name => {
-    return (
+  const node = nodes.find(
+    node =>
       (name === "local" && config.nodename === node.name) || node.name === name
-    );
-  });
+  );
   if (!node) {
     ctx.throw(500, `Node ${name} not found`);
   }
@@ -63,9 +62,9 @@ function getNode(nodes, name, ctx) {
 }
 
 function setNoCacheHeaders(ctx) {
-  ctx.set('Cache-Control', 'no-store, no-cache, must-revalidate');
-  ctx.set('Pragma', 'no-cache');
-  ctx.set('Expires', 0);
+  ctx.set("Cache-Control", "no-store, no-cache, must-revalidate");
+  ctx.set("Pragma", "no-cache");
+  ctx.set("Expires", 0);
 }
 
 export async function initializeServer(bus) {
@@ -114,12 +113,17 @@ export async function initializeServer(bus) {
     return next();
   });
 
-  router.addRoute("POST", "/node/:node/restart", restricted, async (ctx, next) => {
-    const node = getNode(bus.nodes, ctx.params.node, ctx);
-    await node.restart();
-    ctx.body = {};
-    return next();
-  });
+  router.addRoute(
+    "POST",
+    "/node/:node/restart",
+    restricted,
+    async (ctx, next) => {
+      const node = getNode(bus.nodes, ctx.params.node, ctx);
+      await node.restart();
+      ctx.body = {};
+      return next();
+    }
+  );
 
   router.addRoute("POST", "/node/:node/stop", restricted, async (ctx, next) => {
     const node = getNode(bus.nodes, ctx.params.node, ctx);
@@ -130,14 +134,19 @@ export async function initializeServer(bus) {
     return next();
   });
 
-  router.addRoute("POST", "/node/:node/reload", restricted, async (ctx, next) => {
-    const node = getNode(bus.nodes, ctx.params.node, ctx);
+  router.addRoute(
+    "POST",
+    "/node/:node/reload",
+    restricted,
+    async (ctx, next) => {
+      const node = getNode(bus.nodes, ctx.params.node, ctx);
 
-    node.reload();
+      node.reload();
 
-    ctx.body = {};
-    return next();
-  });
+      ctx.body = {};
+      return next();
+    }
+  );
 
   router.addRoute("GET", "/repositories", restricted, async (ctx, next) => {
     setNoCacheHeaders(ctx);
@@ -191,52 +200,72 @@ export async function initializeServer(bus) {
     }
   );
 
-  router.addRoute("POST", "/queue/:queue/pause", restricted, async (ctx, next) => {
-    const queue = getQueue(bus.queues, ctx.params.queue, ctx);
-    await queue.pause();
-    ctx.body = {};
-    return next();
-  });
+  router.addRoute(
+    "POST",
+    "/queue/:queue/pause",
+    restricted,
+    async (ctx, next) => {
+      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
+      await queue.pause();
+      ctx.body = {};
+      return next();
+    }
+  );
 
-  router.addRoute("POST", "/queue/:queue/resume", restricted, async (ctx, next) => {
-    const queue = getQueue(bus.queues, ctx.params.queue, ctx);
-    await queue.resume();
-    ctx.body = {};
-    return next();
-  });
+  router.addRoute(
+    "POST",
+    "/queue/:queue/resume",
+    restricted,
+    async (ctx, next) => {
+      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
+      await queue.resume();
+      ctx.body = {};
+      return next();
+    }
+  );
 
-  router.addRoute("POST", "/queue/:queue/empty", restricted, async (ctx, next) => {
-    const queue = getQueue(bus.queues, ctx.params.queue, ctx);
-    await queue.empty();
-    ctx.body = {};
-    return next();
-  });
+  router.addRoute(
+    "POST",
+    "/queue/:queue/empty",
+    restricted,
+    async (ctx, next) => {
+      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
+      await queue.empty();
+      ctx.body = {};
+      return next();
+    }
+  );
 
-  router.addRoute("GET", "/queue/:queue/jobs", restricted, async (ctx, next) => {
-    setNoCacheHeaders(ctx);
+  router.addRoute(
+    "GET",
+    "/queue/:queue/jobs",
+    restricted,
+    async (ctx, next) => {
+      setNoCacheHeaders(ctx);
 
-    //ctx.query.states;
-    const queue = getQueue(bus.queues, ctx.params.queue, ctx);
-    ctx.body = (await queue.getJobs(
-      [
-        "active",
-        "waiting",
-        "completed",
-        "paused",
-        "failed",
-        "delayed"
-      ] /*, { asc: true }*/
-    )).map(job => {
-      return {
-        id: job.id,
-        attemptsMade: job.attemptsMade,
-        processedOn: job.processedOn,
-        finishedOn: job.processedOn,
-        ...job.data
-      };
-    });
-    return next();
-  });
+      //ctx.query.states;
+      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
+      ctx.body = (await queue.getJobs(
+        [
+          "active",
+          "waiting",
+          "completed",
+          "paused",
+          "failed",
+          "delayed"
+        ] /*, { asc: true }*/
+      )).map(job => {
+        return {
+          id: job.id,
+          attemptsMade: job.attemptsMade,
+          processedOn: job.processedOn,
+          finishedOn: job.processedOn,
+          ...job.data
+        };
+      });
+      return next();
+    }
+  );
 
   router.addRoute(
     "POST",
@@ -266,40 +295,50 @@ export async function initializeServer(bus) {
     }
   );
 
-  router.addRoute("GET", "/queue/:queue/job/:job", restricted, async (ctx, next) => {
-    setNoCacheHeaders(ctx);
+  router.addRoute(
+    "GET",
+    "/queue/:queue/job/:job",
+    restricted,
+    async (ctx, next) => {
+      setNoCacheHeaders(ctx);
 
-    const queue = getQueue(bus.queues, ctx.params.queue, ctx);
-    const job = await queue.getJob(ctx.params.job);
-    ctx.body = {
-      id: job.id,
-      state: await job.getState(),
-      attemptsMade: job.attemptsMade,
-      processedOn: job.processedOn,
-      finishedOn: job.processedOn,
-      ...job.data
-    };
-    return next();
-  });
+      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
+      const job = await queue.getJob(ctx.params.job);
+      ctx.body = {
+        id: job.id,
+        state: await job.getState(),
+        attemptsMade: job.attemptsMade,
+        processedOn: job.processedOn,
+        finishedOn: job.processedOn,
+        ...job.data
+      };
+      return next();
+    }
+  );
 
-  router.addRoute("GET", "/queue/:queue/job/:job/log", restricted, async (ctx, next) => {
-    setNoCacheHeaders(ctx);
+  router.addRoute(
+    "GET",
+    "/queue/:queue/job/:job/log",
+    restricted,
+    async (ctx, next) => {
+      setNoCacheHeaders(ctx);
 
-    console.log(
-      "GET LOG",
-      ctx.params.queue,
-      ctx.params.job,
-      ctx.query.start,
-      ctx.query.end
-    );
-    const queue = getQueue(bus.queues, ctx.params.queue, ctx);
-    ctx.body = await queue.getJobLogs(
-      ctx.params.job,
-      ctx.query.start,
-      ctx.query.end
-    );
-    return next();
-  });
+      console.log(
+        "GET LOG",
+        ctx.params.queue,
+        ctx.params.job,
+        ctx.query.start,
+        ctx.query.end
+      );
+      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
+      ctx.body = await queue.getJobLogs(
+        ctx.params.job,
+        ctx.query.start,
+        ctx.query.end
+      );
+      return next();
+    }
+  );
 
   bus.router = router;
 
