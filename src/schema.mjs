@@ -82,10 +82,19 @@ export const Schema = buildSchema(`
     jobs: [Job]
   }
 
+  type NodeMemory {
+    rss: Int
+    heapTotal: Int
+    heapUsed: Int
+    external: Int  
+  }
+
   type Node {
     name: String!
     version: String!
     uptime: Float!
+    memory: NodeMemory!
+    isLocal: Boolean!
   }
 
   type Query {

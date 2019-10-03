@@ -61,6 +61,10 @@ export class Node {
   get uptime() {
     return -1;
   }
+  
+  get memory() {
+    return {};
+  }
 
   async state() {
     return {
@@ -108,6 +112,10 @@ export class LocalNode extends Node {
 
   get uptime() {
     return process.uptime();
+  }
+
+  get memory() {
+    return process.memoryUsage();
   }
 
   async state() {
