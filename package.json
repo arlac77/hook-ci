@@ -36,7 +36,7 @@
     "bull": "^3.11.0",
     "commander": "^3.0.2",
     "config-expander": "^11.0.5",
-    "execa": "^2.0.4",
+    "execa": "^2.0.5",
     "gitea-repository-provider": "^1.8.22",
     "github-repository-provider": "^7.4.12",
     "globby": "^10.0.1",
