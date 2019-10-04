@@ -62,6 +62,8 @@ export async function initializeQueues(bus) {
   client.setMaxListeners(20);
   const subscriber = new Redis(config.redis.url);
   subscriber.setMaxListeners(20);
+  const other = new Redis(config.redis.url);
+  other.setMaxListeners(20);
 
   const queueOptions = {
     createClient(type) {
@@ -71,7 +73,7 @@ export async function initializeQueues(bus) {
         case 'subscriber':
           return subscriber;
         default:
-          return new Redis();
+          return other;
       }
     }
   };
@@ -142,10 +144,6 @@ async function cleanupJob(job, bus) {
   const wd = job.data.wd;
   if (wd !== undefined) {
     await fs.promises.rmdir(wd, { recursive: true });
-    /*const proc = await execa("rm", ["-rf", wd]);
-    streamIntoJob(proc.stdout, job);
-    streamIntoJob(proc.stderr, job);
-    */
   }
 }
 
