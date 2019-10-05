@@ -20,7 +20,6 @@ program
     let sd = { notify: () => { }, listeners: () => [] };
 
     try {
-      //sd = require("sd-daemon");
       sd = await import("sd-daemon");
     } catch (e) { }
 
