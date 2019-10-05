@@ -95,7 +95,7 @@
   },
   "homepage": "https://github.com/arlac77/hook-ci#readme",
   "config": {
-    "urlPrefix": "/services/ci/api",
+    "base": "/services/ci/api",
     "socket": "/run/${name}/socket"
   },
   "systemd": {
@@ -108,7 +108,7 @@
     "hooks": "pacman/install.sh",
     "backup": "etc/${name}/config.json",
     "depends": {
-      "redis": ">=5.0.5-1",
+      "redis": ">=5.0.6-1",
       "systemd": ">=243.51"
     },
     "installdir": "/services/${name}",
