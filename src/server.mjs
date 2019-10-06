@@ -276,6 +276,8 @@ export async function initializeServer(bus) {
       const job = await queue.getJob(ctx.params.job);
       await job.discard();
 
+      ctx.body = {};
+
       //ctx.throw(500, `Unable to cancel job ${ctx.params.job}`);
 
       return next();
@@ -321,15 +323,6 @@ export async function initializeServer(bus) {
     "/queue/:queue/job/:job/log",
     restricted,
     async (ctx, next) => {
-      setNoCacheHeaders(ctx);
-
-      console.log(
-        "GET LOG",
-        ctx.params.queue,
-        ctx.params.job,
-        ctx.query.start,
-        ctx.query.end
-      );
       const queue = getQueue(bus.queues, ctx.params.queue, ctx);
       ctx.body = await queue.getJobLogs(
         ctx.params.job,
