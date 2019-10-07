@@ -34,21 +34,22 @@ export const Schema = buildSchema(`
   }
 
   type RepositoryGroup {
-    id: String
     name: String!
+    id: String
+    uuid: String
     description: String
     repositories: [Repository]
     repository(name: String): Repository
   }
 
   type Repository {
+    name: String!
     id: String
     uuid: String
-    name: String!
+    description: String
     fullName: String!
     condensedName: String!
     urls: [String]
-    description: String
     defaultBranchName: String
     owner: RepositoryGroup
     branches: [Branch]
