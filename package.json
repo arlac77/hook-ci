@@ -66,7 +66,7 @@
     "esm": "^3.2.25",
     "got": "^9.6.0",
     "markdown-doctest": "^0.9.1",
-    "mock-repository-provider": "^5.1.23",
+    "mock-repository-provider": "^5.1.25",
     "npm-pkgbuild": "^6.10.1",
     "rollup": "^1.23.1",
     "rollup-plugin-cleanup": "^3.1.1",
