@@ -293,6 +293,8 @@ export async function initializeServer(bus) {
       const job = await queue.getJob(ctx.params.job);
       await job.retry();
 
+      ctx.body = {};
+
       return next();
     }
   );
