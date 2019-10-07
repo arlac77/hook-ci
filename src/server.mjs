@@ -148,6 +148,22 @@ export async function initializeServer(bus) {
     }
   );
 
+  router.addRoute("GET", "/groups", restricted, async (ctx, next) => {
+    setNoCacheHeaders(ctx);
+
+    const rg = [];
+
+    for await (const group of bus.repositories.repositoryGroups(
+      ctx.query.pattern || "*"
+    )) {
+      rg.push(group.toJSON());
+    }
+
+    ctx.body = rg;
+
+    return next();
+  });
+
   router.addRoute("GET", "/repositories", restricted, async (ctx, next) => {
     setNoCacheHeaders(ctx);
 

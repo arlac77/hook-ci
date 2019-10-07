@@ -78,6 +78,26 @@ test("request repositories", async t => {
   t.is(json[0].name, "sync-test-repository");
 });
 
+test.skip("request groups", async t => {
+  const response = await got.get(
+    `http://localhost:${t.context.port}/groups/?pattern=arlac77`,
+    {
+      headers: {
+        Authorization: `Bearer ${t.context.token}`
+      }
+    }
+  );
+
+  t.is(response.statusCode, 200);
+
+  const json = JSON.parse(response.body);
+  t.log(json);
+
+  t.true(json.length >= 1);
+  t.is(json[0].name, "arlac77");
+});
+
+
 test("request queues", async t => {
   const response = await got.get(`http://localhost:${t.context.port}/queues`, {
     headers: {
