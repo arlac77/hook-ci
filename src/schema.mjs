@@ -43,6 +43,7 @@ export const Schema = buildSchema(`
 
   type Repository {
     id: String
+    uuid: String
     name: String!
     fullName: String!
     condensedName: String!
