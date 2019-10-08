@@ -53,7 +53,9 @@ export async function authenticate(config, username, password) {
     };
 
     function expand(str) {
-      return str.replace(/\{\{(\w+)\}\}/, (match, g1) => values[g1] ? values[g1] : g1);
+      return str.replace(/\{\{(\w+)\}\}/, (match, g1) =>
+        values[g1] ? values[g1] : g1
+      );
     }
 
     try {
@@ -71,6 +73,15 @@ export async function authenticate(config, username, password) {
         const entitlement = e[ldap.entitlements.attribute];
         entitlements.add(entitlement);
       });
+    } catch (ex) {
+      switch (ex.code) {
+        case 49: // invalid credentials
+          break;
+        default:
+          console.log(ex);
+      }
+
+      throw ex;
     } finally {
       await client.unbind();
     }
@@ -81,8 +92,7 @@ export async function authenticate(config, username, password) {
     if (user !== undefined) {
       if (user.password === password) {
         user.entitlements.forEach(e => entitlements.add(e));
-      }
-      else {
+      } else {
         throw new Error("Wrong credentials");
       }
     }
