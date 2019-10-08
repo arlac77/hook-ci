@@ -69,6 +69,10 @@ export function makeQueue(name) {
 
       return { lines };
     },
+    async clean() {},
+    async empty() {},
+    async pause() {},
+    
     async add(data) {
       return { id: 77, queue: { name: "incoming", data } };
     },
