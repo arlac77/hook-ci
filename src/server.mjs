@@ -246,6 +246,7 @@ export async function initializeServer(bus) {
     restricted,
     async (ctx, next) => {
       const queue = getQueue(bus.queues, ctx.params.queue, ctx);
+      await queue.clean(5000);
       await queue.empty();
       ctx.body = {};
       return next();
