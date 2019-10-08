@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "aggregation-repository-provider": "^2.6.27",
-    "bitbucket-repository-provider": "^3.3.32",
+    "bitbucket-repository-provider": "^3.3.33",
     "bufferutil": "^4.0.1",
     "bull": "^3.11.0",
     "commander": "^3.0.2",
@@ -50,7 +50,7 @@
     "koa-graphql": "^0.8.0",
     "koa-jwt": "^3.6.0",
     "koa-mount": "^4.0.0",
-    "ldapts": "^1.9.0",
+    "ldapts": "^1.10.0",
     "local-repository-provider": "^6.4.39",
     "nbonjour": "^3.6.3",
     "remove-sensible-values": "^1.0.3",
