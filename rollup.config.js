@@ -9,9 +9,9 @@ import pkg from "./package.json";
 const external = [
   ...builtins,
   "koa",
+  "koa-better-router",
   "bull",
   "sd-daemon",
-  "koa-better-router",
   "node-fetch",
   "universal-user-agent",
   
