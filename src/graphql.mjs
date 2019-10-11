@@ -1,6 +1,7 @@
 import GraphQLHTTP from "koa-graphql";
 import mount from "koa-mount";
-import { Schema } from "./schema.mjs";
+import { schema } from "./schema.mjs";
+//import schema from '../schema.graphql';
 
 export function initGraphQL(bus) {
   const root = {
@@ -40,7 +41,7 @@ export function initGraphQL(bus) {
     mount(
       "/graphql",
       GraphQLHTTP({
-        schema: Schema,
+        schema,
         rootValue: root,
         graphiql: true
       })

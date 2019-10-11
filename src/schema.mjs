@@ -1,6 +1,6 @@
 import { buildSchema } from "graphql";
 
-export const Schema = buildSchema(`
+export const schema = buildSchema(`
   type Entry {
     name: String!
     isCollection: Boolean
