@@ -51,7 +51,7 @@
     "koa-jwt": "^3.6.0",
     "koa-mount": "^4.0.0",
     "ldapts": "^1.10.0",
-    "local-repository-provider": "^6.4.40",
+    "local-repository-provider": "^6.4.41",
     "nbonjour": "^3.6.3",
     "remove-sensible-values": "^1.0.3",
     "utf-8-validate": "^5.0.2",
