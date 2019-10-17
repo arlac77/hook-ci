@@ -71,7 +71,12 @@ export async function authenticate(config, username, password) {
       );
       searchEntries.forEach(e => {
         const entitlement = e[ldap.entitlements.attribute];
-        entitlements.add(entitlement);
+        if(Array.isArray(entitlement)) {
+          entitlement.forEach(e => entitlements.add(e));
+        }
+        else {
+          entitlements.add(entitlement);
+        }
       });
     } catch (ex) {
       switch (ex.code) {
