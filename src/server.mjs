@@ -40,13 +40,25 @@ async function queueDetails(name, queue) {
   };
 }
 
-function getQueue(queues, name, ctx) {
+function getQueue(queues, ctx) {
+  const name = ctx.params.queue;
   const queue = queues[name];
   if (!queue) {
     ctx.throw(500, `Queue ${name} not found`);
   }
 
   return queue;
+}
+
+async function getJob(queues, ctx) {
+  const queue = getQueue(queues, ctx);
+  const job = await queue.getJob(ctx.params.job);
+
+  if (!job) {
+    ctx.throw(500, `Job ${ctx.params.job} not found`);
+  }
+
+  return job;
 }
 
 function getNode(nodes, name, ctx) {
@@ -197,7 +209,7 @@ export async function initializeServer(bus) {
 
     ctx.body = await queueDetails(
       ctx.params.queue,
-      getQueue(bus.queues, ctx.params.queue, ctx)
+      getQueue(bus.queues, ctx)
     );
     return next();
   });
@@ -208,7 +220,7 @@ export async function initializeServer(bus) {
     restricted,
     BodyParser(),
     async (ctx, next) => {
-      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
+      const queue = getQueue(bus.queues, ctx);
 
       await queue.add(ctx.request.body);
       ctx.body = {};
@@ -221,7 +233,7 @@ export async function initializeServer(bus) {
     "/queue/:queue/pause",
     restricted,
     async (ctx, next) => {
-      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
+      const queue = getQueue(bus.queues, ctx);
       await queue.pause();
       ctx.body = {};
       return next();
@@ -233,7 +245,7 @@ export async function initializeServer(bus) {
     "/queue/:queue/resume",
     restricted,
     async (ctx, next) => {
-      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
+      const queue = getQueue(bus.queues, ctx);
       await queue.resume();
       ctx.body = {};
       return next();
@@ -245,7 +257,7 @@ export async function initializeServer(bus) {
     "/queue/:queue/empty",
     restricted,
     async (ctx, next) => {
-      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
+      const queue = getQueue(bus.queues, ctx);
       await queue.clean(5000);
       await queue.empty();
       ctx.body = {};
@@ -261,7 +273,7 @@ export async function initializeServer(bus) {
       setNoCacheHeaders(ctx);
 
       //ctx.query.states;
-      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
+      const queue = getQueue(bus.queues, ctx);
       ctx.body = (await queue.getJobs(
         [
           "active",
@@ -289,8 +301,7 @@ export async function initializeServer(bus) {
     "/queue/:queue/job/:job/cancel",
     restricted,
     async (ctx, next) => {
-      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
-      const job = await queue.getJob(ctx.params.job);
+      const job = await getJob(bus.queues, ctx);
       await job.discard();
 
       ctx.body = {};
@@ -306,8 +317,7 @@ export async function initializeServer(bus) {
     "/queue/:queue/job/:job/rerun",
     restricted,
     async (ctx, next) => {
-      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
-      const job = await queue.getJob(ctx.params.job);
+      const job = await getJob(bus.queues, ctx);
       await job.retry();
 
       ctx.body = {};
@@ -323,8 +333,7 @@ export async function initializeServer(bus) {
     async (ctx, next) => {
       setNoCacheHeaders(ctx);
 
-      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
-      const job = await queue.getJob(ctx.params.job);
+      const job = await getJob(bus.queues, ctx);
       ctx.body = {
         id: job.id,
         state: await job.getState(),
@@ -342,7 +351,7 @@ export async function initializeServer(bus) {
     "/queue/:queue/job/:job/log",
     restricted,
     async (ctx, next) => {
-      const queue = getQueue(bus.queues, ctx.params.queue, ctx);
+      const queue = getQueue(bus.queues, ctx);
       ctx.body = await queue.getJobLogs(
         ctx.params.job,
         ctx.query.start,
