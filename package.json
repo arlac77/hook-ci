@@ -104,6 +104,11 @@
     }
   },
   "pacman": {
+    "arch": [
+      "aarch64",
+      "armv7h",
+      "x86_64"
+    ],
     "groups": "webhook",
     "hooks": "pacman/install.sh",
     "backup": "etc/${name}/config.json",
