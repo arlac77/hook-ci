@@ -69,23 +69,21 @@ export async function analyseJob(job, bus) {
 
   job.progress(10);
 
-  let wd;
+  let wd = String(job.id);
 
   if (data.head_commit) {
     const commit = data.head_commit.id;
     if (commit) {
-      wd = join(bus.config.workspace.dir, commit);
+      wd = commit;
     }
-  }
-
-  if (wd === undefined) {
-    wd = join(config.workspace.dir, String(job.id));
   }
 
   //const s1 = await travisAnalyse(branch, job, config, wd);
 
+  const wde = '{{workspaceDirectory}}';
+
   const realSteps = (await Promise.all(
-    [npmAnalyse, pkgbuildAnalyse, buildAnalyse].map(a => a(branch, job, config, wd))
+    [npmAnalyse, pkgbuildAnalyse, buildAnalyse].map(a => a(branch, job, config, wde))
   )).reduce((a, c) => {
     a.push(...c);
     return a;
@@ -107,7 +105,7 @@ export async function analyseJob(job, bus) {
         "-b",
         newData.branch,
         url,
-        wd
+        wde
       ]
     }),
     ...realSteps

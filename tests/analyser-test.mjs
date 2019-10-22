@@ -41,7 +41,7 @@ test("analyser", async t => {
 
   t.deepEqual(processData, {
     branch: "master",
-    wd: "/tmp/1",
+    wd: "1",
     repository: {
       full_name: "arlac77/npm-template-sync-github-hook",
       url: "https://github.com/arlac77/npm-template-sync-github-hook"
@@ -58,7 +58,7 @@ test("analyser", async t => {
           "-b",
           "master",
           "https://github.com/arlac77/npm-template-sync-github-hook",
-          "/tmp/1"
+          "{{workspaceDirectory}}"
         ],
         options: {}
       },
@@ -68,7 +68,7 @@ test("analyser", async t => {
         executable: "npm",
         args: ["install"],
         options: {
-          cwd: "/tmp/1"
+          cwd: "{{workspaceDirectory}}"
         },
         requirements
       },
@@ -78,7 +78,7 @@ test("analyser", async t => {
         executable: "npm",
         args: ["run", "cover"],
         options: {
-          cwd: "/tmp/1"
+          cwd: "{{workspaceDirectory}}"
         },
         requirements
       },
@@ -88,7 +88,7 @@ test("analyser", async t => {
         executable: "npm",
         args: ["run", "lint"],
         options: {
-          cwd: "/tmp/1"
+          cwd: "{{workspaceDirectory}}"
         },
         requirements
       },
@@ -98,7 +98,7 @@ test("analyser", async t => {
         executable: "npm",
         args: ["run", "docs"],
         options: {
-          cwd: "/tmp/1"
+          cwd: "{{workspaceDirectory}}"
         },
         requirements
       },
@@ -108,8 +108,8 @@ test("analyser", async t => {
         executable: "npx",
         args: ["semantic-release"],
         options: {
-          cwd: "/tmp/1",
-          localDir: "/tmp/1"
+          cwd: "{{workspaceDirectory}}",
+          localDir: "{{workspaceDirectory}}"
         },
         requirements
       }

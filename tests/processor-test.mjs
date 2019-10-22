@@ -1,8 +1,26 @@
 import test from "ava";
+import { createContext } from "expression-expander";
 import { executeStep } from "../src/processor.mjs";
 import { makeJob } from './util.mjs';
 
 test("executeStep", async t => {
+
+  function evaluate(expression) {
+    expression = expression.trim();
+    if (expression === 'workspaceDirectory') {
+      return wd;
+    }
+
+    return expression;
+  }
+
+  const eeContext = createContext({
+    leftMarker: '{{',
+    rightMarker: '}}',
+    markerRegexp: '{{([^}]+)}}',
+    evaluate
+  });
+
   const proc = await executeStep(
     {
       timeout: 10000,
@@ -11,7 +29,8 @@ test("executeStep", async t => {
       executable: "npm",
       args: ["--version"]
     },
-    makeJob(1)  );
+    makeJob(1),
+    eeContext  );
 
   t.is(proc.exitCode, 0);
   t.regex(proc.stdout, /\d+\.\d+\.\d+/);

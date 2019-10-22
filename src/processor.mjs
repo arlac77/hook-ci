@@ -1,14 +1,31 @@
 import execa from "execa";
+import { createContext } from "expression-expander";
 import { streamIntoJob } from "./util.mjs";
 
 export const defaultProcessorConfig = {};
 
 export async function processJob(job, bus) {
   const data = job.data;
-  const wd = data.wd;
+  const wd = join(config.workspace.dir,data.wd);
 
   data.node = bus.config.nodename;
-  
+
+  function evaluate(expression) {
+    expression = expression.trim();
+    if (expression === 'workspaceDirectory') {
+      return wd;
+    }
+
+    return expression;
+  }
+
+  const eeContext = createContext({
+    leftMarker: '{{',
+    rightMarker: '}}',
+    markerRegexp: '{{([^}]+)}}',
+    evaluate
+  });
+
   const notificatioHandler = body => {
     const m = body.match(/publish\s+(.*)/);
     if (m) {
@@ -24,7 +41,7 @@ export async function processJob(job, bus) {
       try {
         step.node = bus.config.nodename;
         step.started = Date.now();
-        const process = executeStep(step, job, wd);
+        const process = executeStep(step, job, eeContext, notificatioHandler);
 
         await process;
       } catch (e) {
@@ -34,7 +51,7 @@ export async function processJob(job, bus) {
       } finally {
         step.ended = Date.now();
         job.update(data);
-        if(!step.ok) {
+        if (!step.ok) {
           console.log(`${job.id}.${step.name}: terminate sequence`);
           break;
         }
@@ -47,13 +64,17 @@ export async function processJob(job, bus) {
   return data;
 }
 
-export async function executeStep(step, job, notificatioHandler) {
+export async function executeStep(step, job, eeContext, notificatioHandler) {
   if (step.executable) {
+    const executable = eeContext.expand(step.executable);
+    const args = eeContext.expand(step.args);
+    const options = eeContext.expand(step.options);
+
     console.log(
-      `${job.id}.${step.name}: ${step.executable} ${step.args.join(" ")}`
+      `${job.id}.${step.name}: ${executable} ${args.join(" ")}`
     );
-    job.log(`### ${step.name}: ${step.executable} ${step.args.join(" ")}`);
-    let proc = execa(step.executable, step.args, step.options);
+    job.log(`### ${step.name}: ${executable} ${args.join(" ")}`);
+    let proc = execa(executable, args, options);
 
     streamIntoJob(proc.stdout, job, notificatioHandler);
     streamIntoJob(proc.stderr, job, notificatioHandler);
@@ -68,7 +89,7 @@ export async function executeStep(step, job, notificatioHandler) {
     proc = await proc;
     step.exitCode = proc.exitCode;
     step.ok = step.exitCode === 0;
-    
+
     console.log(`${job.id}.${step.name}: end ${step.exitCode} (${step.ok ? 'OK' : 'NOT OK'})`);
     if (timeout) {
       clearTimeout(timeout);
