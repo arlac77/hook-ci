@@ -111,6 +111,7 @@ export async function analyseJob(job, bus) {
   ];
 
   newData.wd = wd;
+  newData.node = bus.config.nodename;
 
   job.progress(100);
 
