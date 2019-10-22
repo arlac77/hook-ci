@@ -10,7 +10,7 @@ export const defaultAnalyserConfig = {
       exclude: ["!test/**/*", "!tests/**/*"]
     },
     refs: {
-      exclude: "/refs/tags/"
+      exclude: "^refs\\/tags"
     },
     analyser: [
       {
@@ -45,7 +45,7 @@ export async function analyseJob(job, bus) {
 
   if (data.ref) {
     const regex = new RegExp(config.analyse.refs.exclude);
-
+    console.log("REGEX", regex, data.ref);
     if (data.ref.match(regex)) {
       console.log("analyse:", data.event, url, "skipping refs", data.ref);
       return undefined;
