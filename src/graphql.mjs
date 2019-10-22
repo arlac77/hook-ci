@@ -4,11 +4,16 @@ import { schema } from "./schema.mjs";
 //import schema from '../schema.graphql';
 
 function remoteNode(node) {
-  return node ? Object.assign({}, node, {
+  return node ? {
+    name: node.name,
+    version: node.version,
+    uptime: node.uptime,
+    memory: node.memory,
+    isLocal: node.isLocal,
     env: Object.keys(node.env).map(key => {
       return { key, value: node.env[key] };
     })
-  }) : undefined;
+  } : undefined;
 }
 
 export function initGraphQL(bus) {
