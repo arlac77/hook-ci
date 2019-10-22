@@ -6,10 +6,11 @@ import { streamIntoJob } from "./util.mjs";
 export const defaultProcessorConfig = {};
 
 export async function processJob(job, bus) {
+  const config = bus.config;
   const data = job.data;
   const wd = join(config.workspace.dir,data.wd);
 
-  data.node = bus.config.nodename;
+  data.node = config.nodename;
 
   function evaluate(expression) {
     expression = expression.trim();
@@ -40,7 +41,7 @@ export async function processJob(job, bus) {
   if (Array.isArray(data.steps)) {
     for (const step of data.steps) {
       try {
-        step.node = bus.config.nodename;
+        step.node = config.nodename;
         step.started = Date.now();
         const process = executeStep(step, job, eeContext, notificatioHandler);
 
