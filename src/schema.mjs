@@ -92,7 +92,7 @@ export const schema = buildSchema(`
   }
 
   type KeyValuePairs {
-    name: String!
+    key: String!
     value: String!
   }
 
