@@ -66,6 +66,10 @@ export class Node {
     return {};
   }
 
+  get env() {
+    return {};
+  }
+
   async state() {
     return {
       name: this.name,
@@ -116,6 +120,10 @@ export class LocalNode extends Node {
 
   get memory() {
     return process.memoryUsage();
+  }
+
+  get env() {
+    return process.env();
   }
 
   async state() {

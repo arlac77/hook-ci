@@ -91,10 +91,16 @@ export const schema = buildSchema(`
     external: Int  
   }
 
+  type KeyValuePairs {
+    name: String!
+    value: String!
+  }
+
   type Node {
     name: String!
     version: String!
     uptime: Float!
+    env: [KeyValuePairs]
     memory: NodeMemory!
     isLocal: Boolean!
   }
