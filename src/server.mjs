@@ -52,10 +52,11 @@ function getQueue(queues, ctx) {
 
 async function getJob(queues, ctx) {
   const queue = getQueue(queues, ctx);
-  const job = await queue.getJob(ctx.params.job);
+  const jobId = ctx.params.job;
+  const job = await queue.getJob(jobId);
 
   if (!job) {
-    ctx.throw(500, `Job ${ctx.params.job} not found`);
+    ctx.throw(500, `Job ${jobId} not found`);
   }
 
   return job;
