@@ -123,7 +123,7 @@ export class LocalNode extends Node {
   }
 
   get env() {
-    return process.env();
+    return process.env;
   }
 
   async state() {
