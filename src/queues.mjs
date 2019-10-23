@@ -1,6 +1,7 @@
 import fs from "fs";
+import { join } from "path";
 import Queue from "bull";
-import Redis  from 'ioredis';
+import Redis from "ioredis";
 
 import { processJob } from "./processor.mjs";
 import { analyseJob } from "./analyser.mjs";
@@ -52,7 +53,8 @@ const queueTypes = {
   incoming: analyseJob,
   cleanup: cleanupJob,
   process: processJob,
-  publish: publishJob
+  publish: publishJob,
+  investigate: investigateJob,
 };
 
 export async function initializeQueues(bus) {
@@ -68,16 +70,16 @@ export async function initializeQueues(bus) {
   const queueOptions = {
     createClient(type) {
       switch (type) {
-        case 'client':
+        case "client":
           return client;
-        case 'subscriber':
+        case "subscriber":
           return subscriber;
         default:
           return other;
       }
     }
   };
-  
+
   const queues = Object.keys(config.queues).reduce((queues, name) => {
     queues[name] = new Queue(name, queueOptions);
     return queues;
@@ -135,16 +137,33 @@ export async function initializeQueues(bus) {
 }
 
 async function cleanupJob(job, bus) {
-  if (job.data.node !== bus.config.nodename) {
+  const config = bus.config;
+  const data = job.data;
+
+  if (data.node !== bus.config.nodename) {
     throw new Error(
-      `Unable to cleanup on ${bus.config.nodename} need to be run on ${job.data.node}`
+      `Unable to cleanup on ${bus.config.nodename} need to be run on ${data.node}`
     );
   }
 
-  const wd = job.data.wd;
+  const wd = data.wd;
   if (wd !== undefined) {
-    await fs.promises.rmdir(wd, { recursive: true });
+    await fs.promises.rmdir(join(config.workspace.dir, wd), {
+      recursive: true
+    });
   }
 }
 
 async function publishJob(job, bus) {}
+
+async function investigateJob(job, bus) {
+  const config = bus.config;
+  const data = job.data;
+
+  if(data === undefined || Object.keys(data).length === 0) {
+    // ok nothing to do
+  }
+  else {
+    throw new Error(`Unable to investigate`);
+  }
+}
