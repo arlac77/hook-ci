@@ -45,13 +45,11 @@ export async function analyseJob(job, bus) {
 
   if (data.ref) {
     const regex = new RegExp(config.analyse.refs.exclude);
-    console.log("REGEX", regex, data.ref);
     if (data.ref.match(regex)) {
-      console.log("analyse:", data.event, url, "skipping refs", data.ref);
-      return undefined;
+      return undefined; // skip job
     }
 
-    newData.branch = data.ref.substring("/refs/heads".length);
+    newData.branch = data.ref.substring("refs/heads/".length);
   } else {
     newData.branch = "master";
   }
