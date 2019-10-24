@@ -166,9 +166,7 @@ export async function initializeServer(bus) {
 
     const rg = [];
 
-    for await (const group of bus.repositories.repositoryGroups(
-      ctx.query.pattern || "*"
-    )) {
+    for await (const group of bus.repositories.repositoryGroups(ctx.query.pattern)) {
       rg.push(group.toJSON());
     }
 
@@ -182,9 +180,7 @@ export async function initializeServer(bus) {
 
     const rs = [];
 
-    for await (const repository of bus.repositories.repositories(
-      ctx.query.pattern || "*"
-    )) {
+    for await (const repository of bus.repositories.repositories(ctx.query.pattern)) {
       rs.push(repository.toJSON());
     }
 
