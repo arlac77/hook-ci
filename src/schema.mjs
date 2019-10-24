@@ -8,6 +8,11 @@ export const schema = buildSchema(`
     content: String!
   }
 
+  type Issue {
+    id: String!
+    state: String!
+  }
+
   type PullRequest {
     id: String
     number: String!
@@ -73,7 +78,7 @@ export const schema = buildSchema(`
   }
 
   type Job {
-    id: String!
+    id: Int!
     state: String
     attemptsMade: Int
     steps: [Step]
