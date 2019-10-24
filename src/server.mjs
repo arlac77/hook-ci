@@ -282,10 +282,10 @@ export async function initializeServer(bus) {
         ] /*, { asc: true }*/
       )).map(job => {
         return {
-          id: job.id,
+          id: Number(job.id),
           attemptsMade: job.attemptsMade,
           processedOn: job.processedOn,
-          finishedOn: job.processedOn,
+          finishedOn: job.finishedOn,
           ...job.data
         };
       });
