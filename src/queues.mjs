@@ -15,6 +15,7 @@ export const defaultQueuesConfig = {
     incoming: {
       active: true,
       clean: 36000000,
+      removeAfterPropagation: true,
       propagate: {
         failed: "investigate",
         completed: "process"
@@ -39,8 +40,8 @@ export const defaultQueuesConfig = {
       clean: 36000000
     },
     cleanup: {
-      clean: 36000000,
-      active: true
+      active: true,
+      clean: 36000000
     }
   }
 };
@@ -104,7 +105,7 @@ export async function initializeQueues(bus) {
         });
 
         const propagator = event => {
-          return (job, result) => {
+          return async (job, result) => {
             console.log(`${job.id}: ${event}`, result);
             if (result === undefined) {
               return;
@@ -113,7 +114,10 @@ export async function initializeQueues(bus) {
             if (cq.propagate && cq.propagate[event]) {
               console.log(`${job.id}: propagate to`, cq.propagate[event]);
               const dest = queues[cq.propagate[event]];
-              dest.add(result);
+              await dest.add(result);
+              if(cq.removeAfterPropagation) {
+                await job.remove();
+              }
             } else {
               console.log(
                 `${job.id}: ${event} no propagation destination queue`
