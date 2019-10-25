@@ -8,13 +8,13 @@ export const defaultProcessorConfig = {};
 export async function processJob(job, bus) {
   const config = bus.config;
   const data = job.data;
-  const wd = join(config.workspace.dir,data.wd);
+  const wd = join(config.workspace.dir, data.wd);
 
   data.node = config.nodename;
 
   function evaluate(expression) {
     expression = expression.trim();
-    if (expression === 'workspaceDirectory') {
+    if (expression === "workspaceDirectory") {
       return wd;
     }
 
@@ -22,9 +22,9 @@ export async function processJob(job, bus) {
   }
 
   const eeContext = createContext({
-    leftMarker: '{{',
-    rightMarker: '}}',
-    markerRegexp: '{{([^}]+)}}',
+    leftMarker: "{{",
+    rightMarker: "}}",
+    markerRegexp: "{{([^}]+)}}",
     evaluate
   });
 
@@ -70,11 +70,12 @@ export async function executeStep(step, job, eeContext, notificatioHandler) {
   if (step.executable) {
     const executable = eeContext.expand(step.executable);
     const args = eeContext.expand(step.args);
-    const options = eeContext.expand(step.options);
+    const options = eeContext.expand({
+      forceKillAfterTimeout: 2000,
+      ...step.options
+    });
 
-    console.log(
-      `${job.id}.${step.name}: ${executable} ${args.join(" ")}`
-    );
+    console.log(`${job.id}.${step.name}: ${executable} ${args.join(" ")}`);
     job.log(`### ${step.name}: ${executable} ${args.join(" ")}`);
     let proc = execa(executable, args, options);
 
@@ -92,7 +93,11 @@ export async function executeStep(step, job, eeContext, notificatioHandler) {
     step.exitCode = proc.exitCode;
     step.ok = step.exitCode === 0;
 
-    console.log(`${job.id}.${step.name}: end ${step.exitCode} (${step.ok ? 'OK' : 'NOT OK'})`);
+    console.log(
+      `${job.id}.${step.name}: end ${step.exitCode} (${
+        step.ok ? "OK" : "NOT OK"
+      })`
+    );
     if (timeout) {
       clearTimeout(timeout);
     }
