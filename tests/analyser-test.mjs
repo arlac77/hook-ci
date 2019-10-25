@@ -2,17 +2,13 @@ import test from "ava";
 import { defaultRepositoriesConfig } from "../src/repositories.mjs";
 import { analyseJob, defaultAnalyserConfig } from "../src/analyser.mjs";
 import { GithubProvider } from "github-repository-provider";
-import { makeJob } from "./util.mjs";
+import { makeJob, makeConfig } from "./util.mjs";
 
 test("analyser", async t => {
   const bus = {
-    config: {
-      ...defaultRepositoriesConfig,
-      ...defaultAnalyserConfig,
-      workspace: { dir: "/tmp" }
-    },
-    queues: {},
-    repositories: GithubProvider.initialize(undefined, process.env)
+    config: makeConfig(),
+    repositories: GithubProvider.initialize(undefined, process.env),
+    queues: {}
   };
 
   const job = makeJob(1, {
@@ -41,6 +37,7 @@ test("analyser", async t => {
 
   t.deepEqual(processData, {
     branch: "master",
+    node: "testnode",
     wd: "1",
     repository: {
       full_name: "arlac77/npm-template-sync-github-hook",
