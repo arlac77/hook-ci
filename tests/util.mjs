@@ -79,7 +79,7 @@ export function makeQueue(name) {
     async getJobs() {
       return [
         {
-          id: "job1",
+          id: 1,
           data: {
             event: "push",
             repository: { full_name: "repo1" },
@@ -87,7 +87,7 @@ export function makeQueue(name) {
           }
         },
         {
-          id: "job2",
+          id: 2,
           data: {
             event: "push",
             repository: { full_name: "repo2" },

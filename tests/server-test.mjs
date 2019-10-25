@@ -57,7 +57,7 @@ test("incoming jobs", async t => {
 
   const json = JSON.parse(response.body);
   t.true(json.length >= 1);
-  t.is(json[0].id, "job1");
+  t.is(json[0].id, 1);
   t.is(json[1].repository.full_name, "repo2");
 });
 
