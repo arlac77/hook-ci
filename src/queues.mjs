@@ -14,7 +14,7 @@ export const defaultQueuesConfig = {
   queues: {
     incoming: {
       active: true,
-      clean: 36000000,
+      clean: 86400000,
       removeAfterPropagation: true,
       propagate: {
         failed: "investigate",
@@ -23,13 +23,14 @@ export const defaultQueuesConfig = {
     },
     investigate: {
       active: false,
+      clean: 86400000,
       propagate: {
         completed: "cleanup"
       }
     },
     process: {
       active: true,
-      clean: 36000000,
+      clean: 86400000,
       propagate: {
         failed: "investigate",
         completed: "cleanup"
@@ -37,11 +38,11 @@ export const defaultQueuesConfig = {
     },
     publish: {
       active: false,
-      clean: 36000000
+      clean: 86400000
     },
     cleanup: {
       active: true,
-      clean: 36000000
+      clean: 86400000
     }
   }
 };
