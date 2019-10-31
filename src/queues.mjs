@@ -101,9 +101,7 @@ export async function initializeQueues(bus) {
 
         queue.process(async job => qt(job, bus));
 
-        queue.on("error", error => {
-          console.log("ERROR", error);
-        });
+        queue.on("error", error => console.log("ERROR", error));
 
         const propagator = event => {
           return async (job, result) => {
@@ -115,7 +113,7 @@ export async function initializeQueues(bus) {
             if (cq.propagate && cq.propagate[event]) {
               console.log(`${job.id}: propagate to`, cq.propagate[event]);
               const dest = queues[cq.propagate[event]];
-              await dest.add(result);
+              await dest.add(event === 'failed' ? job.data : result);
               if(cq.removeAfterPropagation) {
                 await job.remove();
               }
