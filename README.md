@@ -25,13 +25,13 @@ simple ci to be triggered by git hooks
 
 -   [defaultQueuesConfig](#defaultqueuesconfig)
 -   [queueTypes](#queuetypes)
--   [extractCINotification](#extractcinotification)
-    -   [Parameters](#parameters)
--   [streamIntoJob](#streamintojob)
-    -   [Parameters](#parameters-1)
--   [stripUnusedDataFromHookRequest](#stripunuseddatafromhookrequest)
-    -   [Parameters](#parameters-2)
 -   [analyseJob](#analysejob)
+    -   [Parameters](#parameters)
+-   [extractCINotification](#extractcinotification)
+    -   [Parameters](#parameters-1)
+-   [streamIntoJob](#streamintojob)
+    -   [Parameters](#parameters-2)
+-   [stripUnusedDataFromHookRequest](#stripunuseddatafromhookrequest)
     -   [Parameters](#parameters-3)
 -   [wellKnownScripts](#wellknownscripts)
 -   [buildAnalyse](#buildanalyse)
@@ -51,6 +51,15 @@ default configuration for queues
 
 map queue names
 to processing
+
+## analyseJob
+
+analyse the incoming job and prepare the steps to be executed in the processing queue(s)
+
+### Parameters
+
+-   `job` **Job** 
+-   `bus` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
 ## extractCINotification
 
@@ -82,15 +91,6 @@ strip away currently unused request data
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** stipped down request data
 
-## analyseJob
-
-analyse the incoming job and prepare the steps to be executed in the processing queue(s)
-
-### Parameters
-
--   `job` **Job** 
--   `bus` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
-
 ## wellKnownScripts
 
 npm buildin scripts
@@ -120,7 +120,7 @@ Returns **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 ## accessTokenGenerator
 
-Geenrate a request handler to deliver JWT access tokens
+Generate a request handler to deliver JWT access tokens
 
 ### Parameters
 
