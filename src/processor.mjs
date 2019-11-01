@@ -84,7 +84,7 @@ export async function executeStep(step, job, eeContext, notificatioHandler) {
 
     let timeout = setTimeout(() => {
       timeout = undefined;
-      console.log(`timeout waiting for ${step.executable}`);
+      console.log(`timeout (${step.timeout/1000.0}s) waiting for ${step.executable}`);
       proc.cancel();
       step.ok = false;
     }, step.timeout);
