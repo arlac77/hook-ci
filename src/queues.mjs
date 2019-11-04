@@ -105,7 +105,7 @@ export async function initializeQueues(bus) {
 
         const propagator = event => {
           return async (job, result) => {
-            console.log(`${job.id}: ${event}`, result);
+            console.log(`${job.id}: ${event}`);
             if (result === undefined) {
               return;
             }
