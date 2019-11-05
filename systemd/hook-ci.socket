@@ -1,7 +1,7 @@
 [Socket]
 ListenStream={{socket}}
 MaxConnections=4
-FileDescriptorName=api
+FileDescriptorName=http.listen.socket
 
 [Install]
 RequiredBy={{name}}.service
