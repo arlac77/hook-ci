@@ -32,7 +32,7 @@ export async function processJob(job, bus) {
     const m = body.match(/publish\s+(.*)/);
     if (m) {
       console.log("PUBLISH", m[1]);
-      bus.publush.add({ artifact: m[1], wd });
+      bus.publish.add({ artifact: m[1], wd });
     } else {
       console.log("NOTIFICATION", body);
     }
