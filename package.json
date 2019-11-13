@@ -79,7 +79,7 @@
     "x-hub-signature": "^1.2.0"
   },
   "optionalDependencies": {
-    "sd-daemon": "^1.0.1"
+    "sd-daemon": "^1.0.2"
   },
   "engines": {
     "node": ">=12.12.0"
