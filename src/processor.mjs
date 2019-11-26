@@ -31,8 +31,7 @@ export async function processJob(job, bus) {
   const notificatioHandler = body => {
     const m = body.match(/publish\s+(.*)/);
     if (m) {
-      console.log("PUBLISH", m[1]);
-      bus.queues.publish.add({ artifact: m[1], wd });
+      bus.queues.publish.add({ artifact: m[1], wd, node: config.nodename });
     } else {
       console.log("NOTIFICATION", body);
     }
