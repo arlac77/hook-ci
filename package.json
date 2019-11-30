@@ -4,6 +4,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "bin"
+  ],
   "module": "src/hook-ci-cli.mjs",
   "description": "simple ci to be triggered by git hooks",
   "keywords": [
@@ -88,9 +91,6 @@
     "type": "git",
     "url": "https://github.com/arlac77/hook-ci.git"
   },
-  "files": [
-    "bin"
-  ],
   "bugs": {
     "url": "https://github.com/arlac77/hook-ci/issues"
   },
