@@ -28,12 +28,16 @@ export async function processJob(job, bus) {
     evaluate
   });
 
-  const notificatioHandler = body => {
-    const m = body.match(/publish\s+(.*)/);
+  const notificatioHandler = (type,value,lineNumber, job, step) => {
+    if(type === 'CI STEP') {
+      step.logStarts = lineNumber;
+    }
+
+    let m = value.match(/publish\s+(.*)/);
     if (m) {
       bus.queues.publish.add({ artifact: m[1], wd, node: config.nodename });
     } else {
-      console.log("NOTIFICATION", body);
+      console.log("NOTIFICATION", value);
     }
   };
 
@@ -75,11 +79,11 @@ export async function executeStep(step, job, eeContext, notificatioHandler) {
     });
 
     console.log(`${job.id}.${step.name}: ${executable} ${args.join(" ")}`);
-    job.log(`### ${step.name}: ${executable} ${args.join(" ")}`);
+    job.log(`#<CI STEP> ${step.name}: ${executable} ${args.join(" ")}`);
     let proc = execa(executable, args, options);
 
-    streamIntoJob(proc.stdout, job, notificatioHandler);
-    streamIntoJob(proc.stderr, job, notificatioHandler);
+    streamIntoJob(proc.stdout, job, step, notificatioHandler);
+    streamIntoJob(proc.stderr, job, step, notificatioHandler);
 
     let timeout = setTimeout(() => {
       timeout = undefined;

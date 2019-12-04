@@ -10,11 +10,11 @@ export function createStep(step) {
  * @return {string} notification body or undefined
  */
 function extractCINotification(line) {
-  const m = line.match(/^#<CI>\s*(.*)/);
+  const m = line.match(/^#<(CI\s*[^>]*)>\s*(.*)/);
   if (m) {
-    return m[1];
+    return { type: m[1], value: m[2] };
   }
-  return undefined;
+  return {};
 }
 
 /**
@@ -23,8 +23,19 @@ function extractCINotification(line) {
  * @param {Job} job
  * @param {Function} notificationHandler
  */
-export async function streamIntoJob(stream, job, notificationHandler) {
+export async function streamIntoJob(stream, job, step, notificationHandler) {
   let remainder = "";
+  let lineNumber = 0;
+
+  function handleLine(line) {
+    const { type, value } = extractCINotification(line);
+    if (value === undefined) {
+      lineNumber++;
+      job.log(line);
+    } else {
+      notificationHandler(type, value, lineNumber, job, step);
+    }
+  }
 
   for await (const chunk of stream) {
     const lines = chunk.toString("utf8").split(/\r?\n/);
@@ -35,23 +46,13 @@ export async function streamIntoJob(stream, job, notificationHandler) {
       remainder = lines.pop();
 
       for (const line of lines) {
-        const ci = extractCINotification(line);
-        if (ci === undefined) {
-          job.log(line);
-        } else {
-          notificationHandler(ci);
-        }
+        handleLine(line);
       }
     }
   }
 
   if (remainder.length > 0) {
-    const ci = extractCINotification(remainder);
-    if (ci === undefined) {
-      job.log(remainder);
-    } else {
-      notificationHandler(ci);
-    }
+    handleLine(remainder);
   }
 }
 

@@ -78,6 +78,7 @@ add log entries to a job
 
 -   `stream` **ReadableStream** 
 -   `job` **Job** 
+-   `step`  
 -   `notificationHandler` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
 
 ## stripUnusedDataFromHookRequest
