@@ -16,17 +16,17 @@ test("authenticate positive", async t => {
   await initializeServer(bus);
 
   const response = await got.post(`http://localhost:${port}/authenticate`, {
-    body: {
+    json: {
       username: "user1",
       password: "secret"
-    },
-    json: true
+    }
   });
 
   t.is(response.statusCode, 200);
-  t.truthy(response.body.access_token.length > 10);
+  const access_token = JSON.parse(response.body).access_token;
 
-  const access_token = response.body.access_token;
+  t.truthy(access_token.length > 10);
+
   const data = JSON.parse(Buffer.from(access_token.split(".")[1], "base64"));
   t.deepEqual(data.entitlements.split(/,/), ["ci", "ci.nodes.read"]);
 
@@ -45,17 +45,19 @@ test("authenticate wrong credentials", async t => {
 
   try {
     const response = await got.post(`http://localhost:${port}/authenticate`, {
-      body: {
+      json: {
         username: "user1",
         password: "wrong"
-      },
-      json: true
+      }
     });
 
     t.fail("should throw 401");
   } catch (error) {
-    t.is(error.statusCode, 401);
-    t.is(error.body, "Authentication failed");
+    //console.log(error.response);
+    t.is(error.response.statusCode, 401);
+  //  t.is(error.response.statusMessage, "Authentication failed");
+
+  //  t.is(error.body, "Authentication failed");
   }
 
   bus.server.close();
@@ -73,22 +75,21 @@ test("authenticate no entitlements", async t => {
 
   try {
     const response = await got.post(`http://localhost:${port}/authenticate`, {
-      body: {
+      json: {
         username: "user2",
         password: "secret"
-      },
-      json: true
+      }
     });
 
     t.log(response.body);
     t.fail("should throw 403");
 
-    const access_token = response.body.access_token;
+    const access_token = JSON.parse(response.body).access_token;
     const data = JSON.parse(Buffer.from(access_token.split(".")[1], "base64"));
     t.log(data);
   } catch (error) {
-    t.is(error.statusCode, 403);
-    t.is(error.body, "Not authorized");
+    t.is(error.response.statusCode, 403);
+   // t.is(error.response.statusMessage, "Not authorized");
   }
 
   bus.server.close();
