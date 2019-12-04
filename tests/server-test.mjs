@@ -29,14 +29,13 @@ test.before(async t => {
   await initializeServer(bus);
 
   const response = await got.post(`http://localhost:${port}/authenticate`, {
-    body: {
+    json: {
       username: "user1",
       password: "secret"
-    },
-    json: true
+    }
   });
 
-  t.context.token = response.body.access_token;
+  t.context.token = JSON.parse(response.body).access_token;
 });
 
 test.after.always(async t => {
