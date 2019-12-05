@@ -63,7 +63,6 @@
   },
   "devDependencies": {
     "@rollup/plugin-json": "^4.0.0",
-    "@rollup/plugin-node-resolve": "^6.0.0",
     "@semantic-release/exec": "^3.3.8",
     "ava": "^2.4.0",
     "builtin-modules": "^3.1.0",
