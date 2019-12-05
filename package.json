@@ -4,6 +4,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "bin"
+  ],
   "module": "src/hook-ci-cli.mjs",
   "description": "simple ci to be triggered by git hooks",
   "keywords": [
@@ -74,7 +77,6 @@
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-executable": "^1.5.1",
-    "rollup-plugin-node-resolve": "^5.2.0",
     "semantic-release": "^15.13.31",
     "x-hub-signature": "^1.2.0"
   },
@@ -88,9 +90,6 @@
     "type": "git",
     "url": "https://github.com/arlac77/hook-ci.git"
   },
-  "files": [
-    "bin"
-  ],
   "bugs": {
     "url": "https://github.com/arlac77/hook-ci/issues"
   },
