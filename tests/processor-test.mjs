@@ -1,7 +1,7 @@
 import test from "ava";
 import { createContext } from "expression-expander";
 import { executeStep } from "../src/processor.mjs";
-import { makeJob } from './util.mjs';
+import { makeJob, makeQueue } from './util.mjs';
 
 test("executeStep", async t => {
 
@@ -29,6 +29,7 @@ test("executeStep", async t => {
       executable: "npm",
       args: ["--version"]
     },
+    makeQueue('processor'),
     makeJob(1),
     eeContext  );
 

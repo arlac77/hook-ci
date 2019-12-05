@@ -140,7 +140,7 @@ test("incoming job logs", async t => {
   t.is(response.statusCode, 200);
 
   const json = JSON.parse(response.body);
-  t.deepEqual(json, { lines: ["line 1", "line 2"] });
+  t.deepEqual(json, { count: 37, lines: ["line 1", "line 2"] });
 });
 
 test("pause/resume/empty queues", async t => {

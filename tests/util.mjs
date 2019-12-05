@@ -72,7 +72,7 @@ export function makeQueue(name) {
         from++;
       }
 
-      return { lines };
+      return { lines, count: 37 };
     },
     async clean() {},
     async empty() {},

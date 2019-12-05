@@ -5,7 +5,7 @@ import { streamIntoJob } from "./util.mjs";
 
 export const defaultProcessorConfig = {};
 
-export async function processJob(job, bus) {
+export async function processJob(job, bus, queue) {
   const config = bus.config;
   const data = job.data;
   const wd = join(config.workspace.dir, data.wd);
@@ -28,11 +28,7 @@ export async function processJob(job, bus) {
     evaluate
   });
 
-  const notificatioHandler = (type,value,lineNumber, job, step) => {
-    if(type === 'CI STEP') {
-      step.logStarts = lineNumber;
-    }
-
+  const notificatioHandler = (type, value, lineNumber, job, step) => {
     let m = value.match(/publish\s+(.*)/);
     if (m) {
       bus.queues.publish.add({ artifact: m[1], wd, node: config.nodename });
@@ -46,7 +42,7 @@ export async function processJob(job, bus) {
       try {
         step.node = config.nodename;
         step.started = Date.now();
-        const process = executeStep(step, job, eeContext, notificatioHandler);
+        const process = executeStep(step, queue, job, eeContext, notificatioHandler);
 
         await process;
       } catch (e) {
@@ -69,7 +65,7 @@ export async function processJob(job, bus) {
   return data;
 }
 
-export async function executeStep(step, job, eeContext, notificatioHandler) {
+export async function executeStep(step, queue, job, eeContext, notificatioHandler) {
   if (step.executable) {
     const executable = eeContext.expand(step.executable);
     const args = eeContext.expand(step.args);
@@ -78,8 +74,11 @@ export async function executeStep(step, job, eeContext, notificatioHandler) {
       ...step.options
     });
 
+    let logs = await queue.getJobLogs(job.id,0,0);
+    step.logStart = logs.count;
+
     console.log(`${job.id}.${step.name}: ${executable} ${args.join(" ")}`);
-    job.log(`#<CI STEP> ${step.name}: ${executable} ${args.join(" ")}`);
+    job.log(`### ${step.name}: ${executable} ${args.join(" ")}`);
     let proc = execa(executable, args, options);
 
     streamIntoJob(proc.stdout, job, step, notificatioHandler);
@@ -87,7 +86,9 @@ export async function executeStep(step, job, eeContext, notificatioHandler) {
 
     let timeout = setTimeout(() => {
       timeout = undefined;
-      console.log(`timeout (${step.timeout/1000.0}s) waiting for ${step.executable}`);
+      console.log(
+        `timeout (${step.timeout / 1000.0}s) waiting for ${step.executable}`
+      );
       proc.cancel();
       step.ok = false;
     }, step.timeout);
@@ -101,6 +102,10 @@ export async function executeStep(step, job, eeContext, notificatioHandler) {
         step.ok ? "OK" : "NOT OK"
       })`
     );
+
+    logs = await queue.getJobLogs(job.id,0,0);
+    step.logEnd = logs.count;
+
     if (timeout) {
       clearTimeout(timeout);
     }

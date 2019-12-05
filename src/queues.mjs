@@ -99,7 +99,7 @@ export async function initializeQueues(bus) {
           queue.clean(cq.clean);
         }
 
-        queue.process(async job => qt(job, bus));
+        queue.process(async job => qt(job, bus, queue));
 
         queue.on("error", error => console.log("ERROR", error));
 
