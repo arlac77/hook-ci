@@ -51,6 +51,9 @@ export const schema = buildSchema(`
     name: String!
     id: String
     uuid: String
+    isArchived: Boolean!
+    isDisabled: Boolean!
+    isLocked: Boolean!
     description: String
     fullName: String!
     condensedName: String!
