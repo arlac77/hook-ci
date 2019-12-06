@@ -33,7 +33,7 @@
     "test": "ava"
   },
   "dependencies": {
-    "aggregation-repository-provider": "^2.6.33",
+    "aggregation-repository-provider": "^2.6.34",
     "bitbucket-repository-provider": "^3.3.39",
     "bufferutil": "^4.0.1",
     "bull": "^3.12.1",
@@ -41,8 +41,8 @@
     "config-expander": "^11.0.6",
     "execa": "^3.4.0",
     "expression-expander": "^7.0.3",
-    "gitea-repository-provider": "^1.9.8",
-    "github-repository-provider": "^7.4.31",
+    "gitea-repository-provider": "^1.9.9",
+    "github-repository-provider": "^7.4.32",
     "globby": "^10.0.1",
     "graphql": "^14.5.8",
     "js-yaml": "^3.13.1",
@@ -55,7 +55,7 @@
     "koa-jwt": "^3.6.0",
     "koa-mount": "^4.0.0",
     "ldapts": "^1.10.0",
-    "local-repository-provider": "^6.4.52",
+    "local-repository-provider": "^6.4.53",
     "nbonjour": "^3.6.3",
     "remove-sensible-values": "^1.0.3",
     "utf-8-validate": "^5.0.2",
