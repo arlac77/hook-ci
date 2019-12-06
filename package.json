@@ -41,7 +41,7 @@
     "config-expander": "^11.0.6",
     "execa": "^3.4.0",
     "expression-expander": "^7.0.3",
-    "gitea-repository-provider": "^1.9.9",
+    "gitea-repository-provider": "1.9.8",
     "github-repository-provider": "^7.4.32",
     "globby": "^10.0.1",
     "graphql": "^14.5.8",
