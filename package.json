@@ -4,9 +4,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "files": [
-    "bin"
-  ],
   "module": "src/hook-ci-cli.mjs",
   "description": "simple ci to be triggered by git hooks",
   "keywords": [
@@ -65,6 +62,7 @@
     "@rollup/plugin-json": "^4.0.0",
     "@rollup/plugin-node-resolve": "^6.0.0",
     "@semantic-release/exec": "^3.3.8",
+    "acorn-class-fields": "https://github.com/arlac77/acorn-class-fields.git",
     "ava": "^2.4.0",
     "builtin-modules": "^3.1.0",
     "c8": "^6.0.1",
@@ -74,7 +72,7 @@
     "markdown-doctest": "^1.0.0",
     "mock-repository-provider": "^5.1.32",
     "npm-pkgbuild": "^6.10.14",
-    "rollup": "^1.27.8",
+    "rollup": "^1.27.9",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-executable": "^1.5.1",
@@ -91,6 +89,9 @@
     "type": "git",
     "url": "https://github.com/arlac77/hook-ci.git"
   },
+  "files": [
+    "bin"
+  ],
   "bugs": {
     "url": "https://github.com/arlac77/hook-ci/issues"
   },
