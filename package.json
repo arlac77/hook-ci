@@ -75,10 +75,10 @@
     "markdown-doctest": "^1.0.0",
     "mock-repository-provider": "^5.1.32",
     "npm-pkgbuild": "^6.10.14",
-    "rollup": "^1.27.11",
+    "rollup": "^1.27.12",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-executable": "^1.5.1",
+    "rollup-plugin-executable": "^1.5.2",
     "semantic-release": "^15.13.31",
     "x-hub-signature": "^1.2.0"
   },
