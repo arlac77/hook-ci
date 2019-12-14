@@ -4,6 +4,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "bin"
+  ],
   "module": "src/hook-ci-cli.mjs",
   "description": "simple ci to be triggered by git hooks",
   "keywords": [
@@ -38,7 +41,7 @@
     "config-expander": "^11.0.6",
     "execa": "^3.4.0",
     "expression-expander": "^7.0.3",
-    "gitea-repository-provider": "1.9.8",
+    "gitea-repository-provider": "1.9.10",
     "github-repository-provider": "^7.4.32",
     "globby": "^10.0.1",
     "graphql": "^14.5.8",
@@ -68,14 +71,14 @@
     "c8": "^6.0.1",
     "documentation": "^12.1.4",
     "esm": "^3.2.25",
-    "got": "^10.0.3",
+    "got": "^10.0.4",
     "markdown-doctest": "^1.0.0",
     "mock-repository-provider": "^5.1.32",
     "npm-pkgbuild": "^6.11.0",
-    "rollup": "^1.27.9",
+    "rollup": "^1.27.12",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-executable": "^1.5.1",
+    "rollup-plugin-executable": "^1.5.2",
     "semantic-release": "^15.13.31",
     "x-hub-signature": "^1.2.0"
   },
@@ -89,9 +92,6 @@
     "type": "git",
     "url": "https://github.com/arlac77/hook-ci.git"
   },
-  "files": [
-    "bin"
-  ],
   "bugs": {
     "url": "https://github.com/arlac77/hook-ci/issues"
   },
