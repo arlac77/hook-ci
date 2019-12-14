@@ -59,7 +59,7 @@
     "nbonjour": "^3.6.3",
     "remove-sensible-values": "^1.0.3",
     "utf-8-validate": "^5.0.2",
-    "ws": "^7.2.0"
+    "ws": "^7.2.1"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^4.0.0",
