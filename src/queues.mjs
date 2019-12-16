@@ -6,6 +6,9 @@ import Redis from "ioredis";
 import { processJob } from "./processor.mjs";
 import { analyseJob } from "./analyser.mjs";
 
+const platforms = ["aarch64","armv7"];
+const oss = ["linux","darwin","win32"];
+
 /**
  * default configuration for queues
  */
@@ -36,6 +39,14 @@ export const defaultQueuesConfig = {
         completed: "cleanup"
       }
     },
+    "process-{{os}}-{{platform}}": {
+      active: true,
+      clean: 86400000,
+      propagate: {
+        failed: "investigate",
+        completed: "cleanup"
+      }
+    },
     publish: {
       active: false,
       clean: 86400000
@@ -56,7 +67,7 @@ const queueTypes = {
   cleanup: cleanupJob,
   process: processJob,
   publish: publishJob,
-  investigate: investigateJob,
+  investigate: investigateJob
 };
 
 export async function initializeQueues(bus) {
@@ -82,10 +93,12 @@ export async function initializeQueues(bus) {
     }
   };
 
-  const queues = Object.keys(config.queues).reduce((queues, name) => {
-    queues[name] = new Queue(name, queueOptions);
-    return queues;
-  }, {});
+  const queues = bus.queues = Object.fromEntries(
+    Object.entries(config.queues).map((name, queue) => [
+      name,
+      new Queue(name, queueOptions)
+    ])
+  );
 
   Object.keys(config.queues).forEach(name => {
     const cq = config.queues[name];
@@ -113,8 +126,8 @@ export async function initializeQueues(bus) {
             if (cq.propagate && cq.propagate[event]) {
               console.log(`${job.id}: propagate to`, cq.propagate[event]);
               const dest = queues[cq.propagate[event]];
-              await dest.add(event === 'failed' ? job.data : result);
-              if(cq.removeAfterPropagation) {
+              await dest.add(event === "failed" ? job.data : result);
+              if (cq.removeAfterPropagation) {
                 await job.remove();
               }
             } else {
@@ -135,8 +148,6 @@ export async function initializeQueues(bus) {
       }
     }
   });
-
-  bus.queues = queues;
 }
 
 async function cleanupJob(job, bus) {
@@ -163,10 +174,9 @@ async function investigateJob(job, bus) {
   const config = bus.config;
   const data = job.data;
 
-  if(data === undefined || Object.keys(data).length === 0) {
+  if (data === undefined || Object.keys(data).length === 0) {
     // ok nothing to do
-  }
-  else {
+  } else {
     throw new Error(`Unable to investigate`);
   }
 }
