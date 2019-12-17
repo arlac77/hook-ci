@@ -6,9 +6,6 @@ import Redis from "ioredis";
 import { processJob } from "./processor.mjs";
 import { analyseJob } from "./analyser.mjs";
 
-const platforms = ["aarch64","armv7"];
-const oss = ["linux","darwin","win32"];
-
 /**
  * default configuration for queues
  */
@@ -45,7 +42,12 @@ export const defaultQueuesConfig = {
       propagate: {
         failed: "investigate",
         completed: "cleanup"
-      }
+      },
+      combinations: [
+        { platform: "aarch64", os: "linux" },
+        { platform: "armv7", os: "linux" }
+      ],
+      type: "process"
     },
     publish: {
       active: false,
@@ -93,18 +95,12 @@ export async function initializeQueues(bus) {
     }
   };
 
-  const queues = bus.queues = Object.fromEntries(
-    Object.entries(config.queues).map((name, queue) => [
-      name,
-      new Queue(name, queueOptions)
-    ])
-  );
+  bus.queues = {};
 
-  Object.keys(config.queues).forEach(name => {
-    const cq = config.queues[name];
+  Object.entries(config.queues).forEach(([name, cq]) => {
     if (cq.active) {
-      const queue = queues[name];
-      const qt = queueTypes[name];
+      const queue = (bus.queues[name] = new Queue(name, queueOptions));
+      const qt = queueTypes[cq.type || name];
       if (qt === undefined) {
         console.log(`no queue type for ${name}`);
       } else {
@@ -125,7 +121,7 @@ export async function initializeQueues(bus) {
 
             if (cq.propagate && cq.propagate[event]) {
               console.log(`${job.id}: propagate to`, cq.propagate[event]);
-              const dest = queues[cq.propagate[event]];
+              const dest = bus.queues[cq.propagate[event]];
               await dest.add(event === "failed" ? job.data : result);
               if (cq.removeAfterPropagation) {
                 await job.remove();
