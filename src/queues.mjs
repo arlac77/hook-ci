@@ -52,8 +52,9 @@ export const defaultQueuesConfig = {
         completed: "cleanup"
       },
       combinations: [
-        { arch: "aarch64", platform: "linux" },
-        { arch: "armv7", platform: "linux" }
+        { arch: "arm64", platform: "linux" },
+        { arch: "arm", platform: "linux" },
+        { arch: "x64", platform: "linux" }
       ],
       type: "process"
     }
@@ -74,31 +75,30 @@ const queueTypes = {
 
 export function queueDefinitions(queues) {
   return Object.entries(queues).reduce((all, [name, queue]) => {
-    if (queue.active) {
-      if (queue.combinations) {
-        all.push(
-          ...queue.combinations.map(c => {
-            const n = name.replace(
-              /\{\{(\w+)\}\}/g,
-              (match, key, offset, string) => c[key]
-            );
+    if (queue.combinations) {
+      all.push(
+        ...queue.combinations.map(c => {
+          const n = name.replace(
+            /\{\{(\w+)\}\}/g,
+            (match, key, offset, string) => c[key]
+          );
 
-            delete queue.combinations;
-            return {
-              ...queue,
-              ...c,
-              name: n
-            };
-          })
-        );
-      } else {
-        queue.name = name;
-        if (queue.type === undefined) {
-          queue.type = name;
-        }
-        all.push(queue);
+          delete queue.combinations;
+          return {
+            ...queue,
+            ...c,
+            name: n
+          };
+        })
+      );
+    } else {
+      queue.name = name;
+      if (queue.type === undefined) {
+        queue.type = name;
       }
+      all.push(queue);
     }
+
     return all;
   }, []);
 }
@@ -135,20 +135,22 @@ export async function initializeQueues(bus) {
       queue.clean(queueDef.clean);
     }
 
-    if (queueDef.os && process.arch !== queueDef.arch) {
-      console.log(
-        `skip processing ${queueDef.name} not the right arch ${process.arch}!=${queueDef.arch}`
-      );
-    } else if (queueDef.platform && process.platform !== queueDef.platform) {
-      console.log(
-        `skip processing ${queueDef.name} not the right platform ${process.platform}!=${queueDef.platform}`
-      );
-    } else {
-      const qt = queueTypes[queueDef.type];
-      if (qt) {
-        queue.process(async job => qt(job, bus, queue));
+    if (queueDef.active) {
+      if (queueDef.os && process.arch !== queueDef.arch) {
+        console.log(
+          `skip processing ${queueDef.name} not the right arch ${process.arch}!=${queueDef.arch}`
+        );
+      } else if (queueDef.platform && process.platform !== queueDef.platform) {
+        console.log(
+          `skip processing ${queueDef.name} not the right platform ${process.platform}!=${queueDef.platform}`
+        );
       } else {
-        console.log(`unknown queue type ${queueDef.type}`);
+        const qt = queueTypes[queueDef.type];
+        if (qt) {
+          queue.process(async job => qt(job, bus, queue));
+        } else {
+          console.log(`unknown queue type ${queueDef.type}`);
+        }
       }
     }
 

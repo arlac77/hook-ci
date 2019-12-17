@@ -10,7 +10,14 @@ test("queue defs simple", t => {
 test("queue defs combi", t => {
   t.deepEqual(
     queueDefinitions({
-      a: { active: true },
+      publish: {
+        active: false,
+        clean: 86400000
+      },
+      cleanup: {
+        active: true,
+        clean: 86400000
+      },
       "process-{{platform}}-{{arch}}": {
         active: true,
         clean: 86400000,
@@ -19,40 +26,38 @@ test("queue defs combi", t => {
           completed: "cleanup"
         },
         combinations: [
-          { arch: "aarch64", platform: "linux" },
-          { arch: "armv7", platform: "linux" }
+          { arch: "arm64", platform: "linux" },
+          { arch: "arm", platform: "linux" }
         ],
         type: "process"
       }
     }),
-
     [
-      { active: true, name: "a", type: "a" },
+      { name: "publish", type: "publish", active: false, clean: 86400000 },
+      { name: "cleanup", type: "cleanup", active: true, clean: 86400000 },
       {
-        active: true,
+        name: "process-linux-arm64",
+        type: "process",
         active: true,
         clean: 86400000,
         propagate: {
           failed: "investigate",
           completed: "cleanup"
         },
-        name: "process-linux-aarch64",
         platform: "linux",
-        arch: "aarch64",
-        type: "process"
+        arch: "arm64"
       },
       {
-        active: true,
+        name: "process-linux-arm",
+        type: "process",
         active: true,
         clean: 86400000,
         propagate: {
           failed: "investigate",
           completed: "cleanup"
         },
-        name: "process-linux-armv7",
         platform: "linux",
-        arch: "armv7",
-        type: "process"
+        arch: "arm"
       }
     ]
   );
