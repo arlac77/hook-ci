@@ -36,19 +36,6 @@ export const defaultQueuesConfig = {
         completed: "cleanup"
       }
     },
-    "process-{{os}}-{{platform}}": {
-      active: true,
-      clean: 86400000,
-      propagate: {
-        failed: "investigate",
-        completed: "cleanup"
-      },
-      combinations: [
-        { platform: "aarch64", os: "linux" },
-        { platform: "armv7", os: "linux" }
-      ],
-      type: "process"
-    },
     publish: {
       active: false,
       clean: 86400000
@@ -56,6 +43,19 @@ export const defaultQueuesConfig = {
     cleanup: {
       active: true,
       clean: 86400000
+    },
+    "process-{{platform}}-{{arch}}": {
+      active: true,
+      clean: 86400000,
+      propagate: {
+        failed: "investigate",
+        completed: "cleanup"
+      },
+      combinations: [
+        { arch: "aarch64", platform: "linux" },
+        { arch: "armv7", platform: "linux" }
+      ],
+      type: "process"
     }
   }
 };
@@ -71,6 +71,37 @@ const queueTypes = {
   publish: publishJob,
   investigate: investigateJob
 };
+
+export function queueDefinitions(queues) {
+  return Object.entries(queues).reduce((all, [name, queue]) => {
+    if (queue.active) {
+      if (queue.combinations) {
+        all.push(
+          ...queue.combinations.map(c => {
+            const n = name.replace(
+              /\{\{(\w+)\}\}/g,
+              (match, key, offset, string) => c[key]
+            );
+
+            delete queue.combinations;
+            return {
+              ...queue,
+              ...c,
+              name: n
+            };
+          })
+        );
+      } else {
+        queue.name = name;
+        if (queue.type === undefined) {
+          queue.type = name;
+        }
+        all.push(queue);
+      }
+    }
+    return all;
+  }, []);
+}
 
 export async function initializeQueues(bus) {
   const config = bus.config;
@@ -97,53 +128,60 @@ export async function initializeQueues(bus) {
 
   bus.queues = {};
 
-  Object.entries(config.queues).forEach(([name, cq]) => {
-    if (cq.active) {
-      const queue = (bus.queues[name] = new Queue(name, queueOptions));
-      const qt = queueTypes[cq.type || name];
-      if (qt === undefined) {
-        console.log(`no queue type for ${name}`);
-      } else {
-        if (cq.clean !== undefined) {
-          queue.clean(cq.clean);
-        }
+  for (const queueDef of queueDefinitions(config.queues)) {
+    const queue = new Queue(queueDef.name, queueOptions);
+    bus.queues[queueDef.name] = queue;
+    if (queueDef.clean !== undefined) {
+      queue.clean(queueDef.clean);
+    }
 
+    if (queueDef.os && process.arch !== queueDef.arch) {
+      console.log(
+        `skip processing ${queueDef.name} not the right arch ${process.arch}!=${queueDef.arch}`
+      );
+    } else if (queueDef.platform && process.platform !== queueDef.platform) {
+      console.log(
+        `skip processing ${queueDef.name} not the right platform ${process.platform}!=${queueDef.platform}`
+      );
+    } else {
+      const qt = queueTypes[queueDef.type];
+      if (qt) {
         queue.process(async job => qt(job, bus, queue));
-
-        queue.on("error", error => console.log("ERROR", error));
-
-        const propagator = event => {
-          return async (job, result) => {
-            console.log(`${job.id}: ${event}`);
-            if (result === undefined) {
-              return;
-            }
-
-            if (cq.propagate && cq.propagate[event]) {
-              console.log(`${job.id}: propagate to`, cq.propagate[event]);
-              const dest = bus.queues[cq.propagate[event]];
-              await dest.add(event === "failed" ? job.data : result);
-              if (cq.removeAfterPropagation) {
-                await job.remove();
-              }
-            } else {
-              console.log(
-                `${job.id}: ${event} no propagation destination queue`
-              );
-            }
-
-            if (cq.clean !== undefined) {
-              queue.clean(cq.clean);
-            }
-          };
-        };
-
-        ["completed", "failed"].forEach(state =>
-          queue.on(state, propagator(state))
-        );
+      } else {
+        console.log(`unknown queue type ${queueDef.type}`);
       }
     }
-  });
+
+    queue.on("error", error => console.log("ERROR", error));
+
+    const propagator = event => {
+      return async (job, result) => {
+        console.log(`${job.id}: ${event}`);
+        if (result === undefined) {
+          return;
+        }
+
+        if (cq.propagate && cq.propagate[event]) {
+          console.log(`${job.id}: propagate to`, queueDef.propagate[event]);
+          const dest = bus.queues[queueDef.propagate[event]];
+          await dest.add(event === "failed" ? job.data : result);
+          if (queueDef.removeAfterPropagation) {
+            await job.remove();
+          }
+        } else {
+          console.log(`${job.id}: ${event} no propagation destination queue`);
+        }
+
+        if (queueDef.clean !== undefined) {
+          queue.clean(queueDef.clean);
+        }
+      };
+    };
+
+    ["completed", "failed"].forEach(state =>
+      queue.on(state, propagator(state))
+    );
+  }
 }
 
 async function cleanupJob(job, bus) {
