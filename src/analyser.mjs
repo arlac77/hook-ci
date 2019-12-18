@@ -62,9 +62,6 @@ export async function analyseJob(job, bus) {
 
   if (branch === undefined) {
     throw new Error(`No such branch: ${url} ${newData.branch}`);
-
-    /*console.log(`analyse: no such branch ${url} ${newData.branch}`);
-    return undefined;*/
   }
 
   job.progress(10);

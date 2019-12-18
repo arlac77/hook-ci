@@ -104,6 +104,8 @@
       "${name}": "systemd/${name}*"
     }
   },
+  "os" : [ "darwin", "linux" ],
+  "cpu" : [ "x64", "arm64", "arm" ],
   "pacman": {
     "arch": [
       "aarch64",
