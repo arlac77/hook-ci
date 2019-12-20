@@ -54,7 +54,7 @@
     "koa-graphql": "^0.8.0",
     "koa-jwt": "^3.6.0",
     "koa-mount": "^4.0.0",
-    "ldapts": "^2.0.1",
+    "ldapts": "^2.0.2",
     "local-repository-provider": "^6.5.0",
     "nbonjour": "^3.6.3",
     "remove-sensible-values": "^1.0.3",
