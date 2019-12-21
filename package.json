@@ -62,7 +62,7 @@
     "ws": "^7.2.1"
   },
   "devDependencies": {
-    "@rollup/plugin-json": "^4.0.0",
+    "@rollup/plugin-json": "^4.0.1",
     "@rollup/plugin-node-resolve": "^6.0.0",
     "@semantic-release/exec": "^3.3.8",
     "ava": "^2.4.0",
