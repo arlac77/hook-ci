@@ -57,7 +57,7 @@
     "ldapts": "^2.0.2",
     "local-repository-provider": "^6.5.0",
     "nbonjour": "^3.6.3",
-    "remove-sensible-values": "^1.0.3",
+    "remove-sensible-values": "^1.0.4",
     "utf-8-validate": "^5.0.2",
     "ws": "^7.2.1"
   },
