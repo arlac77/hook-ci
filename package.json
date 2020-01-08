@@ -33,7 +33,7 @@
     "test": "ava"
   },
   "dependencies": {
-    "aggregation-repository-provider": "^2.6.36",
+    "aggregation-repository-provider": "^2.6.37",
     "bitbucket-repository-provider": "^3.3.41",
     "bufferutil": "^4.0.1",
     "bull": "^3.12.1",
