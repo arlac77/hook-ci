@@ -38,7 +38,7 @@
     "bufferutil": "^4.0.1",
     "bull": "^3.12.1",
     "commander": "^4.1.0",
-    "config-expander": "^11.0.7",
+    "config-expander": "^11.0.8",
     "execa": "^4.0.0",
     "expression-expander": "^7.0.3",
     "gitea-repository-provider": "1.9.10",
