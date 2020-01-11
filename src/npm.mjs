@@ -54,12 +54,12 @@ export async function npmAnalyse(branch, job, config, wd) {
       });
     }
 
-    const packageLock = await branch.maybeEntry(
-      entry.name.replace(/.json$/, "-lock.json")
-    );
-    const yarnLock = await branch.maybeEntry(
-      entry.name.replace("package.json", "yarn.lock")
-    );
+    const [packageLock, yarnLock] = await Promise.all(
+      branch.maybeEntry(
+        entry.name.replace(/.json$/, "-lock.json")),
+      branch.maybeEntry(
+        entry.name.replace("package.json", "yarn.lock"))
+      );
 
     if (yarnLock) {
       steps.push(
