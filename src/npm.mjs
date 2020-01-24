@@ -56,11 +56,15 @@ export async function npmAnalyse(branch, job, config, wd) {
 
     const yarnLock = await branch.maybeEntry(entry.name.replace("package.json", "yarn.lock"));
 
+    let executable = "npm";
+    
     if (yarnLock) {
+      executable = "yarn";
+    
       steps.push(
         createStep({
           name: "prepare",
-          executable: "yarn",
+          executable,
           args: ["install"],
           options,
           requirements
@@ -72,7 +76,7 @@ export async function npmAnalyse(branch, job, config, wd) {
       steps.push(
         createStep({
           name: "prepare",
-          executable: "npm",
+          executable,
           args: scriptArgs(packageLock === undefined ? "install" : "ci"),
           options,
           requirements
@@ -85,7 +89,7 @@ export async function npmAnalyse(branch, job, config, wd) {
         steps.push(
           createStep({
             name: "test",
-            executable: "npm",
+            executable,
             args: scriptArgs("cover"),
             options,
             requirements
@@ -95,7 +99,7 @@ export async function npmAnalyse(branch, job, config, wd) {
         steps.push(
           createStep({
             name: "test",
-            executable: "npm",
+            executable,
             args: scriptArgs("test"),
             options,
             requirements
@@ -106,7 +110,7 @@ export async function npmAnalyse(branch, job, config, wd) {
         steps.push(
           createStep({
             name: "lint",
-            executable: "npm",
+            executable,
             args: scriptArgs("lint"),
             options,
             requirements
@@ -117,7 +121,7 @@ export async function npmAnalyse(branch, job, config, wd) {
         steps.push(
           createStep({
             name: "documentation",
-            executable: "npm",
+            executable,
             args: scriptArgs("docs"),
             options,
             requirements
