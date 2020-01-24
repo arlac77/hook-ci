@@ -15,6 +15,7 @@ const external = [
   "sd-daemon",
   "node-fetch",
   "universal-user-agent",
+  "@octokit/rest",
   "@octokit/plugin-throttling",
   "bufferutil",
   "utf-8-validate"
