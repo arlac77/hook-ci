@@ -49,7 +49,7 @@ export async function analyseJob(job, bus) {
       return undefined; // skip job
     }
 
-    newData.branch = data.ref.substring("refs/heads/".length);
+    newData.branch = data.ref.slice("refs/heads/".length);
   } else {
     newData.branch = "master";
   }
