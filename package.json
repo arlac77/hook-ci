@@ -62,9 +62,9 @@
     "ws": "^7.2.1"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^11.0.1",
-    "@rollup/plugin-json": "^4.0.1",
-    "@rollup/plugin-node-resolve": "^7.0.0",
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-json": "^4.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.0",
     "@semantic-release/exec": "^5.0.0",
     "ava": "^2.4.0",
     "builtin-modules": "^3.1.0",
