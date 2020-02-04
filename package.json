@@ -42,7 +42,7 @@
     "execa": "^4.0.0",
     "expression-expander": "^7.0.4",
     "gitea-repository-provider": "^1.9.14",
-    "github-repository-provider": "^7.5.12",
+    "github-repository-provider": "^7.5.18",
     "globby": "^11.0.0",
     "graphql": "^14.6.0",
     "js-yaml": "^3.13.1",
