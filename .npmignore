@@ -9,6 +9,5 @@ doc
 .vscode
 rollup.config.js
 .DS_Store
-
 systemd
 pacman
