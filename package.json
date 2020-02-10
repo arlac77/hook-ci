@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "aggregation-repository-provider": "^2.6.41",
-    "bitbucket-repository-provider": "^3.4.1",
+    "bitbucket-repository-provider": "^3.4.2",
     "bufferutil": "^4.0.1",
     "bull": "^3.12.1",
     "commander": "^4.1.1",
@@ -65,14 +65,13 @@
     "@rollup/plugin-json": "^4.0.2",
     "@rollup/plugin-node-resolve": "^7.1.1",
     "@semantic-release/exec": "^5.0.0",
-    "ava": "^2.4.0",
+    "ava": "^3.3.0",
     "builtin-modules": "^3.1.0",
-    "c8": "^7.0.1",
+    "c8": "^7.1.0",
     "documentation": "^12.1.4",
-    "esm": "^3.2.25",
     "got": "^10.5.5",
     "mock-repository-provider": "^5.1.38",
-    "npm-pkgbuild": "^6.11.4",
+    "npm-pkgbuild": "^6.11.5",
     "rollup": "^1.31.0",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-executable": "^1.5.2",
@@ -141,19 +140,6 @@
           "publishCmd": "npx npm-pkgbuild --pkgver ${nextRelease.version} --npm-dist --npm-modules pkgbuild pacman makepkg"
         }
       ]
-    ]
-  },
-  "ava": {
-    "files": [
-      "tests/*-test.mjs"
-    ],
-    "require": [
-      "esm"
-    ],
-    "babel": false,
-    "compileEnhancements": false,
-    "extensions": [
-      "mjs"
     ]
   },
   "template": {
