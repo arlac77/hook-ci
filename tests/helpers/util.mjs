@@ -1,8 +1,8 @@
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { readFileSync } from "fs";
-import { defaultRepositoriesConfig } from "../src/repositories.mjs";
-import { defaultAnalyserConfig } from "../src/analyser.mjs";
+import { defaultRepositoriesConfig } from "../../src/repositories.mjs";
+import { defaultAnalyserConfig } from "../../src/analyser.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -52,8 +52,8 @@ export function makeConfig(port=1234) {
           algorithm: "RS256",
           expiresIn: "12h"
         },
-        public: readFileSync(join(here, "fixtures", "demo.rsa.pub")),
-        private: readFileSync(join(here, "fixtures", "demo.rsa"))
+        public: readFileSync(join(here, "..", "fixtures", "demo.rsa.pub")),
+        private: readFileSync(join(here, "..", "fixtures", "demo.rsa"))
       }
     }
   };

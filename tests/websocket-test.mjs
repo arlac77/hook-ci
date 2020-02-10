@@ -2,7 +2,7 @@ import test from "ava";
 import WebSocket from "ws";
 import { initializeServer } from "../src/server.mjs";
 import { initializeWebsockets } from "../src/websockets.mjs";
-import { makeConfig } from "./util.mjs";
+import { makeConfig } from "./helpers/util.mjs";
 
 const sd = { notify: () => {}, listeners: () => [] };
 

@@ -1,8 +1,7 @@
 import test from "ava";
-import { defaultRepositoriesConfig } from "../src/repositories.mjs";
-import { analyseJob, defaultAnalyserConfig } from "../src/analyser.mjs";
+import { analyseJob } from "../src/analyser.mjs";
 import { GithubProvider } from "github-repository-provider";
-import { makeJob, makeConfig } from "./util.mjs";
+import { makeJob, makeConfig } from "./helpers/util.mjs";
 
 test("analyser", async t => {
   const bus = {

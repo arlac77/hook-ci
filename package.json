@@ -43,7 +43,7 @@
     "gitea-repository-provider": "^1.9.14",
     "github-repository-provider": "^7.6.1",
     "globby": "^11.0.0",
-    "graphql": "^14.6.0",
+    "graphql": "git+https://github.com/graphql/graphql-js.git",
     "js-yaml": "^3.13.1",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.11.0",

@@ -1,7 +1,7 @@
 import test from "ava";
 import got from "got";
 import { initializeServer } from "../src/server.mjs";
-import { makeConfig, sd } from "./util.mjs";
+import { makeConfig, sd } from "./helpers/util.mjs";
 
 let port = 3159;
 

@@ -1,7 +1,7 @@
 import test from "ava";
 import { createContext } from "expression-expander";
 import { executeStep } from "../src/processor.mjs";
-import { makeJob, makeQueue } from './util.mjs';
+import { makeJob, makeQueue } from './helpers/util.mjs';
 
 test("executeStep", async t => {
 

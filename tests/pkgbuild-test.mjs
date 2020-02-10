@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 import { defaultAnalyserConfig } from "../src/analyser.mjs";
 import { pkgbuildAnalyse } from "../src/pkgbuild.mjs";
 import { MockProvider } from "mock-repository-provider";
-import { makeJob } from "./util.mjs";
+import { makeJob } from "./helpers/util.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 

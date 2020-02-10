@@ -1,4 +1,4 @@
-import { buildSchema } from "graphql";
+import { buildSchema } from "graphql/dist/utilities/buildASTSchema.mjs";
 
 export const schema = buildSchema(`
   type Entry {
