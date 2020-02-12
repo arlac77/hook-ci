@@ -1,20 +1,6 @@
 language: node_js
 jobs:
   include:
-    - stage: test
-      node_js:
-        - 13.7.0
-        - 13.8.0
-      script:
-        - npm run cover
-        - npx codecov
-        - cat ./build/coverage/lcov.info | npx coveralls
-    - stage: doc
-      node_js: lts/*
-      skip_cleanup: 'true'
-      script:
-        - npm run lint
-        - npm run docs
     - stage: release
       node_js: lts/*
       script: skip
@@ -23,6 +9,20 @@ jobs:
         skip_cleanup: 'true'
         script:
           - npx semantic-release
+    - stage: doc
+      node_js: lts/*
+      skip_cleanup: 'true'
+      script:
+        - npm run lint
+        - npm run docs
+    - stage: test
+      node_js:
+        - 13.7.0
+        - 13.8.0
+      script:
+        - npm run cover
+        - npx codecov
+        - cat ./build/coverage/lcov.info | npx coveralls
 branches:
   only:
     - master
