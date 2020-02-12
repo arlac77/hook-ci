@@ -24,12 +24,12 @@
     "hook-ci": "bin/hook-ci"
   },
   "scripts": {
-    "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
+    "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
     "docs": "documentation readme src/hook-ci-cli.mjs --section=API",
     "lint": "documentation lint src/hook-ci-cli.mjs",
     "package": "npm-pkgbuild --npm-dist --npm-modules pkgbuild pacman makepkg",
     "prepare": "rollup -c",
-    "test": "ava"
+    "test": "ava --timeout 2m"
   },
   "dependencies": {
     "aggregation-repository-provider": "^2.6.41",
@@ -64,6 +64,7 @@
     "@rollup/plugin-commonjs": "^11.0.2",
     "@rollup/plugin-json": "^4.0.2",
     "@rollup/plugin-node-resolve": "^7.1.1",
+    "@rollup/plugin-typescript": "^3.0.0",
     "@semantic-release/exec": "^5.0.0",
     "ava": "^3.3.0",
     "builtin-modules": "^3.1.0",
@@ -73,8 +74,11 @@
     "mock-repository-provider": "^5.1.38",
     "npm-pkgbuild": "^6.11.5",
     "rollup": "^1.31.0",
+    "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-cleanup": "^3.1.1",
+    "rollup-plugin-consts": "^1.0.1",
     "rollup-plugin-executable": "^1.5.2",
+    "rollup-plugin-native": "^1.2.8",
     "semantic-release": "^17.0.2",
     "x-hub-signature": "^1.2.0"
   },
