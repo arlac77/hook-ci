@@ -35,7 +35,7 @@
     "aggregation-repository-provider": "^2.6.41",
     "bitbucket-repository-provider": "^3.4.2",
     "bufferutil": "^4.0.1",
-    "bull": "^3.12.1",
+    "bull": "^3.13.0",
     "commander": "^4.1.1",
     "config-expander": "^11.0.10",
     "execa": "^4.0.0",
