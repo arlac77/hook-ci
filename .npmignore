@@ -7,7 +7,5 @@ doc
 .tmp
 .travis.yml
 .vscode
-.DS_Store
 systemd
 pacman
-rollup.config.js
