@@ -1,7 +1,7 @@
 import test from "ava";
 import got from "got";
 import { GithubProvider } from "github-repository-provider";
-import signer from "x-hub-signature/src/signer";
+import signer from "x-hub-signature/src/signer.js";
 import { initializeServer } from "../src/server.mjs";
 import { LocalNode } from "../src/nodes.mjs";
 import { makeQueue, makeConfig, sd, secret, hook } from "./helpers/util.mjs";
