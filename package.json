@@ -24,12 +24,12 @@
     "hook-ci": "bin/hook-ci"
   },
   "scripts": {
-    "package": "npm-pkgbuild --npm-dist --npm-modules pkgbuild pacman makepkg",
     "prepare": "rollup -c",
     "test": "ava --node-arguments '--experimental-modules' --timeout 2m",
     "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --node-arguments '--experimental-modules' --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
     "docs": "documentation readme src/hook-ci-cli.mjs --section=API",
-    "lint": "documentation lint src/hook-ci-cli.mjs"
+    "lint": "documentation lint src/hook-ci-cli.mjs",
+    "package": "npm-pkgbuild --npm-dist --npm-modules pkgbuild pacman makepkg"
   },
   "dependencies": {
     "aggregation-repository-provider": "^2.6.41",
@@ -72,7 +72,7 @@
     "got": "^10.5.7",
     "mock-repository-provider": "^5.1.40",
     "npm-pkgbuild": "^6.11.5",
-    "rollup": "^1.31.1",
+    "rollup": "^1.32.0",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-executable": "^1.5.2",
     "semantic-release": "^17.0.4",
@@ -143,8 +143,6 @@
     ]
   },
   "template": {
-    "repository": {
-      "url": "https://github.com/arlac77/npm-package-template.git"
-    }
+    "inheritFrom": "arlac77/template-cli-app"
   }
 }
