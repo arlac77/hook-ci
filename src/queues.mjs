@@ -205,7 +205,6 @@ async function cleanupJob(job, bus) {
 async function publishJob(job, bus) {}
 
 async function investigateJob(job, bus) {
-  const config = bus.config;
   const data = job.data;
 
   if (data === undefined || Object.keys(data).length === 0) {
