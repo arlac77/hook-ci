@@ -154,22 +154,22 @@ export async function initializeQueues(bus) {
 
     queue.on("error", error => console.log("ERROR", error));
 
-    const propagator = event => {
+    const propagator = state => {
       return async (job, result) => {
-        console.log(`${job.id}: ${event}`);
+        console.log(`${job.id}: ${state}`);
         if (result === undefined) {
           return;
         }
 
-        if (queueDef.propagate[event]) {
-          console.log(`${job.id}: propagate to`, queueDef.propagate[event]);
-          const dest = bus.queues[queueDef.propagate[event]];
-          await dest.add(event === "failed" ? job.data : result);
+        if (queueDef.propagate[state]) {
+          console.log(`${job.id}: propagate to`, queueDef.propagate[state]);
+          const dest = bus.queues[queueDef.propagate[state]];
+          await dest.add(state === "failed" ? job.data : result);
           if (queueDef.removeAfterPropagation) {
             await job.remove();
           }
         } else {
-          //console.log(`${job.id}: ${event} no propagation destination queue`);
+          //console.log(`${job.id}: ${state} no propagation destination queue`);
         }
 
         if (queueDef.clean !== undefined) {
