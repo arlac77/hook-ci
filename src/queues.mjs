@@ -136,18 +136,18 @@ export async function initializeQueues(bus) {
     if (queueDef.active) {
       if (queueDef.os && process.arch !== queueDef.arch) {
         console.log(
-          `skip processing ${queueDef.name} not the right arch ${process.arch}!=${queueDef.arch}`
+          `Skip processing ${queueDef.name} not the right arch ${process.arch}!=${queueDef.arch}`
         );
       } else if (queueDef.platform && process.platform !== queueDef.platform) {
         console.log(
-          `skip processing ${queueDef.name} not the right platform ${process.platform}!=${queueDef.platform}`
+          `Skip processing ${queueDef.name} not the right platform ${process.platform}!=${queueDef.platform}`
         );
       } else {
         const qt = queueTypes[queueDef.type];
         if (qt) {
           queue.process(async job => qt(job, bus, queue));
         } else {
-          console.log(`unknown queue type ${queueDef.type}`);
+          console.log(`Unknown queue type ${queueDef.type}`);
         }
       }
     }
@@ -169,7 +169,7 @@ export async function initializeQueues(bus) {
             await job.remove();
           }
         } else {
-          console.log(`${job.id}: ${event} no propagation destination queue`);
+          //console.log(`${job.id}: ${event} no propagation destination queue`);
         }
 
         if (queueDef.clean !== undefined) {
