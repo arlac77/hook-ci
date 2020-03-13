@@ -120,7 +120,7 @@
     "hooks": "pacman/hooks.sh",
     "backup": "etc/${name}/config.json",
     "depends": {
-      "redis": ">=5.0.6-1",
+      "redis": ">=5.0.8-1",
       "systemd": ">=244"
     },
     "installdir": "/services/${name}",
