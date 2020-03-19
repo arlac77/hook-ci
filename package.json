@@ -72,7 +72,7 @@
     "got": "^10.6.0",
     "mock-repository-provider": "^5.1.40",
     "npm-pkgbuild": "^6.11.6",
-    "rollup": "^2.0.6",
+    "rollup": "^2.1.0",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-executable": "^1.5.2",
     "semantic-release": "^17.0.4",
