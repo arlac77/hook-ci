@@ -36,7 +36,7 @@
     "bitbucket-repository-provider": "^3.4.8",
     "bufferutil": "^4.0.1",
     "bull": "^3.13.0",
-    "commander": "^4.1.1",
+    "commander": "^5.0.0",
     "config-expander": "^11.0.11",
     "execa": "^4.0.0",
     "expression-expander": "^7.0.4",
@@ -48,7 +48,7 @@
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.11.0",
     "koa-better-router": "^2.1.1",
-    "koa-bodyparser": "^4.2.1",
+    "koa-bodyparser": "^4.3.0",
     "koa-github-hook-handler": "^1.4.5",
     "koa-graphql": "^0.8.0",
     "koa-jwt": "^3.6.0",
@@ -58,7 +58,7 @@
     "nbonjour": "^3.6.3",
     "remove-sensible-values": "^1.0.5",
     "utf-8-validate": "^5.0.2",
-    "ws": "^7.2.2"
+    "ws": "^7.2.3"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.2",
