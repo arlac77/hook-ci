@@ -121,7 +121,7 @@
     "backup": "etc/${name}/config.json",
     "depends": {
       "redis": ">=5.0.8-1",
-      "systemd": ">=244"
+      "systemd": ">=245"
     },
     "installdir": "/services/${name}",
     "content": {
