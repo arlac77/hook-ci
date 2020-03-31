@@ -7,7 +7,19 @@ import executable from "rollup-plugin-executable";
 import cleanup from "rollup-plugin-cleanup";
 import builtins from "builtin-modules";
 
-const external = [...builtins];
+const external = [
+  ...builtins,
+  "koa",
+  "koa-better-router",
+  "bull",
+  "sd-daemon",
+  "node-fetch",
+  "universal-user-agent",
+  "@octokit/rest",
+  "@octokit/plugin-throttling",
+  "bufferutil",
+  "utf-8-validate"
+];
 const extensions = ["js", "mjs", "jsx", "tag"];
 const plugins = [
   commonjs(),
@@ -31,7 +43,7 @@ const config = Object.keys(bin || {}).map(name => {
     output: {
       plugins: [executable()],
       banner:
-        '#!/bin/sh\n":" //# comment; exec /usr/bin/env node --experimental-modules --experimental-wasm-modules "$0" "$@"',
+        '#!/bin/sh\n":" //# comment; exec /usr/bin/env node "$0" "$@"',
       file: bin[name]
     }
   };
