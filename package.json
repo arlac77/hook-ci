@@ -32,7 +32,7 @@
     "package": "npm-pkgbuild --npm-dist --npm-modules pkgbuild pacman makepkg"
   },
   "dependencies": {
-    "aggregation-repository-provider": "^2.6.45",
+    "aggregation-repository-provider": "^2.6.47",
     "bitbucket-repository-provider": "^3.5.2",
     "bufferutil": "^4.0.1",
     "bull": "^3.13.0",
