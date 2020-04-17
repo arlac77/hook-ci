@@ -41,7 +41,7 @@
     "execa": "^4.0.0",
     "expression-expander": "^7.0.4",
     "gitea-repository-provider": "^1.10.3",
-    "github-repository-provider": "^7.8.1",
+    "github-repository-provider": "^7.8.2",
     "globby": "^11.0.0",
     "graphql": "^15.0.0",
     "js-yaml": "^3.13.1",
@@ -53,7 +53,7 @@
     "koa-graphql": "^0.8.0",
     "koa-jwt": "^3.6.0",
     "koa-mount": "^4.0.0",
-    "ldapts": "^2.2.0",
+    "ldapts": "^2.2.1",
     "local-repository-provider": "^6.5.14",
     "nbonjour": "^3.6.3",
     "remove-sensible-values": "^1.0.6",
@@ -84,7 +84,7 @@
     "sd-daemon": "^1.0.2"
   },
   "engines": {
-    "node": ">=13.7.0"
+    "node": ">=13.13.0"
   },
   "os": [
     "darwin",
@@ -123,7 +123,7 @@
     "backup": "etc/${name}/config.json",
     "depends": {
       "redis": ">=5.0.8-1",
-      "systemd": ">=245"
+      "systemd": ">=245.4"
     },
     "installdir": "/services/${name}",
     "content": {
