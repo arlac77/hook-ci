@@ -123,7 +123,8 @@
     "backup": "etc/${name}/config.json",
     "depends": {
       "redis": ">=5.0.8-1",
-      "systemd": ">=245.4"
+      "systemd": ">=245.4",
+      "nginx-mainline": ">=1.17.10"
     },
     "installdir": "/services/${name}",
     "content": {
