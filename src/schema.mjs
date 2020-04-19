@@ -38,6 +38,10 @@ export const schema = buildSchema(`
     entry(name: String): Entry
   }
 
+  type RepositoryProvider {
+    name: String!
+  }
+
   type RepositoryGroup {
     name: String!
     id: String
@@ -45,6 +49,7 @@ export const schema = buildSchema(`
     description: String
     repositories: [Repository]
     repository(name: String): Repository
+    provider: RepositoryProvider
   }
 
   type Repository {
