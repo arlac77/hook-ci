@@ -74,10 +74,10 @@
     "got": "^11.0.1",
     "mock-repository-provider": "^5.1.49",
     "npm-pkgbuild": "^6.11.16",
-    "rollup": "^2.6.1",
+    "rollup": "^2.7.1",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-executable": "^1.5.3",
-    "semantic-release": "^17.0.6",
+    "semantic-release": "^17.0.7",
     "x-hub-signature": "^1.2.0"
   },
   "optionalDependencies": {
