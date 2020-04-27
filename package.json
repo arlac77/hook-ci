@@ -36,7 +36,7 @@
     "bitbucket-repository-provider": "^3.5.10",
     "bufferutil": "^4.0.1",
     "bull": "^3.13.0",
-    "commander": "^5.0.0",
+    "commander": "^5.1.0",
     "config-expander": "^11.0.12",
     "execa": "^4.0.0",
     "expression-expander": "^7.0.4",
@@ -58,7 +58,7 @@
     "nbonjour": "^3.6.3",
     "remove-sensible-values": "^1.0.6",
     "utf-8-validate": "^5.0.2",
-    "ws": "^7.2.3"
+    "ws": "^7.2.5"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.1.0",
