@@ -24,12 +24,13 @@
     "hook-ci": "bin/hook-ci"
   },
   "scripts": {
-    "prepare": "rollup -c",
+    "prepare": "npm run snyk-protect && rollup -c",
     "test": "ava --timeout 2m",
     "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
     "docs": "documentation readme src/hook-ci-cli.mjs --section=API",
     "lint": "documentation lint src/hook-ci-cli.mjs",
-    "package": "npm-pkgbuild --npm-dist --npm-modules pkgbuild pacman makepkg"
+    "package": "npm-pkgbuild --npm-dist --npm-modules pkgbuild pacman makepkg",
+    "snyk-protect": "snyk protect"
   },
   "dependencies": {
     "aggregation-repository-provider": "^2.6.56",
@@ -58,7 +59,8 @@
     "nbonjour": "^3.6.3",
     "remove-sensible-values": "^1.0.6",
     "utf-8-validate": "^5.0.2",
-    "ws": "^7.2.5"
+    "ws": "^7.2.5",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.1.0",
@@ -153,5 +155,6 @@
       "arlac77/template-systemd",
       "arlac77/template-pacman"
     ]
-  }
+  },
+  "snyk": true
 }
