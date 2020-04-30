@@ -27,8 +27,8 @@
     "prepare": "rollup -c",
     "test": "ava --timeout 2m",
     "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
-    "docs": "documentation readme src/hook-ci-cli.mjs --section=API",
-    "lint": "documentation lint src/hook-ci-cli.mjs",
+    "docs": "documentation readme src/hook-ci-cli.mjs --section=API && documentation readme {{main}} --section=API",
+    "lint": "documentation lint src/hook-ci-cli.mjs && documentation lint {{main}}",
     "package": "npm-pkgbuild --npm-dist --npm-modules pkgbuild pacman makepkg"
   },
   "dependencies": {
@@ -74,7 +74,7 @@
     "got": "^11.0.2",
     "mock-repository-provider": "^5.1.54",
     "npm-pkgbuild": "^6.11.18",
-    "rollup": "^2.7.3",
+    "rollup": "^2.7.5",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-executable": "^1.5.3",
     "semantic-release": "^17.0.7",
