@@ -7,7 +7,7 @@
   "files": [
     "bin"
   ],
-  "module": "src/hook-ci-cli.mjs",
+  "main": "src/hook-ci-cli.mjs",
   "description": "simple ci to be triggered by git hooks",
   "keywords": [
     "ci",
