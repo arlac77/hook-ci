@@ -46,6 +46,7 @@ export const schema = buildSchema(`
     name: String!
     id: String
     uuid: String
+    url: String
     description: String
     repositories: [Repository]
     repository(name: String): Repository
