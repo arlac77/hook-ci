@@ -32,16 +32,16 @@
     "package": "npm-pkgbuild --npm-dist --npm-modules pkgbuild pacman makepkg"
   },
   "dependencies": {
-    "aggregation-repository-provider": "^2.6.59",
-    "bitbucket-repository-provider": "^3.5.16",
+    "aggregation-repository-provider": "^2.6.60",
+    "bitbucket-repository-provider": "^3.5.18",
     "bufferutil": "^4.0.1",
     "bull": "^3.13.0",
     "commander": "^5.1.0",
     "config-expander": "^11.0.13",
     "execa": "^4.0.0",
     "expression-expander": "^7.0.5",
-    "gitea-repository-provider": "^1.10.16",
-    "github-repository-provider": "^7.9.8",
+    "gitea-repository-provider": "^1.10.18",
+    "github-repository-provider": "^7.9.10",
     "globby": "^11.0.0",
     "graphql": "^15.0.0",
     "js-yaml": "^3.13.1",
@@ -54,7 +54,7 @@
     "koa-jwt": "^3.6.0",
     "koa-mount": "^4.0.0",
     "ldapts": "^2.2.1",
-    "local-repository-provider": "^6.5.29",
+    "local-repository-provider": "^6.5.30",
     "nbonjour": "^3.6.3",
     "remove-sensible-values": "^1.0.6",
     "utf-8-validate": "^5.0.2",
@@ -71,7 +71,7 @@
     "builtin-modules": "^3.1.0",
     "c8": "^7.1.2",
     "documentation": "^12.3.0",
-    "got": "^11.1.0",
+    "got": "^11.1.1",
     "mock-repository-provider": "^5.1.58",
     "npm-pkgbuild": "^6.11.18",
     "rollup": "^2.8.2",
@@ -84,7 +84,7 @@
     "sd-daemon": "^1.0.2"
   },
   "engines": {
-    "node": ">=14.1.0"
+    "node": ">=14.2.0"
   },
   "os": [
     "darwin",
