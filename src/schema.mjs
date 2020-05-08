@@ -60,6 +60,7 @@ export const schema = buildSchema(`
     isArchived: Boolean!
     isDisabled: Boolean!
     isLocked: Boolean!
+    isTemplate: Boolean!
     description: String
     fullName: String!
     condensedName: String!
