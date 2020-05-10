@@ -32,8 +32,6 @@ test("analyser", async t => {
     }
   ];
 
-  //console.log(processData);
-
   t.deepEqual(processData, {
     branch: "master",
     node: "testnode",
@@ -78,7 +76,7 @@ test("analyser", async t => {
         },
         requirements
       },
-      {
+      /*{
         timeout: 1800000,
         name: "lint",
         executable: "npm",
@@ -97,7 +95,7 @@ test("analyser", async t => {
           cwd: "{{workspaceDirectory}}"
         },
         requirements
-      },
+      },*/
       {
         timeout: 1800000,
         name: "deploy",
