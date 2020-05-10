@@ -35,10 +35,10 @@
     "aggregation-repository-provider": "^2.6.61",
     "bitbucket-repository-provider": "^3.5.19",
     "bufferutil": "^4.0.1",
-    "bull": "^3.13.0",
+    "bull": "^3.14.0",
     "commander": "^5.1.0",
     "config-expander": "^11.0.13",
-    "execa": "^4.0.0",
+    "execa": "^4.0.1",
     "expression-expander": "^7.0.5",
     "gitea-repository-provider": "^1.10.19",
     "github-repository-provider": "^7.9.11",
@@ -58,7 +58,7 @@
     "nbonjour": "^3.6.3",
     "remove-sensible-values": "^1.0.6",
     "utf-8-validate": "^5.0.2",
-    "ws": "^7.2.5"
+    "ws": "^7.3.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.1.0",
