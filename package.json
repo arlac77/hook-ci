@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "aggregation-repository-provider": "^2.6.64",
-    "bitbucket-repository-provider": "^3.5.20",
+    "bitbucket-repository-provider": "^3.5.21",
     "bufferutil": "^4.0.1",
     "bull": "^3.14.0",
     "commander": "^5.1.0",
@@ -41,7 +41,7 @@
     "execa": "^4.0.1",
     "expression-expander": "^7.0.5",
     "gitea-repository-provider": "^1.10.22",
-    "github-repository-provider": "^7.9.17",
+    "github-repository-provider": "^7.9.18",
     "globby": "^11.0.0",
     "graphql": "^15.0.0",
     "js-yaml": "^3.13.1",
