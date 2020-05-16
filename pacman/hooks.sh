@@ -4,7 +4,6 @@ pre_install() {
 }
 
 post_install() {
-	systemctl daemon-reload
 	systemctl enable {{name}}
 	systemctl enable {{name}}.socket
 	systemctl start {{name}}.socket
@@ -17,7 +16,6 @@ pre_upgrade() {
 }
 
 post_upgrade() {
-	systemctl daemon-reload
 	systemctl start {{name}}.socket
 	systemctl is-enabled nginx 2>&1 >/dev/null && systemctl -q try-reload-or-restart nginx
 }
@@ -30,7 +28,6 @@ pre_remove() {
 }
 
 post_remove() {
-	systemctl daemon-reload
 	systemctl is-enabled nginx 2>&1 >/dev/null && systemctl -q try-reload-or-restart nginx
 
 	userdel {{name}}
