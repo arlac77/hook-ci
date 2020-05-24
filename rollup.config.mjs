@@ -23,7 +23,7 @@ const external = [
 const extensions = ["js", "mjs", "jsx", "tag"];
 const plugins = [
   commonjs(),
-  resolve(),
+  resolve.nodeResolve(),
   json({
     preferConst: true,
     compact: true
