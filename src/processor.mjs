@@ -89,7 +89,13 @@ export async function executeStep(step, queue, job, eeContext, notificatioHandle
       console.log(
         `timeout (${step.timeout / 1000.0}s) waiting for ${step.executable}`
       );
-      proc.cancel();
+      try { 
+        proc.cancel();
+      }
+      catch(e) {
+        console.log(e);
+        console.log(proc);
+      }
       step.ok = false;
     }, step.timeout);
 
