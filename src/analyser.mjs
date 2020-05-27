@@ -25,7 +25,7 @@ export const defaultAnalyserConfig = {
 };
 
 /**
- * analyse the incoming job and prepare the steps to be executed in the processing queue(s)
+ * Analyse the incoming job and prepare the steps to be executed in the processing queue(s)
  * @param {Job} job
  * @param {Object} bus
  */

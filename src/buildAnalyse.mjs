@@ -2,8 +2,7 @@ import { join, dirname } from "path";
 import { createStep } from "./util.mjs";
 
 /**
- * 
- * search for build.sh
+ * Search for build.sh
  */
 export async function buildAnalyse(branch, job, config, wd) {
   const steps = [];
