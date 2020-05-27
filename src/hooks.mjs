@@ -24,15 +24,16 @@ export function createHooks(hooks, router, queues) {
 
     const hook = hooks[t];
     const queue = queues[hook.queue];
+    
+    const logOnly = (request, event) => console.log("Received a %s event for %s", event, request);
 
     router.addRoute(
       "POST",
       hook.path,
       handler(
         {
-          delete: async (request, event) => {
-            console.log("Received a %s event for %s", event, request);
-          },
+          create: logOnly, 
+          delete: logOnly, 
           'repo:push': async (request, event) => {
             request.event = event;
             if(request.repository && request.repository.links && request.repository.links.html) {
