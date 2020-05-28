@@ -6,7 +6,7 @@ Wants=network-online.target
 [Service]
 Type=notify
 
-ExecStart={{installdir}}/bin/{{name}}
+ExecStart=/usr/bin/node --title {{name}} {{installdir}}/src/{{name}}-cli.mjs
 ExecStop=/usr/bin/curl -s -XPOST --unix-socket {{socket}} http://localhost/node/local/stop
 ExecReload=/usr/bin/curl -s -XPOST --unix-socket {{socket}} http://localhost/node/local/reload
 RestartSec=10

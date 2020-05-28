@@ -1,5 +1,7 @@
-import { resolve } from "path";
-import { version, description } from "../package.json";
+import { readFileSync } from "fs";
+import { resolve, join, dirname } from "path";
+import { fileURLToPath } from "url";
+
 import program from "commander";
 import { expand } from "config-expander";
 import { removeSensibleValues } from "remove-sensible-values";
@@ -9,19 +11,31 @@ import { defaultQueuesConfig, initializeQueues } from "./queues.mjs";
 import { defaultAnalyserConfig } from "./analyser.mjs";
 import { defaultProcessorConfig } from "./processor.mjs";
 import { defaultAuthConfig } from "./auth.mjs";
-import { defaultRepositoriesConfig, initializeRepositories } from "./repositories.mjs";
+import {
+  defaultRepositoriesConfig,
+  initializeRepositories
+} from "./repositories.mjs";
 import { defaultNodesConfig, initializeNodes } from "./nodes.mjs";
+
+const here = join(dirname(fileURLToPath(import.meta.url)));
+
+const { version, description } = JSON.parse(
+  readFileSync(
+    join(dirname(fileURLToPath(import.meta.url)), "..", "package.json"),
+    { endoding: "utf8" }
+  )
+);
 
 program
   .version(version)
   .description(description)
   .option("-c, --config <dir>", "use config directory")
   .action(async () => {
-    let sd = { notify: () => { }, listeners: () => [] };
+    let sd = { notify: () => {}, listeners: () => [] };
 
     try {
       sd = await import("sd-daemon");
-    } catch (e) { }
+    } catch (e) {}
 
     sd.notify("READY=1\nSTATUS=starting");
 
@@ -30,7 +44,7 @@ program
     const config = await expand(configDir ? "${include('config.json')}" : {}, {
       constants: {
         basedir: configDir || process.cwd(),
-        installdir: resolve(__dirname, "..")
+        installdir: resolve(here, "..")
       },
       default: {
         version,
