@@ -17,12 +17,12 @@ import {
 } from "./repositories.mjs";
 import { defaultNodesConfig, initializeNodes } from "./nodes.mjs";
 
-const here = join(dirname(fileURLToPath(import.meta.url)));
+const here = dirname(fileURLToPath(import.meta.url));
 
 const { version, description } = JSON.parse(
   readFileSync(
-    join(dirname(fileURLToPath(import.meta.url)), "..", "package.json"),
-    { endoding: "utf8" }
+    join(here, "..", "package.json"),
+    { encoding: "utf8" }
   )
 );
 
