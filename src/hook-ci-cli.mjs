@@ -21,10 +21,7 @@ import { StandaloneServiceProvider } from "@kronos-integration/service";
 const here = dirname(fileURLToPath(import.meta.url));
 
 const { version, description } = JSON.parse(
-  readFileSync(
-    join(here, "..", "package.json"),
-    { encoding: "utf8" }
-  )
+  readFileSync(join(here, "..", "package.json"), { encoding: "utf8" })
 );
 
 program
@@ -34,54 +31,53 @@ program
   .action(() => initialize())
   .parse(process.argv);
 
-async function setup(sp)
-{
-    sp.start();
+async function setup(sp) {
+  sp.start();
 
-    //console.log(Object.keys(sp.services));
+  const configDir = process.env.CONFIGURATION_DIRECTORY || program.config;
 
-    const configDir = process.env.CONFIGURATION_DIRECTORY || program.config;
-
-    const config = await expand(configDir ? "${include('config.json')}" : {}, {
-      constants: {
-        basedir: configDir || process.cwd(),
-        installdir: resolve(here, "..")
-      },
-      default: {
-        version,
-        nodename: "${os.hostname}",
-        ...defaultNodesConfig,
-        ...defaultAuthConfig,
-        ...defaultRepositoriesConfig,
-        ...defaultServerConfig,
-        ...defaultProcessorConfig,
-        ...defaultAnalyserConfig,
-        ...defaultQueuesConfig
-      }
-    });
-
-    //console.log(sp.services.config.listeners);
-
-    const l = sp.services.config.listeners.find(l => l.name = 'http.listen.socket');
-    if(l) {
-      config.http.port = l; 
+  const config = await expand(configDir ? "${include('config.json')}" : {}, {
+    constants: {
+      basedir: configDir || process.cwd(),
+      installdir: resolve(here, "..")
+    },
+    default: {
+      version,
+      nodename: "${os.hostname}",
+      ...defaultNodesConfig,
+      ...defaultAuthConfig,
+      ...defaultRepositoriesConfig,
+      ...defaultServerConfig,
+      ...defaultProcessorConfig,
+      ...defaultAnalyserConfig,
+      ...defaultQueuesConfig
     }
+  });
 
-    console.log(config.http.port);
+  //console.log(sp.services.config.listeners);
 
-    //console.log(removeSensibleValues(config));
-
-    const bus = { sd: { notify: str => sp.notify(str)}, config };
-
-    try {
-      await Promise.all([initializeNodes(bus), initializeRepositories(bus)]);
-      await initializeQueues(bus);
-      await initializeServer(bus);
-      await initializeWebsockets(bus);
-    } catch (error) {
-      console.log(error);
-    }
+  const l = sp.services.config.listeners.find(
+    l => (l.name = "http.listen.socket")
+  );
+  if (l) {
+    config.http.port = l;
   }
+
+  console.log(config.http.port);
+
+  //console.log(removeSensibleValues(config));
+
+  const bus = { sd: { notify: str => sp.notify(str) }, config };
+
+  try {
+    await Promise.all([initializeNodes(bus), initializeRepositories(bus)]);
+    await initializeQueues(bus);
+    await initializeServer(bus);
+    await initializeWebsockets(bus);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 async function initialize() {
   try {
