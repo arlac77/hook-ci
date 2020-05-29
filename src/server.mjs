@@ -368,6 +368,6 @@ export async function initializeServer(bus) {
 
   bus.server = app.listen(config.http.port, () => {
     console.log("listen on", bus.server.address());
-    bus.sd.notify("READY=1\nSTATUS=running");
+    //bus.sd.notify("READY=1\nSTATUS=running");
   });
 }

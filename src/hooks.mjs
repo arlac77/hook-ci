@@ -32,8 +32,9 @@ export function createHooks(hooks, router, queues) {
       hook.path,
       handler(
         {
-          create: logOnly, 
-          delete: logOnly, 
+          create: logOnly,
+          delete: logOnly,
+          check_suite: logOnly,
           'repo:push': async (request, event) => {
             request.event = event;
             if(request.repository && request.repository.links && request.repository.links.html) {

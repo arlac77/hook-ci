@@ -16,6 +16,7 @@ import {
   initializeRepositories
 } from "./repositories.mjs";
 import { defaultNodesConfig, initializeNodes } from "./nodes.mjs";
+import { StandaloneServiceProvider } from "@kronos-integration/service";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -30,14 +31,14 @@ program
   .version(version)
   .description(description)
   .option("-c, --config <dir>", "use config directory")
-  .action(async () => {
-    let sd = { notify: () => {}, listeners: () => [] };
+  .action(() => initialize())
+  .parse(process.argv);
 
-    try {
-      sd = await import("sd-daemon");
-    } catch (e) {}
+async function setup(sp)
+{
+    sp.start();
 
-    sd.notify("READY=1\nSTATUS=starting");
+    //console.log(Object.keys(sp.services));
 
     const configDir = process.env.CONFIGURATION_DIRECTORY || program.config;
 
@@ -59,12 +60,18 @@ program
       }
     });
 
-    const listeners = sd.listeners();
-    if (listeners.length > 0) config.http.port = listeners[0];
+    //console.log(sp.services.config.listeners);
 
-    console.log(removeSensibleValues(config));
+    const l = sp.services.config.listeners.find(l => l.name = 'http.listen.socket');
+    if(l) {
+      config.http.port = l; 
+    }
 
-    const bus = { sd, config };
+    console.log(config.http.port);
+
+    //console.log(removeSensibleValues(config));
+
+    const bus = { sd: { notify: str => sp.notify(str)}, config };
 
     try {
       await Promise.all([initializeNodes(bus), initializeRepositories(bus)]);
@@ -74,5 +81,24 @@ program
     } catch (error) {
       console.log(error);
     }
-  })
-  .parse(process.argv);
+  }
+
+async function initialize() {
+  try {
+    let serviceProvider;
+    try {
+      const m = await import("@kronos-integration/service-systemd");
+      serviceProvider = new m.default();
+    } catch (e) {
+      serviceProvider = new StandaloneServiceProvider(
+        JSON.parse(
+          readFileSync(join(args[1], "config.json"), { encoding: "utf8" })
+        )
+      );
+    }
+
+    await setup(serviceProvider);
+  } catch (error) {
+    console.error(error);
+  }
+}
