@@ -56,10 +56,10 @@ export default async function setup(sp) {
     }
   });
 
-  if (Array.isArray(sp.services.config.listeners)) {
-    console.log(sp.services.config.listeners);
+  if (Array.isArray(sp.services.config.listeningFileDescriptors)) {
+    console.log(sp.services.config.listeningFileDescriptors);
 
-    const l = sp.services.config.listeners.find(
+    const l = sp.services.config.listeningFileDescriptors.find(
       l => (l.name = "http.listen.socket")
     );
     if (l) {
