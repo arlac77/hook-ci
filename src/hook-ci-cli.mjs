@@ -24,6 +24,8 @@ const { description } = JSON.parse(
   readFileSync(join(here, "..", "package.json"), { encoding: "utf8" })
 );
 
+const version = "1.0.0";
+
 program
   .description(description)
   .option("-c, --config <dir>", "use config directory")
