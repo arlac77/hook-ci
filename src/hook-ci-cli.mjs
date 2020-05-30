@@ -1,83 +1,46 @@
 import { readFileSync } from "fs";
-import { resolve, join, dirname } from "path";
+import { join, dirname } from "path";
 import { fileURLToPath } from "url";
-
-import program from "commander";
-import { expand } from "config-expander";
-import { removeSensibleValues } from "remove-sensible-values";
-import { defaultServerConfig, initializeServer } from "./server.mjs";
-import { initializeWebsockets } from "./websockets.mjs";
-import { defaultQueuesConfig, initializeQueues } from "./queues.mjs";
-import { defaultAnalyserConfig } from "./analyser.mjs";
-import { defaultProcessorConfig } from "./processor.mjs";
-import { defaultAuthConfig } from "./auth.mjs";
-import {
-  defaultRepositoriesConfig,
-  initializeRepositories
-} from "./repositories.mjs";
-import { defaultNodesConfig, initializeNodes } from "./nodes.mjs";
+import setup from "./hook-ci.mjs";
 import { StandaloneServiceProvider } from "@kronos-integration/service";
 
-const here = dirname(fileURLToPath(import.meta.url));
+const args = process.argv.slice(2);
 
-const { description } = JSON.parse(
-  readFileSync(join(here, "..", "package.json"), { encoding: "utf8" })
-);
-
-const version = "1.0.0";
-
-program
-  .description(description)
-  .option("-c, --config <dir>", "use config directory")
-  .action(() => initialize())
-  .parse(process.argv);
-
-async function setup(sp) {
-  sp.start();
-
-  const configDir = process.env.CONFIGURATION_DIRECTORY || program.config;
-
-  const config = await expand(configDir ? "${include('config.json')}" : {}, {
-    constants: {
-      basedir: configDir || process.cwd(),
-      installdir: resolve(here, "..")
-    },
-    default: {
-      version,
-      nodename: "${os.hostname}",
-      ...defaultNodesConfig,
-      ...defaultAuthConfig,
-      ...defaultRepositoriesConfig,
-      ...defaultServerConfig,
-      ...defaultProcessorConfig,
-      ...defaultAnalyserConfig,
-      ...defaultQueuesConfig
+switch (args[0]) {
+  case "--version":
+    {
+      const { version } = info();
+      console.log(version);
+      process.exit(0);
     }
-  });
+    break;
+  case "--help":
+  case "-h":
+    {
+      const { description, version } = info();
+      console.log(`${description} (${version});
+usage:
+ -h --help this help screen
+ -c --config <directory> set config directory`);
+      process.exit(0);
+    }
+    break;
 
-  //console.log(sp.services.config.listeners);
+  case "--config":
+  case "-c":
+    process.env.CONFIGURATION_DIRECTORY = args[1];
+    break;
+}
 
-  const l = sp.services.config.listeners.find(
-    l => (l.name = "http.listen.socket")
+initialize();
+
+function info() {
+  return JSON.parse(
+    readFileSync(
+      join(dirname(fileURLToPath(import.meta.url)), "..", "package.json"),
+      { encoding: "utf8" }
+    )
   );
-  if (l) {
-    config.http.port = l;
-  }
-
-  console.log(config.http.port);
-
-  //console.log(removeSensibleValues(config));
-
-  const bus = { sd: { notify: str => sp.notify(str) }, config };
-
-  try {
-    await Promise.all([initializeNodes(bus), initializeRepositories(bus)]);
-    await initializeQueues(bus);
-    await initializeServer(bus);
-    await initializeWebsockets(bus);
-  } catch (error) {
-    console.log(error);
-  }
 }
 
 async function initialize() {

@@ -33,7 +33,6 @@
     "bitbucket-repository-provider": "^3.6.0",
     "bufferutil": "^4.0.1",
     "bull": "^3.14.0",
-    "commander": "^5.1.0",
     "config-expander": "^11.0.13",
     "execa": "^4.0.2",
     "expression-expander": "^7.0.5",
@@ -53,7 +52,6 @@
     "ldapts": "^2.5.1",
     "local-repository-provider": "^6.5.43",
     "nbonjour": "^3.6.3",
-    "remove-sensible-values": "^1.0.6",
     "utf-8-validate": "^5.0.2",
     "ws": "^7.3.0"
   },
@@ -113,7 +111,7 @@
     "backup": "etc/${name}/config.json",
     "depends": {
       "redis": ">=6.0.4-1",
-      "systemd": ">=245.4",
+      "systemd": ">=245.5",
       "nginx-mainline": ">=1.17.10"
     },
     "installdir": "/services/${name}",
