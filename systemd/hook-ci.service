@@ -5,25 +5,39 @@ Wants=network-online.target
 
 [Service]
 Type=notify
-
 ExecStart=/usr/bin/node --title {{name}} {{installdir}}/src/{{name}}-cli.mjs
-ExecStop=/usr/bin/curl -s -XPOST --unix-socket {{socket}} http://localhost/node/local/stop
-ExecReload=/usr/bin/curl -s -XPOST --unix-socket {{socket}} http://localhost/node/local/reload
+ExecReload=/bin/kill -HUP $MAINPID
 RestartSec=10
 TimeoutStartSec=40
 TimeoutStopSec=25
-StandardOutput=syslog
+NotifyAccess=all
+FileDescriptorStoreMax=5
+OOMPolicy=stop
 User={{name}}
 Group={{name}}
-CPUWeight=50
-IOWeight=50
 SupplementaryGroups=http
-PrivateTmp=true
-PrivateDevices=true
 NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
 RuntimeDirectory={{name}}
 StateDirectory={{name}}
+CacheDirectory={{name}}
 ConfigurationDirectory={{name}}
+PrivateTmp=true
+PrivateDevices=true
+ProtectClock=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+LockPersonality=true
+RestrictSUIDSGID=true
+CPUWeight=50
+IOWeight=50
+MemoryAccounting=true
+MemoryHigh=500M
+MemoryMax=1000M
+StandardError=journal
+StandardOutput=journal
+SystemCallErrorNumber=EPERM
 
 [Install]
 WantedBy=multi-user.target
