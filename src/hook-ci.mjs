@@ -1,6 +1,10 @@
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 import { expand } from "config-expander";
+import ServiceLDAP from "@kronos-integration/service-ldap";
+import ServiceAuthenticator from "@kronos-integration/service-authenticator";
+
+
 import { defaultServerConfig, initializeServer } from "./server.mjs";
 import { initializeWebsockets } from "./websockets.mjs";
 import { defaultQueuesConfig, initializeQueues } from "./queues.mjs";
@@ -16,6 +20,20 @@ import { defaultNodesConfig, initializeNodes } from "./nodes.mjs";
 const here = dirname(fileURLToPath(import.meta.url));
 
 export default async function setup(sp) {
+
+  await sp.declareServices({
+    auth: {
+      type: ServiceAuthenticator,
+      autostart: true,
+      endpoints: {
+        ldap: "service(ldap).authenticate"
+      }
+    },
+    ldap: {
+      type: ServiceLDAP
+    }
+  });
+
   sp.start();
 
   const configDir = process.env.CONFIGURATION_DIRECTORY || args[1];

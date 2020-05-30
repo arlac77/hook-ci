@@ -29,6 +29,9 @@
   },
   "dependencies": {
     "@kronos-integration/service": "^8.5.12",
+    "@kronos-integration/service-authenticator": "^1.0.38",
+    "@kronos-integration/service-ldap": "^2.1.36",
+    "@kronos-integration/service-swarm": "^1.6.12",
     "aggregation-repository-provider": "^2.7.8",
     "bitbucket-repository-provider": "^3.6.3",
     "bufferutil": "^4.0.1",
