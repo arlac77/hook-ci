@@ -4,7 +4,6 @@ import Router from "koa-better-router";
 import BodyParser from "koa-bodyparser";
 import { createHooks } from "./hooks.mjs";
 import { initGraphQL } from "./graphql.mjs";
-import { accessTokenGenerator } from "./auth.mjs";
 
 export const defaultServerConfig = {
   http: {
@@ -80,6 +79,23 @@ function setNoCacheHeaders(ctx) {
   ctx.set("Expires", 0);
 }
 
+function tokenGenerator(authService) {
+  return async (ctx, next) => {
+    const q = ctx.request.body;
+
+    try {
+      const result = await authService.accessTokenGenerator(q.username, q.password);
+      ctx.body = {
+        access_token: result.access_token
+      };
+      return next();
+    } catch (e) {
+      console.log(e);
+      ctx.throw(401, "Authentication failed");
+    }
+  };
+}
+
 export async function initializeServer(bus) {
   const config = bus.config;
 
@@ -98,7 +114,7 @@ export async function initializeServer(bus) {
     "POST",
     "/authenticate",
     BodyParser(),
-    accessTokenGenerator(config, e => e.startsWith("ci"))
+    tokenGenerator(bus.sp.services.auth)
   );
 
   // middleware to restrict access to token holding requests
@@ -166,7 +182,9 @@ export async function initializeServer(bus) {
 
     const rg = [];
 
-    for await (const group of bus.repositories.repositoryGroups(ctx.query.pattern)) {
+    for await (const group of bus.repositories.repositoryGroups(
+      ctx.query.pattern
+    )) {
       rg.push(group.toJSON());
     }
 
@@ -180,7 +198,9 @@ export async function initializeServer(bus) {
 
     const rs = [];
 
-    for await (const repository of bus.repositories.repositories(ctx.query.pattern)) {
+    for await (const repository of bus.repositories.repositories(
+      ctx.query.pattern
+    )) {
       rs.push(repository.toJSON());
     }
 
@@ -204,10 +224,7 @@ export async function initializeServer(bus) {
   router.addRoute("GET", "/queue/:queue", restricted, async (ctx, next) => {
     setNoCacheHeaders(ctx);
 
-    ctx.body = await queueDetails(
-      ctx.params.queue,
-      getQueue(bus.queues, ctx)
-    );
+    ctx.body = await queueDetails(ctx.params.queue, getQueue(bus.queues, ctx));
     return next();
   });
 
@@ -271,16 +288,18 @@ export async function initializeServer(bus) {
 
       //ctx.query.states;
       const queue = getQueue(bus.queues, ctx);
-      ctx.body = (await queue.getJobs(
-        [
-          "active",
-          "waiting",
-          "completed",
-          "paused",
-          "failed",
-          "delayed"
-        ] /*, { asc: true }*/
-      )).map(job => {
+      ctx.body = (
+        await queue.getJobs(
+          [
+            "active",
+            "waiting",
+            "completed",
+            "paused",
+            "failed",
+            "delayed"
+          ] /*, { asc: true }*/
+        )
+      ).map(job => {
         return {
           id: Number(job.id),
           attemptsMade: job.attemptsMade,
@@ -368,6 +387,5 @@ export async function initializeServer(bus) {
 
   bus.server = app.listen(config.http.port, () => {
     console.log("listen on", bus.server.address());
-    //bus.sd.notify("READY=1\nSTATUS=running");
   });
 }

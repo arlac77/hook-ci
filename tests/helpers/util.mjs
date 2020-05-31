@@ -59,8 +59,6 @@ export function makeConfig(port=1234) {
   };
 }
 
-export const sd = { notify: () => {}, listeners: () => [] };
-
 export function makeQueue(name) {
   const queue = {
     name,

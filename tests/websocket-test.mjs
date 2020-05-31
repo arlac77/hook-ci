@@ -4,8 +4,6 @@ import { initializeServer } from "../src/server.mjs";
 import { initializeWebsockets } from "../src/websockets.mjs";
 import { makeConfig } from "./helpers/util.mjs";
 
-const sd = { notify: () => {}, listeners: () => [] };
-
 let _port = 3200;
 
 function nextPort() {
@@ -26,9 +24,10 @@ test.cb("websocket", t => {
   async function setupServer() {
     const port = nextPort();
     const bus = {
+      sp: { services: { auth: { accessTokenGenerator: async () => {} } } },
+
       config: makeConfig(port),
-        sd,
-        queues
+      queues
     };
 
     await initializeServer(bus);
@@ -44,7 +43,7 @@ test.cb("websocket", t => {
       console.log("OPEN");
       ws.send("All glory to WebSockets!");
 
-      ws.on('message', data => {
+      ws.on("message", data => {
         console.log("MESSAGE", data);
       });
 

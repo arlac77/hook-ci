@@ -94,12 +94,10 @@ export class LocalNode extends Node {
   }
 
   async stop() {
-    //this.bus.sd.notify("STOPPING=1");
     setImmediate(() => process.exit(0));
   }
 
   async reload() {
-    //this.bus.sd.notify("RELOADING=1");
   }
 
   get isLocal() {

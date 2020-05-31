@@ -34,7 +34,7 @@ export default async function setup(sp) {
     }
   });
 
-  sp.start();
+  await sp.start();
 
   const configDir = process.env.CONFIGURATION_DIRECTORY || args[1];
 
@@ -69,7 +69,7 @@ export default async function setup(sp) {
 
   console.log(config.http.port);
 
-  const bus = { sd: { notify: str => sp.notify(str) }, config };
+  const bus = { sp, config };
 
   try {
     await Promise.all([initializeNodes(bus), initializeRepositories(bus)]);

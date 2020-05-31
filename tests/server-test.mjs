@@ -1,19 +1,63 @@
 import test from "ava";
 import got from "got";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
+import { readFileSync } from "fs";
+
 import { GithubProvider } from "github-repository-provider";
+import ServiceAuthenticator from "@kronos-integration/service-authenticator";
+import { StandaloneServiceProvider } from "@kronos-integration/service";
+import { ReceiveEndpoint } from "@kronos-integration/endpoint";
+
 import signer from "x-hub-signature/src/signer.js";
 import { initializeServer } from "../src/server.mjs";
 import { LocalNode } from "../src/nodes.mjs";
-import { makeQueue, makeConfig, sd, secret, hook } from "./helpers/util.mjs";
+import { makeQueue, makeConfig, secret, hook } from "./helpers/util.mjs";
+
+const here = dirname(fileURLToPath(import.meta.url));
 
 let port = 3149;
 
 test.before(async t => {
   port++;
 
+  const sp = new StandaloneServiceProvider({
+    auth: {
+      jwt: {
+        options: {
+          algorithm: "RS256",
+          expiresIn: "12h"
+        },
+        public: readFileSync(join(here, "fixtures", "demo.rsa.pub")),
+        private: readFileSync(join(here, "fixtures", "demo.rsa"))
+      }
+    }}
+  );
+
+  const authEndpoint = new ReceiveEndpoint("mockAuth", sp, {
+    receive: props => {
+      const { username, password } = props;
+      return { username, entitlements: ["a"] };
+    }
+  });
+
+  await sp.declareServices({
+    auth: {
+      type: ServiceAuthenticator,
+      autostart: true,
+      endpoints: {
+        auth: authEndpoint
+      }
+    }
+  });
+
+  sp.services.auth.endpoints.auth.addConnection(authEndpoint);
+
+  await sp.start();
+
   const bus = {
+    sp,
     config: makeConfig(port),
-    sd,
     queues: {
       incoming: makeQueue("incoming")
     },
@@ -95,7 +139,6 @@ test.skip("request groups", async t => {
   t.true(json.length >= 1);
   t.is(json[0].name, "arlac77");
 });
-
 
 test("request queues", async t => {
   const response = await got.get(`http://localhost:${t.context.port}/queues`, {
