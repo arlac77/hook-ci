@@ -4,13 +4,11 @@ import { expand } from "config-expander";
 import ServiceLDAP from "@kronos-integration/service-ldap";
 import ServiceAuthenticator from "@kronos-integration/service-authenticator";
 
-
 import { defaultServerConfig, initializeServer } from "./server.mjs";
 import { initializeWebsockets } from "./websockets.mjs";
 import { defaultQueuesConfig, initializeQueues } from "./queues.mjs";
 import { defaultAnalyserConfig } from "./analyser.mjs";
 import { defaultProcessorConfig } from "./processor.mjs";
-import { defaultAuthConfig } from "./auth.mjs";
 import {
   defaultRepositoriesConfig,
   initializeRepositories
@@ -20,7 +18,6 @@ import { defaultNodesConfig, initializeNodes } from "./nodes.mjs";
 const here = dirname(fileURLToPath(import.meta.url));
 
 export default async function setup(sp) {
-
   await sp.declareServices({
     auth: {
       type: ServiceAuthenticator,
@@ -36,6 +33,10 @@ export default async function setup(sp) {
 
   await sp.start();
 
+  console.log(
+    await sp.services.config.configFor("server", defaultServerConfig.server)
+  );
+
   const configDir = process.env.CONFIGURATION_DIRECTORY || args[1];
 
   const config = await expand(configDir ? "${include('config.json')}" : {}, {
@@ -47,7 +48,6 @@ export default async function setup(sp) {
       version: "1.0.0",
       nodename: "${os.hostname}",
       ...defaultNodesConfig,
-      ...defaultAuthConfig,
       ...defaultRepositoriesConfig,
       ...defaultServerConfig,
       ...defaultProcessorConfig,
