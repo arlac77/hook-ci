@@ -27,7 +27,6 @@ export class ServiceRepositories extends Service {
   async _start() {
     await this._start();
 
-    console.log("AA");
     const providers = await Promise.all(
       this.providers.map(async provider => {
         const m = await import(provider.type);

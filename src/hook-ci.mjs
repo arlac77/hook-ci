@@ -1,14 +1,13 @@
-import { resolve, dirname } from "path";
+import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { expand } from "config-expander";
 import ServiceLDAP from "@kronos-integration/service-ldap";
 import ServiceAuthenticator from "@kronos-integration/service-authenticator";
 import ServiceRepositories from "./service-repositories.mjs";
 import ServiceNodes from "./service-nodes.mjs";
 import ServiceAnalyser from "./service-analyser.mjs";
+import ServiceQeueus from "./service-queues.mjs";
 
 import { defaultServerConfig, initializeServer } from "./server.mjs";
-import { defaultQueuesConfig, initializeQueues } from "./queues.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -26,6 +25,9 @@ export default async function setup(sp) {
     },
     repositories: {
       type: ServiceRepositories
+    },
+    queues: {
+      type: ServiceQeueus
     },
     nodes: {
       type: ServiceNodes
@@ -52,27 +54,9 @@ export default async function setup(sp) {
 
   await sp.start();
 
-  console.log(
-    await sp.services.config.configFor("http", defaultServerConfig.http)
-  );
-  console.log(
-    await sp.services.config.configFor("queues", defaultQueuesConfig.queues)
-  );
-
-  const configDir = process.env.CONFIGURATION_DIRECTORY || process.argv[3];
-
-  const config = await expand(configDir ? "${include('config.json')}" : {}, {
-    constants: {
-      basedir: configDir || process.cwd(),
-      installdir: resolve(here, "..")
-    },
-    default: {
-      version: "1.0.0",
-      nodename: "${os.hostname}",
-      ...defaultServerConfig,
-      ...defaultQueuesConfig
-    }
-  });
+  const config = {
+    http: await sp.services.config.configFor("http", defaultServerConfig.http)
+ };
 
   if (Array.isArray(sp.services.config.listeningFileDescriptors)) {
     console.log(sp.services.config.listeningFileDescriptors);
@@ -90,7 +74,6 @@ export default async function setup(sp) {
   const bus = { sp, config };
 
   try {
-    await initializeQueues(bus);
     await initializeServer(bus);
   } catch (error) {
     console.log(error);
