@@ -99,6 +99,8 @@ function tokenGenerator(authService) {
 export async function initializeServer(bus) {
   const config = bus.config;
 
+  const sp = bus.sp;
+
   const app = new Koa();
 
   bus.app = app;
@@ -114,7 +116,7 @@ export async function initializeServer(bus) {
     "POST",
     "/authenticate",
     BodyParser(),
-    tokenGenerator(bus.sp.services.auth)
+    tokenGenerator(sp.services.auth)
   );
 
   // middleware to restrict access to token holding requests
@@ -182,7 +184,7 @@ export async function initializeServer(bus) {
 
     const rg = [];
 
-    for await (const group of bus.sp.repositories.provider.repositoryGroups(
+    for await (const group of sp.repositories.provider.repositoryGroups(
       ctx.query.pattern
     )) {
       rg.push(group.toJSON());
@@ -198,7 +200,7 @@ export async function initializeServer(bus) {
 
     const rs = [];
 
-    for await (const repository of bus.sp.repositories.provider.repositories(
+    for await (const repository of sp.repositories.provider.repositories(
       ctx.query.pattern
     )) {
       rs.push(repository.toJSON());

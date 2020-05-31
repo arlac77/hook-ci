@@ -4,13 +4,13 @@ import { expand } from "config-expander";
 import ServiceLDAP from "@kronos-integration/service-ldap";
 import ServiceAuthenticator from "@kronos-integration/service-authenticator";
 import ServiceRepositories from "./service-repositories.mjs";
+import ServiceNodes from "./service-nodes.mjs";
 
 import { defaultServerConfig, initializeServer } from "./server.mjs";
 import { initializeWebsockets } from "./websockets.mjs";
 import { defaultQueuesConfig, initializeQueues } from "./queues.mjs";
 import { defaultAnalyserConfig } from "./analyser.mjs";
 import { defaultProcessorConfig } from "./processor.mjs";
-import { defaultNodesConfig, initializeNodes } from "./nodes.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -28,16 +28,23 @@ export default async function setup(sp) {
     },
     repositories: {
       type: ServiceRepositories
+    },
+    nodes: {
+      type: ServiceNodes
     }
   });
 
   await sp.start();
 
   console.log(
-    await sp.services.config.configFor("server", defaultServerConfig.server)
+    await sp.services.config.configFor("http", defaultServerConfig.http)
+  );
+  console.log(
+    await sp.services.config.configFor("analyse", defaultServerConfig.analyse)
   );
 
-  const configDir = process.env.CONFIGURATION_DIRECTORY || args[1];
+  const configDir = process.env.CONFIGURATION_DIRECTORY || process.argv[3];
+
 
   const config = await expand(configDir ? "${include('config.json')}" : {}, {
     constants: {
@@ -47,7 +54,6 @@ export default async function setup(sp) {
     default: {
       version: "1.0.0",
       nodename: "${os.hostname}",
-      ...defaultNodesConfig,
       ...defaultServerConfig,
       ...defaultProcessorConfig,
       ...defaultAnalyserConfig,
@@ -71,7 +77,6 @@ export default async function setup(sp) {
   const bus = { sp, config };
 
   try {
-    await initializeNodes(bus);
     await initializeQueues(bus);
     await initializeServer(bus);
     await initializeWebsockets(bus);

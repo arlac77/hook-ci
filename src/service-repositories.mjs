@@ -45,6 +45,8 @@ export class ServiceRepositories extends Service {
       })
     );
 
+    console.log(providers);
+    
     this.provider = new AggregationProvider(providers, { logger });
   }
 }

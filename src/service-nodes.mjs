@@ -1,46 +1,67 @@
 import execa from "execa";
 import nbonjour from "nbonjour";
+import { Service } from "@kronos-integration/service";
+import { mergeAttributes, createAttributes } from "model-attributes";
 
-export const defaultNodesConfig = {
-  nodes: {
-    mdns: {
-      type: "hook-ci"
+
+export class ServiceNodes extends Service {
+  static get configurationAttributes() {
+    return mergeAttributes(
+      super.configurationAttributes,
+      createAttributes({
+        mdns: {
+        }
+      })
+    );
+  }
+
+  /**
+   * @return {string} 'repositories'
+   */
+  static get name() {
+    return "repositories";
+  }
+
+  async _start() {
+
+
+    let nodename = "myself";
+
+    await this._start();
+
+    const nodes = [new LocalNode(nodename, this)];
+
+    if (config.nodes.mdns) {
+      const bonjour = nbonjour.create();
+  
+      const type = this.mdns.type;
+  
+      bonjour.publish({
+        name: config.nodename,
+        type,
+        port: 3000,
+        url: `https://${nodename}/services/ci/api`
+      });
+  
+      const browser = bonjour.find({ type }, service => {
+        if (
+          service.name !== undefined &&
+          !nodes.find(node => node.name === service.name)
+        ) {
+          console.log(service);
+          nodes.push(new Node(service.name));
+        }
+      });
+  
+      browser.start();
     }
+  
+    this.nodes = nodes;  
   }
-};
-
-export async function initializeNodes(bus) {
-  const config = bus.config;
-
-  const nodes = [new LocalNode(config.nodename, bus)];
-
-  if (config.nodes.mdns) {
-    const bonjour = nbonjour.create();
-
-    const type = config.nodes.mdns.type;
-
-    bonjour.publish({
-      name: config.nodename,
-      type,
-      port: 3000,
-      url: `https://${config.nodename}/services/ci/api`
-    });
-
-    const browser = bonjour.find({ type }, service => {
-      if (
-        service.name !== undefined &&
-        !nodes.find(node => node.name === service.name)
-      ) {
-        console.log(service);
-        nodes.push(new Node(service.name));
-      }
-    });
-
-    browser.start();
-  }
-
-  bus.nodes = nodes;
 }
+
+export default ServiceNodes;
+
 
 export class Node {
   constructor(name, options) {
@@ -86,7 +107,7 @@ export class Node {
 export class LocalNode extends Node {
   constructor(name, options) {
     super(name, options);
-    Object.defineProperties(this, { bus: { value: options } });
+    Object.defineProperties(this, { service: { value: options } });
   }
 
   async restart() {
@@ -105,11 +126,11 @@ export class LocalNode extends Node {
   }
 
   get config() {
-    return this.bus.config;
+    return {};
   }
 
   get version() {
-    return this.config.version;
+    return "-78";
   }
 
   get uptime() {
@@ -127,7 +148,7 @@ export class LocalNode extends Node {
   async state() {
     return {
       name: this.name,
-      version: this.bus.config.version,
+      version: "-77",
       versions: process.versions,
       platform: process.platform,
       uptime: process.uptime(),
