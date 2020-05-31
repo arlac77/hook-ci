@@ -105,11 +105,11 @@ export async function initializeQueues(bus) {
   const config = bus.config;
 
   const client = new Redis(config.redis.url);
-  client.setMaxListeners(20);
+  client.setMaxListeners(30);
   const subscriber = new Redis(config.redis.url);
-  subscriber.setMaxListeners(20);
+  subscriber.setMaxListeners(30);
   const other = new Redis(config.redis.url);
-  other.setMaxListeners(20);
+  other.setMaxListeners(30);
 
   const queueOptions = {
     createClient(type) {
