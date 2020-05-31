@@ -182,7 +182,7 @@ export async function initializeServer(bus) {
 
     const rg = [];
 
-    for await (const group of bus.repositories.repositoryGroups(
+    for await (const group of bus.sp.repositories.provider.repositoryGroups(
       ctx.query.pattern
     )) {
       rg.push(group.toJSON());
@@ -198,7 +198,7 @@ export async function initializeServer(bus) {
 
     const rs = [];
 
-    for await (const repository of bus.repositories.repositories(
+    for await (const repository of bus.sp.repositories.provider.repositories(
       ctx.query.pattern
     )) {
       rs.push(repository.toJSON());

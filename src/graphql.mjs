@@ -20,30 +20,30 @@ export function initGraphQL(bus) {
   const root = {
     branches: async ({ name }) => {
       const result = [];
-      for await (const r of bus.repositories.branches(name)) {
+      for await (const r of bus.sp.repositories.provider.branches(name)) {
         result.push(r);
       }
       return result;
     },
-    branch: async params => bus.repositories.branch(params.name),
+    branch: async params => bus.sp.repositories.provider.branch(params.name),
 
     repositories: async ({ name }) => {
       const result = [];
-      for await (const r of bus.repositories.repositories(name)) {
+      for await (const r of bus.sp.repositories.provider.repositories(name)) {
         result.push(r);
       }
       return result;
     },
-    repository: async params => bus.repositories.repository(params.name),
+    repository: async params => bus.sp.repositories.provider.repository(params.name),
 
     groups: async ({ name }) => {
       const result = [];
-      for await (const r of bus.repositories.repositoryGroups(name)) {
+      for await (const r of bus.sp.repositories.provider.repositoryGroups(name)) {
         result.push(r);
       }
       return result;
     },
-    group: async params => bus.repositories.repositoryGroup(params.name),
+    group: async params => bus.sp.repositories.provider.repositoryGroup(params.name),
     node: async params => remoteNode(bus.nodes.find(node => node.name === params.name)),
     nodes: async () => bus.nodes.map(node => remoteNode(node)),
     queue: async params => bus.queues[params.name],

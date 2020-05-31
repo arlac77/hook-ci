@@ -3,16 +3,13 @@ import { fileURLToPath } from "url";
 import { expand } from "config-expander";
 import ServiceLDAP from "@kronos-integration/service-ldap";
 import ServiceAuthenticator from "@kronos-integration/service-authenticator";
+import ServiceRepositories from "./service-repositories.mjs";
 
 import { defaultServerConfig, initializeServer } from "./server.mjs";
 import { initializeWebsockets } from "./websockets.mjs";
 import { defaultQueuesConfig, initializeQueues } from "./queues.mjs";
 import { defaultAnalyserConfig } from "./analyser.mjs";
 import { defaultProcessorConfig } from "./processor.mjs";
-import {
-  defaultRepositoriesConfig,
-  initializeRepositories
-} from "./repositories.mjs";
 import { defaultNodesConfig, initializeNodes } from "./nodes.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -28,6 +25,9 @@ export default async function setup(sp) {
     },
     ldap: {
       type: ServiceLDAP
+    },
+    repositories: {
+      type: ServiceRepositories
     }
   });
 
@@ -48,7 +48,6 @@ export default async function setup(sp) {
       version: "1.0.0",
       nodename: "${os.hostname}",
       ...defaultNodesConfig,
-      ...defaultRepositoriesConfig,
       ...defaultServerConfig,
       ...defaultProcessorConfig,
       ...defaultAnalyserConfig,
@@ -72,7 +71,7 @@ export default async function setup(sp) {
   const bus = { sp, config };
 
   try {
-    await Promise.all([initializeNodes(bus), initializeRepositories(bus)]);
+    await initializeNodes(bus);
     await initializeQueues(bus);
     await initializeServer(bus);
     await initializeWebsockets(bus);

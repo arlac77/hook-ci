@@ -58,7 +58,7 @@ export async function analyseJob(job, bus) {
 
   job.progress(5);
 
-  const branch = await bus.repositories.branch(`${url}#${newData.branch}`);
+  const branch = await bus.sp.repositories.provider.branch(`${url}#${newData.branch}`);
 
   if (branch === undefined) {
     throw new Error(`No such branch: ${url} ${newData.branch}`);
