@@ -1,14 +1,14 @@
 import test from "ava";
-import { initializeNodes, defaultNodesConfig, detectCapabilities, detectCapabilitiesFrom, CapabilitiyDetectors } from "../src/nodes.mjs";
+import { detectCapabilities, detectCapabilitiesFrom, CapabilitiyDetectors } from "../src/service-nodes.mjs";
 
 test("initialize nodes", async t => {
   const bus = {
    config: {
-     ...defaultNodesConfig, nodename: 'local'
+     nodename: 'local'
    }
   };
 
-  await initializeNodes(bus);
+ // await initializeNodes(bus);
 
   t.is(bus.nodes[0].name, 'local');
 });

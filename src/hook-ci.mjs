@@ -5,12 +5,10 @@ import ServiceLDAP from "@kronos-integration/service-ldap";
 import ServiceAuthenticator from "@kronos-integration/service-authenticator";
 import ServiceRepositories from "./service-repositories.mjs";
 import ServiceNodes from "./service-nodes.mjs";
+import ServiceAnalyser from "./service-analyser.mjs";
 
 import { defaultServerConfig, initializeServer } from "./server.mjs";
-import { initializeWebsockets } from "./websockets.mjs";
 import { defaultQueuesConfig, initializeQueues } from "./queues.mjs";
-import { defaultAnalyserConfig } from "./analyser.mjs";
-import { defaultProcessorConfig } from "./processor.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -31,6 +29,24 @@ export default async function setup(sp) {
     },
     nodes: {
       type: ServiceNodes
+    },
+    analyser: {
+      type: ServiceAnalyser,
+      entries: {
+        exclude: ["!test/**/*", "!tests/**/*"]
+      },
+      refs: {
+        exclude: "^refs\\/tags"
+      },
+      analyser: [
+        {
+          type: "npm",
+          logLevel: "debug"
+        },
+        {
+          type: "pkgbuild"
+        }
+      ]
     }
   });
 
@@ -40,11 +56,10 @@ export default async function setup(sp) {
     await sp.services.config.configFor("http", defaultServerConfig.http)
   );
   console.log(
-    await sp.services.config.configFor("analyse", defaultServerConfig.analyse)
+    await sp.services.config.configFor("queues", defaultQueuesConfig.queues)
   );
 
   const configDir = process.env.CONFIGURATION_DIRECTORY || process.argv[3];
-
 
   const config = await expand(configDir ? "${include('config.json')}" : {}, {
     constants: {
@@ -55,8 +70,6 @@ export default async function setup(sp) {
       version: "1.0.0",
       nodename: "${os.hostname}",
       ...defaultServerConfig,
-      ...defaultProcessorConfig,
-      ...defaultAnalyserConfig,
       ...defaultQueuesConfig
     }
   });
@@ -79,7 +92,6 @@ export default async function setup(sp) {
   try {
     await initializeQueues(bus);
     await initializeServer(bus);
-    await initializeWebsockets(bus);
   } catch (error) {
     console.log(error);
   }

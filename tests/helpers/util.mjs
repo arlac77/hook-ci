@@ -1,8 +1,6 @@
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { readFileSync } from "fs";
-import { defaultRepositoriesConfig } from "../../src/repositories.mjs";
-import { defaultAnalyserConfig } from "../../src/analyser.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -22,7 +20,6 @@ export function makeJob(id, data = {}) {
 
 export function makeConfig(port=1234) {
   return {
-    ...defaultRepositoriesConfig,
     ...defaultAnalyserConfig,
     nodename: "testnode",
     version: 99,

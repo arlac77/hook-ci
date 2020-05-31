@@ -19,12 +19,10 @@ export class ServiceNodes extends Service {
    * @return {string} 'repositories'
    */
   static get name() {
-    return "repositories";
+    return "nodes";
   }
 
   async _start() {
-
-
     let nodename = "myself";
 
     await this._start();

@@ -2,6 +2,8 @@ import { createStep } from "./util.mjs";
 import { npmAnalyse } from "./npm.mjs";
 import { pkgbuildAnalyse } from "./pkgbuild.mjs";
 import { buildAnalyse } from "./buildAnalyse.mjs";
+import { Service } from "@kronos-integration/service";
+import { mergeAttributes, createAttributes } from "model-attributes";
 
 export const defaultAnalyserConfig = {
   workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp/hook-ci')}" },
@@ -23,6 +25,31 @@ export const defaultAnalyserConfig = {
     ]
   }
 };
+
+
+export class ServiceAnalyser extends Service {
+  static get configurationAttributes() {
+    return mergeAttributes(
+      super.configurationAttributes,
+      createAttributes({
+      })
+    );
+  }
+
+  /**
+   * @return {string} 'repositories'
+   */
+  static get name() {
+    return "analyser";
+  }
+
+  async _start() {
+    await this._start();
+  }
+}
+
+export default ServiceAnalyser;
+
 
 /**
  * Analyse the incoming job and prepare the steps to be executed in the processing queue(s)

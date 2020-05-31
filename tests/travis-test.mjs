@@ -1,7 +1,7 @@
 import test from "ava";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
-import { defaultAnalyserConfig } from "../src/analyser.mjs";
+import ServiceAnalyser from "../src/service-analyser.mjs";
 import { travisAnalyse } from "../src/travis.mjs";
 import { MockProvider } from "mock-repository-provider";
 import { makeJob } from "./helpers/util.mjs";
@@ -18,7 +18,7 @@ test("travis", async t => {
   const steps = await travisAnalyse(
     await repositories.branch("fixtures/scenario1#master"),
     job,
-    defaultAnalyserConfig,
+    {}, // defaultAnalyserConfig,
     "/tmp"
   );
 

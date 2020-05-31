@@ -3,8 +3,6 @@ import execa from "execa";
 import { createContext } from "expression-expander";
 import { streamIntoJob } from "./util.mjs";
 
-export const defaultProcessorConfig = {};
-
 export async function processJob(job, bus, queue) {
   const config = bus.config;
   const data = job.data;

@@ -4,7 +4,7 @@ import Queue from "bull";
 import Redis from "ioredis";
 
 import { processJob } from "./processor.mjs";
-import { analyseJob } from "./analyser.mjs";
+import { analyseJob } from "./service-analyser.mjs";
 
 /**
  * default configuration for queues

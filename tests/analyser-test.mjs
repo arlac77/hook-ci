@@ -1,5 +1,5 @@
 import test from "ava";
-import { analyseJob } from "../src/analyser.mjs";
+import { analyseJob } from "../src/service-analyser.mjs";
 import { GithubProvider } from "github-repository-provider";
 import { makeJob, makeConfig } from "./helpers/util.mjs";
 

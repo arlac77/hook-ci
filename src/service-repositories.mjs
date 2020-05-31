@@ -27,8 +27,7 @@ export class ServiceRepositories extends Service {
   async _start() {
     await this._start();
 
-    const logger = (...args) => this.info(...args);
-
+    console.log("AA");
     const providers = await Promise.all(
       this.providers.map(async provider => {
         const m = await import(provider.type);
@@ -47,7 +46,7 @@ export class ServiceRepositories extends Service {
 
     console.log(providers);
     
-    this.provider = new AggregationProvider(providers, { logger });
+    this.provider = new AggregationProvider(providers);
   }
 }
 

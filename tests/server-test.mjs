@@ -11,7 +11,7 @@ import { ReceiveEndpoint } from "@kronos-integration/endpoint";
 
 import signer from "x-hub-signature/src/signer.js";
 import { initializeServer } from "../src/server.mjs";
-import { LocalNode } from "../src/nodes.mjs";
+import { LocalNode } from "../src/service-nodes.mjs";
 import { makeQueue, makeConfig, secret, hook } from "./helpers/util.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
