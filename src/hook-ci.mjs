@@ -2,7 +2,7 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import ServiceLDAP from "@kronos-integration/service-ldap";
 import ServiceAuthenticator from "@kronos-integration/service-authenticator";
-import ServiceRepositories from "./service-repositories.mjs";
+import ServiceRepositories from "@kronos-integration/service-repositories";
 import ServiceNodes from "./service-nodes.mjs";
 import ServiceAnalyser from "./service-analyser.mjs";
 import ServiceQeueus from "./service-queues.mjs";
