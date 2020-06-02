@@ -6,10 +6,10 @@ import {
 } from "koa-github-hook-handler";
 
 const types = {
-  "gitea" : createGiteaHookHandler,
-  "github" : createGithubHookHandler,
-  "bitbucket" : createBitbucketHookHandler
-}
+  gitea: createGiteaHookHandler,
+  github: createGithubHookHandler,
+  bitbucket: createBitbucketHookHandler
+};
 export function createHooks(hooks, router, queues) {
   if (hooks === undefined) {
     return;
@@ -17,15 +17,16 @@ export function createHooks(hooks, router, queues) {
 
   for (const t of Object.keys(hooks)) {
     const handler = types[t];
-    if(handler === undefined) {
+    if (handler === undefined) {
       console.log(`No webhook handler for ${t}`);
       continue;
     }
 
     const hook = hooks[t];
     const queue = queues[hook.queue];
-    
-    const logOnly = (request, event) => console.log("Received a %s event for %s", event, request);
+
+    const logOnly = (request, event) =>
+      console.log("Received a %s event for %s", event, request);
 
     router.addRoute(
       "POST",
@@ -35,10 +36,16 @@ export function createHooks(hooks, router, queues) {
           create: logOnly,
           delete: logOnly,
           check_suite: logOnly,
-          'repo:push': async (request, event) => {
+          check_run: logOnly,
+          "repo:push": async (request, event) => {
             request.event = event;
-            if(request.repository && request.repository.links && request.repository.links.html) {
-              request.repository.url = request.repository.links.html.href + '.git';
+            if (
+              request.repository &&
+              request.repository.links &&
+              request.repository.links.html
+            ) {
+              request.repository.url =
+                request.repository.links.html.href + ".git";
             }
 
             const job = await queue.add(request);
