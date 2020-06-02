@@ -3,6 +3,10 @@ import { fileURLToPath } from "url";
 import ServiceLDAP from "@kronos-integration/service-ldap";
 import ServiceAuthenticator from "@kronos-integration/service-authenticator";
 import ServiceRepositories from "@kronos-integration/service-repositories";
+import {
+  ServiceHTTP,
+  CTXBodyParamInterceptor
+} from "@kronos-integration/service-http";
 import ServiceNodes from "./service-nodes.mjs";
 import ServiceAnalyser from "./service-analyser.mjs";
 import ServiceQeueus from "./service-queues.mjs";
@@ -12,6 +16,12 @@ import { defaultServerConfig, initializeServer } from "./server.mjs";
 const here = dirname(fileURLToPath(import.meta.url));
 
 export default async function setup(sp) {
+
+  const POST = {
+    method: "POST",
+    interceptors: [new CTXBodyParamInterceptor()]
+  };
+
   await sp.declareServices({
     auth: {
       type: ServiceAuthenticator,
@@ -28,6 +38,13 @@ export default async function setup(sp) {
     },
     queues: {
       type: ServiceQeueus
+    },
+    http: {
+      type: ServiceHTTP,
+      autostart: true,
+      endpoints: {
+        "/authenticate": { ...POST, connected: "service(auth).access_token" }
+      }
     },
     nodes: {
       type: ServiceNodes
