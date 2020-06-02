@@ -4,18 +4,20 @@
       "depth": 3
     }
   },
-  "providers": [
-    {
-      "type": "github-repository-provider",
-      "logLevel": "debug"
-    },
-    {
-      "type": "gitea-repository-provider",
-      "logLevel": "debug"
-    },
-    {
-      "type": "bitbucket-repository-provider",
-      "logLevel": "debug"
-    }
-  ]
+  "repositories": {
+    "providers": [
+      {
+        "type": "github-repository-provider",
+        "logLevel": "debug"
+      },
+      {
+        "type": "gitea-repository-provider",
+        "logLevel": "debug"
+      },
+      {
+        "type": "bitbucket-repository-provider",
+        "logLevel": "debug"
+      }
+    ]
+  }
 }
