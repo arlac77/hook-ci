@@ -32,7 +32,7 @@
     "@kronos-integration/service-authenticator": "^1.1.0",
     "@kronos-integration/service-ldap": "^2.1.36",
     "@kronos-integration/service-repositories": "^1.0.1",
-    "@kronos-integration/service-swarm": "^1.6.13",
+    "@kronos-integration/service-swarm": "^1.6.14",
     "@kronos-integration/service-http": "^10.1.19",
     "bitbucket-repository-provider": "^3.6.8",
     "bufferutil": "^4.0.1",
@@ -75,7 +75,7 @@
     "@kronos-integration/service-systemd": "^2.3.6"
   },
   "engines": {
-    "node": ">=14.3.0"
+    "node": ">=14.4.0"
   },
   "os": [
     "darwin",
@@ -96,7 +96,7 @@
   "homepage": "https://github.com/arlac77/hook-ci#readme",
   "config": {
     "base": "/services/ci/api",
-    "socket": "/run/${name}/socket"
+    "socket": "/run/${name}/http/socket"
   },
   "systemd": {
     "units": {
@@ -113,9 +113,9 @@
     "hooks": "pacman/hooks.sh",
     "backup": "etc/${name}/config.json",
     "depends": {
-      "redis": ">=6.0.4-1",
-      "systemd": ">=245.5",
-      "nginx-mainline": ">=1.17.10"
+      "redis": ">=6.0.5-1",
+      "systemd": ">=245.6",
+      "nginx-mainline": ">=1.19.0"
     },
     "installdir": "/services/${name}",
     "content": {
