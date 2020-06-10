@@ -1,6 +1,6 @@
 import test from "ava";
 import { analyseJob } from "../src/service-analyser.mjs";
-import { GithubProvider } from "github-repository-provider";
+import GithubProvider from "github-repository-provider";
 import { makeJob, makeConfig } from "./helpers/util.mjs";
 
 test("analyser", async t => {

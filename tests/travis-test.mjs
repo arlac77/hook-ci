@@ -1,7 +1,6 @@
 import test from "ava";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
-import ServiceAnalyser from "../src/service-analyser.mjs";
 import { travisAnalyse } from "../src/travis.mjs";
 import { MockProvider } from "mock-repository-provider";
 import { makeJob } from "./helpers/util.mjs";
