@@ -8,7 +8,9 @@
   "description": "simple ci to be triggered by git hooks",
   "keywords": [
     "ci",
-    "software delivery"
+    "kronos-integration",
+    "software delivery",
+    "systemd"
   ],
   "contributors": [
     {
@@ -23,17 +25,18 @@
   "scripts": {
     "test": "ava --timeout 2m",
     "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
-    "docs": "",
-    "lint": "",
     "package": "npm-pkgbuild --npm-dist --npm-modules pkgbuild pacman makepkg"
   },
   "dependencies": {
-    "@kronos-integration/service": "^8.5.12",
+    "@kronos-integration/interceptor-decode-json": "^2.1.10",
+    "@kronos-integration/service": "^8.5.14",
+    "@kronos-integration/service-admin": "^3.1.8",
     "@kronos-integration/service-authenticator": "^1.1.0",
+    "@kronos-integration/service-health-check": "^5.0.35",
+    "@kronos-integration/service-http": "^10.1.19",
     "@kronos-integration/service-ldap": "^2.1.36",
     "@kronos-integration/service-repositories": "^1.0.1",
     "@kronos-integration/service-swarm": "^1.6.14",
-    "@kronos-integration/service-http": "^10.1.19",
     "bitbucket-repository-provider": "^3.6.8",
     "bufferutil": "^4.0.1",
     "bull": "^3.14.0",
@@ -121,7 +124,16 @@
     "content": {
       "/usr/lib/tmpfiles.d/${name}.conf": "pacman/tmpfiles.conf",
       "/etc/${name}/config.json": "config/config.json",
-      "/etc/nginx/config.d/${name}.conf": "pacman/nginx.conf"
+      "/etc/nginx/config.d/${name}.conf": "pacman/nginx.conf",
+      "/usr/lib/sysusers.d/${name}.conf": "pacman/sysusers.conf"
+    },
+    "group": "services",
+    "content-provider": {
+      "systemd": {
+        "units": {
+          "${name}": "systemd/${name}*"
+        }
+      }
     }
   },
   "release": {
@@ -138,11 +150,9 @@
   },
   "template": {
     "inheritFrom": [
-      "arlac77/template-node-app",
+      "arlac77/template-arlac77-github",
       "arlac77/template-github",
-      "arlac77/template-nginx",
-      "arlac77/template-systemd",
-      "arlac77/template-pacman"
+      "arlac77/template-kronos-app"
     ]
   }
 }
