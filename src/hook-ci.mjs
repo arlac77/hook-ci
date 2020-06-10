@@ -44,20 +44,7 @@ export default async function setup(sp) {
       type: ServiceAuthenticator,
       autostart: true,
       endpoints: {
-        ldap: "service(ldap).authenticate",
-
-        "/state/uptime": {
-          ...WS,
-          connected: "service(health).uptime"
-        },
-        "/state/cpu": {
-          ...WS,
-          connected: "service(health).cpu"
-        },
-        "/state/memory": {
-          ...WS,
-          connected: "service(health).memory"
-        }
+        ldap: "service(ldap).authenticate"
       }
     },
     ldap: {
@@ -76,7 +63,20 @@ export default async function setup(sp) {
       type: ServiceHTTP,
       autostart: true,
       endpoints: {
-        "/authenticate": { ...POST, connected: "service(auth).access_token" }
+        "/authenticate": { ...POST, connected: "service(auth).access_token" },
+
+        "/state/uptime": {
+          ...WS,
+          connected: "service(health).uptime"
+        },
+        "/state/cpu": {
+          ...WS,
+          connected: "service(health).cpu"
+        },
+        "/state/memory": {
+          ...WS,
+          connected: "service(health).memory"
+        }
       }
     },
     nodes: {
