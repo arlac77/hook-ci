@@ -7,7 +7,7 @@ import {
 } from "@kronos-integration/service-http";
 import ServiceNodes from "./service-nodes.mjs";
 import ServiceAnalyser from "./service-analyser.mjs";
-import ServiceQeueus from "./service-queues.mjs";
+import ServiceQueues from "./service-queues.mjs";
 
 
 export default async function setup(sp) {
@@ -32,7 +32,7 @@ export default async function setup(sp) {
       type: ServiceRepositories
     },
     queues: {
-      type: ServiceQeueus
+      type: ServiceQueues
     },
     http: {
       type: ServiceHTTP,
