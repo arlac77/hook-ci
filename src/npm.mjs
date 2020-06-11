@@ -65,7 +65,7 @@ export async function npmAnalyse(branch, job, config, wd) {
         createStep({
           name: "prepare",
           executable,
-          args: ["install"],
+          args: ["--ignore-engines","install"],
           options,
           requirements
         })
