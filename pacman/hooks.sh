@@ -12,14 +12,11 @@ post_install() {
 }
 
 pre_upgrade() {
-	systemctl stop {{name}}.socket
 	systemctl stop {{name}}
 }
 
 post_upgrade() {
 	systemctl daemon-reload
-	systemctl start {{name}}.socket
-	systemctl is-enabled nginx 2>&1 >/dev/null && systemctl -q try-reload-or-restart nginx
 }
 
 pre_remove() {
