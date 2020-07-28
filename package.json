@@ -32,7 +32,7 @@
     "@kronos-integration/service": "^9.2.0",
     "@kronos-integration/service-admin": "^3.1.13",
     "@kronos-integration/service-authenticator": "^1.1.5",
-    "@kronos-integration/service-health-check": "^5.0.39",
+    "@kronos-integration/service-health-check": "^5.0.40",
     "@kronos-integration/service-http": "^10.1.25",
     "@kronos-integration/service-ldap": "^2.1.42",
     "@kronos-integration/service-repositories": "^1.0.8",
@@ -75,7 +75,7 @@
     "x-hub-signature": "^1.2.0"
   },
   "optionalDependencies": {
-    "@kronos-integration/service-systemd": "^2.3.9"
+    "@kronos-integration/service-systemd": "^2.3.10"
   },
   "engines": {
     "node": ">=14.6.0"
