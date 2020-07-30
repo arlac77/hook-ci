@@ -78,7 +78,7 @@
     "@kronos-integration/service-systemd": "^2.3.10"
   },
   "engines": {
-    "node": ">=14.6.0"
+    "node": ">=14.7.0"
   },
   "os": [
     "darwin",
