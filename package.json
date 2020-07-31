@@ -36,7 +36,7 @@
     "@kronos-integration/service-http": "^10.1.26",
     "@kronos-integration/service-ldap": "^2.1.45",
     "@kronos-integration/service-repositories": "^1.0.9",
-    "@kronos-integration/service-swarm": "^1.6.25",
+    "@kronos-integration/service-swarm": "^1.6.27",
     "bitbucket-repository-provider": "^3.7.15",
     "bufferutil": "^4.0.1",
     "bull": "^3.15.0",
@@ -118,7 +118,7 @@
     "depends": {
       "redis": ">=6.0.5-1",
       "systemd": ">=245.6",
-      "nginx-mainline": ">=1.19.0"
+      "nginx-mainline": ">=1.19.1"
     },
     "installdir": "/services/${name}",
     "content": {
