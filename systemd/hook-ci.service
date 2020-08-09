@@ -41,8 +41,6 @@ IOWeight=50
 MemoryAccounting=true
 MemoryHigh=500M
 MemoryMax=1000M
-StandardError=journal
-StandardOutput=journal
 SystemCallErrorNumber=EPERM
 
 [Install]
