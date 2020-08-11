@@ -8,6 +8,7 @@ Type=notify
 ExecStart=/usr/bin/node --trace-uncaught --trace-warnings --title {{name}} {{installdir}}/src/{{name}}-cli.mjs
 ExecReload=/bin/kill -HUP $MAINPID
 RestartSec=10
+Restart=on-failure
 TimeoutStartSec=40
 TimeoutStopSec=25
 NotifyAccess=all
