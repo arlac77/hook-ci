@@ -65,7 +65,7 @@
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@semantic-release/exec": "^5.0.0",
     "@semantic-release/release-notes-generator": "^9.0.1",
-    "ava": "^3.11.1",
+    "ava": "^3.12.1",
     "c8": "^7.3.0",
     "documentation": "^13.0.2",
     "got": "^11.5.2",
