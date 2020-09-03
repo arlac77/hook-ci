@@ -24,8 +24,7 @@
   },
   "scripts": {
     "test": "ava --timeout 2m",
-    "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
-    "package": "npm-pkgbuild --npm-dist --npm-modules pkgbuild pacman makepkg"
+    "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp"
   },
   "dependencies": {
     "@kronos-integration/interceptor-decode-json": "^2.1.15",
@@ -39,12 +38,12 @@
     "@kronos-integration/service-swarm": "^1.8.11",
     "bitbucket-repository-provider": "^3.7.17",
     "bufferutil": "^4.0.1",
-    "bull": "^3.16.0",
+    "bull": "^3.18.0",
     "config-expander": "^11.0.13",
     "execa": "^4.0.3",
     "expression-expander": "^7.0.5",
     "gitea-repository-provider": "^1.13.4",
-    "github-repository-provider": "^7.16.2",
+    "github-repository-provider": "^7.16.3",
     "globby": "^11.0.1",
     "graphql": "^15.3.0",
     "js-yaml": "^3.14.0",
@@ -68,7 +67,7 @@
     "ava": "^3.12.1",
     "c8": "^7.3.0",
     "documentation": "^13.0.2",
-    "got": "^11.5.2",
+    "got": "^11.6.0",
     "mock-repository-provider": "^5.2.5",
     "npm-pkgbuild": "^6.12.6",
     "semantic-release": "^17.1.1",
