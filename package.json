@@ -83,15 +83,28 @@
     "darwin",
     "linux"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/arlac77/hook-ci.git"
-  },
   "cpu": [
     "x64",
     "arm64",
     "arm"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arlac77/hook-ci.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arlac77/hook-ci/issues"
+  },
+  "homepage": "https://github.com/arlac77/hook-ci#readme",
+  "config": {
+    "base": "/services/ci/api",
+    "socket": "/run/${name}/http/socket"
+  },
+  "systemd": {
+    "units": {
+      "${name}": "systemd/${name}*"
+    }
+  },
   "pacman": {
     "arch": [
       "aarch64",
@@ -120,19 +133,6 @@
           "${name}": "systemd/${name}*"
         }
       }
-    }
-  },
-  "bugs": {
-    "url": "https://github.com/arlac77/hook-ci/issues"
-  },
-  "homepage": "https://github.com/arlac77/hook-ci#readme",
-  "config": {
-    "base": "/services/ci/api",
-    "socket": "/run/${name}/http/socket"
-  },
-  "systemd": {
-    "units": {
-      "${name}": "systemd/${name}*"
     }
   },
   "release": {
