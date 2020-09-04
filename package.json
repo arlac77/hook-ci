@@ -69,7 +69,7 @@
     "documentation": "^13.0.2",
     "got": "^11.6.0",
     "mock-repository-provider": "^5.2.5",
-    "npm-pkgbuild": "^6.12.6",
+    "npm-pkgbuild": "^6.12.7",
     "semantic-release": "^17.1.1",
     "x-hub-signature": "^1.2.0"
   },
@@ -149,9 +149,6 @@
     ]
   },
   "template": {
-    "inheritFrom": [
-      "arlac77/template-arlac77-github",
-      "arlac77/template-kronos-app"
-    ]
+    "inheritFrom": "arlac77/template-arlac77-github"
   }
 }
