@@ -116,7 +116,7 @@
     "backup": "etc/${name}/config.json",
     "depends": {
       "redis": ">=6.0.5-1",
-      "systemd": ">=246.5",
+      "systemd": ">=246.6",
       "nginx-mainline": ">=1.19.2"
     },
     "installdir": "/services/${name}",
