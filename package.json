@@ -28,13 +28,13 @@
     "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp"
   },
   "dependencies": {
-    "@kronos-integration/interceptor-decode-json": "^2.1.22",
-    "@kronos-integration/service": "^9.2.15",
-    "@kronos-integration/service-admin": "^3.1.27",
-    "@kronos-integration/service-authenticator": "^1.2.2",
-    "@kronos-integration/service-health-check": "^5.0.53",
-    "@kronos-integration/service-http": "^10.2.14",
-    "@kronos-integration/service-ldap": "^2.1.58",
+    "@kronos-integration/interceptor-decode-json": "^2.1.24",
+    "@kronos-integration/service": "^9.2.18",
+    "@kronos-integration/service-admin": "^3.1.29",
+    "@kronos-integration/service-authenticator": "^1.2.5",
+    "@kronos-integration/service-health-check": "^5.0.56",
+    "@kronos-integration/service-http": "^10.2.18",
+    "@kronos-integration/service-ldap": "^2.1.60",
     "@kronos-integration/service-repositories": "^1.0.19",
     "@kronos-integration/service-swarm": "^1.8.16",
     "bitbucket-repository-provider": "^3.7.23",
@@ -75,7 +75,7 @@
     "x-hub-signature": "^1.2.0"
   },
   "optionalDependencies": {
-    "@kronos-integration/service-systemd": "^2.4.1"
+    "@kronos-integration/service-systemd": "^2.4.2"
   },
   "engines": {
     "node": ">=14.13.1"
