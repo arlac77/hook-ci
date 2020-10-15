@@ -40,7 +40,7 @@
     "bitbucket-repository-provider": "^3.7.27",
     "bufferutil": "^4.0.1",
     "bull": "^3.18.0",
-    "config-expander": "^11.0.15",
+    "config-expander": "^12.0.0",
     "execa": "^4.0.3",
     "expression-expander": "^7.0.6",
     "gitea-repository-provider": "^1.13.18",
