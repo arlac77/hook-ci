@@ -4,7 +4,7 @@ import { createStep } from "./util.mjs";
 /**
  * Search for Cargo.toml
  */
-export async function buildAnalyse(branch, job, config, wd) {
+export async function cargoAnalyse(branch, job, config, wd) {
   const steps = [];
 
   for await (const entry of branch.entries([
