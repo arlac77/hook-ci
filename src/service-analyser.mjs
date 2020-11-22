@@ -2,6 +2,7 @@ import { createStep } from "./util.mjs";
 import { npmAnalyse } from "./npm.mjs";
 import { pkgbuildAnalyse } from "./pkgbuild.mjs";
 import { buildAnalyse } from "./buildAnalyse.mjs";
+import { cargoAnalyse } from "./cargoAnalyse.mjs";
 import { Service } from "@kronos-integration/service";
 import { mergeAttributes, createAttributes } from "model-attributes";
 
@@ -107,7 +108,7 @@ export async function analyseJob(job, bus) {
   const wde = '{{workspaceDirectory}}';
 
   const realSteps = (await Promise.all(
-    [npmAnalyse, pkgbuildAnalyse, buildAnalyse].map(a => a(branch, job, config, wde))
+    [npmAnalyse, pkgbuildAnalyse, buildAnalyse, cargoAnalyse].map(a => a(branch, job, config, wde))
   )).reduce((a, c) => {
     a.push(...c);
     return a;
