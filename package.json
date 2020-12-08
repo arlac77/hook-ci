@@ -37,7 +37,7 @@
     "@kronos-integration/service-ldap": "^4.0.2",
     "@kronos-integration/service-repositories": "^1.0.27",
     "@kronos-integration/service-swarm": "^1.9.29",
-    "bitbucket-repository-provider": "^3.7.75",
+    "bitbucket-repository-provider": "^3.7.77",
     "bufferutil": "^4.0.1",
     "bull": "^3.18.0",
     "config-expander": "^12.0.1",
@@ -56,7 +56,7 @@
     "koa-graphql": "^0.8.0",
     "koa-jwt": "^4.0.0",
     "koa-mount": "^4.0.0",
-    "local-repository-provider": "^7.0.62",
+    "local-repository-provider": "^7.0.64",
     "nbonjour": "^3.6.3",
     "utf-8-validate": "^5.0.2",
     "ws": "^7.3.1"
@@ -69,7 +69,7 @@
     "c8": "^7.3.0",
     "documentation": "^13.0.2",
     "got": "^11.8.0",
-    "mock-repository-provider": "^5.5.45",
+    "mock-repository-provider": "^5.5.47",
     "npm-pkgbuild": "^6.12.16",
     "semantic-release": "^17.3.0",
     "x-hub-signature": "^1.2.0"
