@@ -1,19 +1,23 @@
 import { stripUnusedDataFromHookRequest } from "./util.mjs";
-import {
-  createGithubHookHandler,
-  createGiteaHookHandler,
-  createBitbucketHookHandler
-} from "koa-github-hook-handler";
 
-const types = {
-  gitea: createGiteaHookHandler,
-  github: createGithubHookHandler,
-  bitbucket: createBitbucketHookHandler
-};
-export function createHooks(hooks, router, queues) {
-  if (hooks === undefined) {
-    return;
+class ServiceHooks extends Service {
+  static get name() {
+    return "hooks";
   }
+
+  static get endpoints() {
+    return {
+      ...super.endpoints,
+      push: {
+        receive: "push"
+      }
+    };
+  }
+
+  async push(request) {}
+}
+
+/*
 
   for (const t of Object.keys(hooks)) {
     const handler = types[t];
@@ -33,6 +37,7 @@ export function createHooks(hooks, router, queues) {
       hook.path,
       handler(
         {
+          repository: logOnly,
           create: logOnly,
           delete: logOnly,
           check_suite: logOnly,
@@ -79,5 +84,4 @@ export function createHooks(hooks, router, queues) {
         hook
       )
     );
-  }
-}
+*/

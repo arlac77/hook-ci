@@ -2,7 +2,7 @@ import Koa from "koa";
 import KoaJWT from "koa-jwt";
 import Router from "koa-better-router";
 import BodyParser from "koa-bodyparser";
-import { createHooks } from "./hooks.mjs";
+import { createHooks } from "./service-hooks.mjs";
 import { initGraphQL } from "./graphql.mjs";
 
 export const defaultServerConfig = {

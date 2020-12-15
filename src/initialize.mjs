@@ -11,7 +11,9 @@ import {
 import ServiceNodes from "./service-nodes.mjs";
 import ServiceAnalyser from "./service-analyser.mjs";
 import ServiceQueues from "./service-queues.mjs";
+import { ServiceHooks } from "./service-hooks.mjs";
 import { DecodeJSONInterceptor } from "@kronos-integration/interceptor-decode-json";
+import { GithubHookInterceptor } from "@kronos-integration/interceptor-webhook";
 
 export default async function initialize(sp) {
   const GETInterceptors = [
@@ -54,7 +56,16 @@ export default async function initialize(sp) {
       type: ServiceHealthCheck
     },
     repositories: {
-      type: ServiceRepositories
+      type: ServiceRepositories,
+      autostart: true,
+      providers: [
+        {
+          type: "github-repository-provider"
+        }
+      ]
+    },
+    hooks: {
+      type: ServiceHooks
     },
     queues: {
       type: ServiceQueues
@@ -76,6 +87,12 @@ export default async function initialize(sp) {
         "/state/memory": {
           ...WS,
           connected: "service(health).memory"
+        },
+        "POST:/webhook": {
+          interceptors: [
+            new GithubHookInterceptor({ secret: process.env.WEBHOOK_SECRET })
+          ],
+          connected: "service(hooks).push"
         }
       }
     },
