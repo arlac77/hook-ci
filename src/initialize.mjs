@@ -13,7 +13,7 @@ import ServiceAnalyser from "./service-analyser.mjs";
 import ServiceQueues from "./service-queues.mjs";
 import { DecodeJSONInterceptor } from "@kronos-integration/interceptor-decode-json";
 
-export default async function setup(sp) {
+export default async function initialize(sp) {
   const GETInterceptors = [
     new CTXJWTVerifyInterceptor(),
     new CTXInterceptor({
