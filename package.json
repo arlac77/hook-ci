@@ -70,7 +70,7 @@
     "c8": "^7.3.0",
     "got": "^11.8.1",
     "mock-repository-provider": "^5.5.54",
-    "npm-pkgbuild": "^6.12.16",
+    "npm-pkgbuild": "^6.12.18",
     "semantic-release": "^17.3.0",
     "x-hub-signature": "^1.2.0"
   },
@@ -78,7 +78,7 @@
     "@kronos-integration/service-systemd": "^2.4.6"
   },
   "engines": {
-    "node": ">=14.15.2"
+    "node": ">=14.15.3"
   },
   "os": [
     "darwin",
