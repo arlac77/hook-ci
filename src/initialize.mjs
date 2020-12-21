@@ -118,6 +118,4 @@ export default async function initialize(sp) {
       ]
     }
   });
-
-  await sp.start();
 }
