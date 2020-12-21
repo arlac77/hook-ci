@@ -33,16 +33,16 @@ export default async function initialize(sp) {
 
   const POST = {
     method: "POST",
-    interceptors: [new CTXBodyParamInterceptor()]
+    interceptors: new CTXBodyParamInterceptor()
   };
 
   const WS = {
     ws: true,
-    interceptors: [new DecodeJSONInterceptor()]
+    interceptors: new DecodeJSONInterceptor()
   };
 
   await sp.declareServices({
-    auth: {
+    authenticator: {
       type: ServiceAuthenticator,
       autostart: true,
       endpoints: {
@@ -57,7 +57,6 @@ export default async function initialize(sp) {
     },
     repositories: {
       type: ServiceRepositories,
-      autostart: true,
       providers: [
         {
           type: "github-repository-provider"
@@ -74,7 +73,7 @@ export default async function initialize(sp) {
       type: ServiceHTTP,
       autostart: true,
       endpoints: {
-        "/authenticate": { ...POST, connected: "service(auth).access_token" },
+        "/authenticate": { ...POST, connected: "service(authenticator).access_token" },
 
         "/state/uptime": {
           ...WS,
