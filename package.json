@@ -70,8 +70,8 @@
     "c8": "^7.3.0",
     "got": "^11.8.1",
     "mock-repository-provider": "^5.5.56",
-    "npm-pkgbuild": "^6.12.21",
-    "semantic-release": "^17.3.3",
+    "npm-pkgbuild": "^6.12.22",
+    "semantic-release": "^17.3.7",
     "x-hub-signature": "^1.2.0"
   },
   "optionalDependencies": {
