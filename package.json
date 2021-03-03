@@ -44,7 +44,7 @@
     "config-expander": "^12.0.1",
     "execa": "^5.0.0",
     "expression-expander": "^7.0.9",
-    "gitea-repository-provider": "^1.15.12",
+    "gitea-repository-provider": "^1.16.0",
     "github-repository-provider": "^7.21.16",
     "globby": "^11.0.2",
     "graphql": "^15.3.0",
@@ -57,7 +57,7 @@
     "koa-graphql": "^0.8.0",
     "koa-jwt": "^4.0.0",
     "koa-mount": "^4.0.0",
-    "local-repository-provider": "^7.0.77",
+    "local-repository-provider": "^7.0.78",
     "nbonjour": "^3.6.3",
     "utf-8-validate": "^5.0.2",
     "ws": "^7.3.1"
@@ -69,7 +69,7 @@
     "ava": "^3.15.0",
     "c8": "^7.3.0",
     "got": "^11.8.1",
-    "mock-repository-provider": "^5.5.62",
+    "mock-repository-provider": "^5.5.63",
     "npm-pkgbuild": "^6.12.22",
     "semantic-release": "^17.3.7",
     "x-hub-signature": "^1.2.0"
