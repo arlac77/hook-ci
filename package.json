@@ -65,13 +65,13 @@
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@semantic-release/exec": "^5.0.0",
-    "@semantic-release/release-notes-generator": "^9.0.1",
+    "@semantic-release/release-notes-generator": "^9.0.2",
     "ava": "^3.15.0",
     "c8": "^7.3.0",
     "got": "^11.8.2",
     "mock-repository-provider": "^5.5.67",
-    "npm-pkgbuild": "^6.12.22",
-    "semantic-release": "^17.3.7",
+    "npm-pkgbuild": "^6.12.27",
+    "semantic-release": "^17.4.3",
     "x-hub-signature": "^1.2.0"
   },
   "optionalDependencies": {
@@ -116,8 +116,8 @@
     "backup": "etc/${name}/config.json",
     "depends": {
       "redis": ">=6.0.9",
-      "systemd": ">=247.2",
-      "nginx-mainline": ">=1.19.6"
+      "systemd": ">=248",
+      "nginx-mainline": ">=1.19.8"
     },
     "installdir": "/services/${name}",
     "content": {
@@ -139,13 +139,15 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
+      "@semantic-release/github",
       [
         "@semantic-release/exec",
         {
           "verifyConditionsCmd": "which makepkg",
           "publishCmd": "npx npm-pkgbuild --pkgver ${nextRelease.version} --npm-dist --npm-modules pkgbuild pacman makepkg"
         }
-      ]
+      ],
+      "@semantic-release/npm"
     ]
   },
   "template": {
