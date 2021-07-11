@@ -117,7 +117,7 @@
     "depends": {
       "redis": ">=6.0.9",
       "systemd": ">=248",
-      "nginx-mainline": ">=1.21.0"
+      "nginx-mainline": ">=1.21.1"
     },
     "installdir": "/services/${name}",
     "content": {
