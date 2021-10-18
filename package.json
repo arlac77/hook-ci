@@ -70,7 +70,7 @@
     "c8": "^7.3.0",
     "got": "^11.8.2",
     "mock-repository-provider": "^5.5.93",
-    "npm-pkgbuild": "^6.12.59",
+    "npm-pkgbuild": "^6.12.61",
     "semantic-release": "^18.0.0",
     "x-hub-signature": "^1.2.0"
   },
@@ -116,7 +116,7 @@
     "backup": "etc/${name}/config.json",
     "depends": {
       "redis": ">=6.0.9",
-      "systemd": ">=249.4",
+      "systemd": ">=249.5",
       "nginx-mainline": ">=1.21.1"
     },
     "installdir": "/services/${name}",
