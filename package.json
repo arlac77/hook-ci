@@ -38,7 +38,7 @@
     "@kronos-integration/service-ldap": "^4.0.58",
     "@kronos-integration/service-repositories": "^2.0.92",
     "@kronos-integration/service-swarm": "^1.9.86",
-    "bitbucket-repository-provider": "^3.9.6",
+    "bitbucket-repository-provider": "^3.9.7",
     "bufferutil": "^4.0.5",
     "bull": "^4.0.0",
     "config-expander": "^12.0.1",
@@ -57,7 +57,7 @@
     "koa-graphql": "^0.9.0",
     "koa-jwt": "^4.0.0",
     "koa-mount": "^4.0.0",
-    "local-repository-provider": "^7.0.103",
+    "local-repository-provider": "^7.0.104",
     "nbonjour": "^3.6.3",
     "utf-8-validate": "^5.0.7",
     "ws": "^8.2.3"
