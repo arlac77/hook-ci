@@ -42,6 +42,7 @@ IOWeight=50
 MemoryAccounting=true
 MemoryHigh=500M
 MemoryMax=1000M
+ProtectProc=noaccess
 SystemCallErrorNumber=EPERM
 
 [Install]
