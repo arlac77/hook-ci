@@ -75,7 +75,7 @@
     "x-hub-signature": "^1.2.0"
   },
   "optionalDependencies": {
-    "@kronos-integration/service-systemd": "^2.5.2"
+    "@kronos-integration/service-systemd": "^2.5.3"
   },
   "engines": {
     "node": ">=14.18.1"
