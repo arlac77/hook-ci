@@ -34,7 +34,7 @@
     "@kronos-integration/service-admin": "^3.4.42",
     "@kronos-integration/service-authenticator": "^1.6.2",
     "@kronos-integration/service-health": "^5.0.129",
-    "@kronos-integration/service-http": "^10.6.81",
+    "@kronos-integration/service-http": "^10.6.82",
     "@kronos-integration/service-ldap": "^4.0.64",
     "@kronos-integration/service-repositories": "^2.0.92",
     "@kronos-integration/service-swarm": "^1.9.86",
@@ -60,7 +60,7 @@
     "local-repository-provider": "^7.0.109",
     "nbonjour": "^3.6.3",
     "utf-8-validate": "^5.0.7",
-    "ws": "^8.3.0"
+    "ws": "^8.4.0"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^9.0.2",
