@@ -68,7 +68,7 @@
     "@semantic-release/release-notes-generator": "^10.0.2",
     "ava": "^4.0.1",
     "c8": "^7.3.0",
-    "got": "^12.0.0",
+    "got": "^12.0.1",
     "mock-repository-provider": "^5.5.112",
     "npm-pkgbuild": "^6.12.83",
     "semantic-release": "^18.0.1",
