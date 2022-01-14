@@ -60,7 +60,7 @@
     "local-repository-provider": "^7.0.112",
     "nbonjour": "^3.6.3",
     "utf-8-validate": "^5.0.7",
-    "ws": "^8.4.0"
+    "ws": "^8.4.1"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^9.0.2",
