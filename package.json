@@ -57,7 +57,7 @@
     "koa-graphql": "^0.12.0",
     "koa-jwt": "^4.0.0",
     "koa-mount": "^4.0.0",
-    "local-repository-provider": "^7.0.112",
+    "local-repository-provider": "^7.0.114",
     "nbonjour": "^3.6.3",
     "utf-8-validate": "^5.0.7",
     "ws": "^8.4.1"
