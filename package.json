@@ -65,12 +65,12 @@
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/exec": "^6.0.3",
-    "@semantic-release/release-notes-generator": "^10.0.2",
+    "@semantic-release/release-notes-generator": "^10.0.3",
     "ava": "^4.0.1",
     "c8": "^7.3.0",
     "got": "^12.0.1",
     "mock-repository-provider": "^5.5.119",
-    "npm-pkgbuild": "^6.12.89",
+    "npm-pkgbuild": "^6.12.90",
     "semantic-release": "^19.0.2",
     "x-hub-signature": "^1.2.0"
   },
