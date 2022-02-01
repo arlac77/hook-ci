@@ -35,7 +35,7 @@
     "@kronos-integration/service-authenticator": "^1.6.11",
     "@kronos-integration/service-health": "^5.0.137",
     "@kronos-integration/service-http": "^10.6.94",
-    "@kronos-integration/service-ldap": "^4.0.72",
+    "@kronos-integration/service-ldap": "^4.0.73",
     "@kronos-integration/service-repositories": "^2.0.92",
     "@kronos-integration/service-swarm": "^1.9.86",
     "bitbucket-repository-provider": "^3.10.10",
