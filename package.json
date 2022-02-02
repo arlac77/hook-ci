@@ -46,7 +46,7 @@
     "expression-expander": "^7.0.14",
     "gitea-repository-provider": "^1.16.67",
     "github-repository-provider": "^7.25.24",
-    "globby": "^13.1.0",
+    "globby": "^13.1.1",
     "graphql": "^16.0.1",
     "js-yaml": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
