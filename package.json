@@ -70,7 +70,7 @@
     "c8": "^7.3.0",
     "got": "^12.0.1",
     "mock-repository-provider": "^5.5.131",
-    "npm-pkgbuild": "^7.25.2",
+    "npm-pkgbuild": "^7.25.5",
     "semantic-release": "^19.0.2",
     "x-hub-signature": "^1.2.0"
   },
@@ -101,10 +101,6 @@
     "socket": "/run/${name}/http/socket"
   },
   "pkg": {
-    "group": "services",
-    "hooks": "pkg/hooks.sh",
-    "backup": "etc/${name}/config.json",
-    "installdir": "/services/${name}",
     "content": {
       "/usr/lib/systemd/system/": {
         "base": "systemd"
@@ -122,10 +118,15 @@
       ],
       "/etc/nginx/sites/common/${name}.conf": "pkg/nginx.conf"
     },
+    "hooks": "pkg/hooks.sh",
+    "backup": "etc/${name}/config.json",
+    "groups": "services",
     "depends": {
       "nginx-mainline": ">=1.21.4",
       "systemd": ">=250.3"
-    }
+    },
+    "group": "services",
+    "installdir": "/services/${name}"
   },
   "release": {
     "plugins": [
