@@ -78,7 +78,7 @@
     "@kronos-integration/service-systemd": "^2.5.3"
   },
   "engines": {
-    "node": ">=14.18.3"
+    "node": ">=16.13.2"
   },
   "os": [
     "linux"
@@ -136,17 +136,10 @@
       [
         "@semantic-release/exec",
         {
-          "verifyConditionsCmd": "which makepkg",
-          "publishCmd": "npx npm-pkgbuild --pkgver ${nextRelease.version} --npm-dist --npm-modules pkgbuild pacman makepkg"
-        }
-      ],
-      "@semantic-release/npm",
-      [
-        "@semantic-release/exec",
-        {
           "publishCmd": "npx npm-pkgbuild"
         }
-      ]
+      ],
+      "@semantic-release/npm"
     ]
   },
   "template": {

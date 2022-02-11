@@ -12,7 +12,7 @@ export async function pkgbuildAnalyse(branch, job, config, wd) {
       executable: "makepkg"
     }];
 
-    const content = await entry.getString();
+    const content = await entry.string;
 
     let m = content.match(/arch=\(([^\)]+)\)/);
 
