@@ -1,16 +1,14 @@
-import execa from "execa";
+import { execa } from "execa";
 import nbonjour from "nbonjour";
 import { Service } from "@kronos-integration/service";
 import { mergeAttributes, createAttributes } from "model-attributes";
-
 
 export class ServiceNodes extends Service {
   static get configurationAttributes() {
     return mergeAttributes(
       super.configurationAttributes,
       createAttributes({
-        mdns: {
-        }
+        mdns: {}
       })
     );
   }
@@ -31,16 +29,16 @@ export class ServiceNodes extends Service {
 
     if (config.nodes.mdns) {
       const bonjour = nbonjour.create();
-  
+
       const type = this.mdns.type;
-  
+
       bonjour.publish({
         name: config.nodename,
         type,
         port: 3000,
         url: `https://${nodename}/services/ci/api`
       });
-  
+
       const browser = bonjour.find({ type }, service => {
         if (
           service.name !== undefined &&
@@ -50,16 +48,15 @@ export class ServiceNodes extends Service {
           nodes.push(new Node(service.name));
         }
       });
-  
+
       browser.start();
     }
-  
-    this.nodes = nodes;  
+
+    this.nodes = nodes;
   }
 }
 
 export default ServiceNodes;
-
 
 export class Node {
   constructor(name, options) {
@@ -80,7 +77,7 @@ export class Node {
   get uptime() {
     return -1;
   }
-  
+
   get memory() {
     return {};
   }
@@ -116,8 +113,7 @@ export class LocalNode extends Node {
     setImmediate(() => process.exit(0));
   }
 
-  async reload() {
-  }
+  async reload() {}
 
   get isLocal() {
     return true;
@@ -157,18 +153,20 @@ export class LocalNode extends Node {
 }
 
 export async function detectCapabilities() {
-  return (await Promise.all(
-    CapabilitiyDetectors.map(async step => {
-      try {
-        const proc = await execa(step.executable, step.args);
-        return detectCapabilitiesFrom(step, proc.stdout);
-      } catch (error) {
-        //console.log(error);
-      }
+  return (
+    await Promise.all(
+      CapabilitiyDetectors.map(async step => {
+        try {
+          const proc = await execa(step.executable, step.args);
+          return detectCapabilitiesFrom(step, proc.stdout);
+        } catch (error) {
+          //console.log(error);
+        }
 
-      return undefined;
-    })
-  )).filter(x => x !== undefined);
+        return undefined;
+      })
+    )
+  ).filter(x => x !== undefined);
 }
 
 export function detectCapabilitiesFrom(step, stdout) {
@@ -273,6 +271,7 @@ export const CapabilitiyDetectors = [
     executable: "rsync",
     args: ["--version"],
     // rsync  version 2.6.9  protocol version 29
-    regex: /rsync(-\w+)?\s+(?<version>[\d\.]+)\s+protocol\s+version\s+(?<protocol>[\d\.]+)/
+    regex:
+      /rsync(-\w+)?\s+(?<version>[\d\.]+)\s+protocol\s+version\s+(?<protocol>[\d\.]+)/
   }
 ];
