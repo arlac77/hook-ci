@@ -1,10 +1,10 @@
+import { Service } from "@kronos-integration/service";
+import { mergeAttributes, createAttributes } from "model-attributes";
 import { createStep } from "./util.mjs";
 import { npmAnalyse } from "./npm.mjs";
 import { pkgbuildAnalyse } from "./pkgbuild.mjs";
 import { buildAnalyse } from "./buildAnalyse.mjs";
 import { cargoAnalyse } from "./cargoAnalyse.mjs";
-import { Service } from "@kronos-integration/service";
-import { mergeAttributes, createAttributes } from "model-attributes";
 
 export const defaultAnalyserConfig = {
   workspace: { dir: "${first(env.STATE_DIRECTORY,'/tmp/hook-ci')}" },

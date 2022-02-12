@@ -1,13 +1,12 @@
-import fs from "fs";
+import { rmdir } from "fs/promises";
 import { join } from "path";
 import Queue from "bull";
 import Redis from "ioredis";
 
-import { processJob } from "./processor.mjs";
-import { analyseJob } from "./service-analyser.mjs";
-
 import { Service } from "@kronos-integration/service";
 import { mergeAttributes, createAttributes } from "model-attributes";
+import { processJob } from "./processor.mjs";
+import { analyseJob } from "./service-analyser.mjs";
 
 export class ServiceQueues extends Service {
   static get configurationAttributes() {
@@ -228,7 +227,7 @@ async function cleanupJob(job, bus) {
 
   const wd = data.wd;
   if (wd !== undefined) {
-    await fs.promises.rmdir(join(config.workspace.dir, wd), {
+    await rmdir(join(config.workspace.dir, wd), {
       recursive: true
     });
   }

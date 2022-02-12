@@ -1,3 +1,4 @@
+import { Service } from "@kronos-integration/service";
 import { stripUnusedDataFromHookRequest } from "./util.mjs";
 
 export class ServiceHooks extends Service {
