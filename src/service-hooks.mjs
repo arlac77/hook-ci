@@ -1,6 +1,6 @@
 import { stripUnusedDataFromHookRequest } from "./util.mjs";
 
-class ServiceHooks extends Service {
+export class ServiceHooks extends Service {
   static get name() {
     return "hooks";
   }
