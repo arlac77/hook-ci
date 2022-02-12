@@ -1,4 +1,4 @@
-import ServiceHealthCheck from "@kronos-integration/service-health-check";
+import ServiceHealthCheck from "@kronos-integration/service-health";
 import ServiceLDAP from "@kronos-integration/service-ldap";
 import ServiceAuthenticator from "@kronos-integration/service-authenticator";
 import ServiceRepositories from "@kronos-integration/service-repositories";
@@ -8,12 +8,12 @@ import {
   CTXJWTVerifyInterceptor,
   CTXBodyParamInterceptor
 } from "@kronos-integration/service-http";
+import { DecodeJSONInterceptor } from "@kronos-integration/interceptor-decode-json";
+import { GithubHookInterceptor } from "@kronos-integration/interceptor-webhook";
 import ServiceNodes from "./service-nodes.mjs";
 import ServiceAnalyser from "./service-analyser.mjs";
 import ServiceQueues from "./service-queues.mjs";
 import { ServiceHooks } from "./service-hooks.mjs";
-import { DecodeJSONInterceptor } from "@kronos-integration/interceptor-decode-json";
-import { GithubHookInterceptor } from "@kronos-integration/interceptor-webhook";
 
 export default async function initialize(sp) {
   const GETInterceptors = [
