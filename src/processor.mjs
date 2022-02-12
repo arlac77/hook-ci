@@ -1,5 +1,5 @@
 import { join } from "path";
-import execa from "execa";
+import { execa } from "execa";
 import { createContext } from "expression-expander";
 import { streamIntoJob } from "./util.mjs";
 
@@ -40,7 +40,13 @@ export async function processJob(job, bus, queue) {
       try {
         step.node = config.nodename;
         step.started = Date.now();
-        const process = executeStep(step, queue, job, eeContext, notificatioHandler);
+        const process = executeStep(
+          step,
+          queue,
+          job,
+          eeContext,
+          notificatioHandler
+        );
 
         await process;
       } catch (e) {
@@ -63,7 +69,13 @@ export async function processJob(job, bus, queue) {
   return data;
 }
 
-export async function executeStep(step, queue, job, eeContext, notificatioHandler) {
+export async function executeStep(
+  step,
+  queue,
+  job,
+  eeContext,
+  notificatioHandler
+) {
   if (step.executable) {
     const executable = eeContext.expand(step.executable);
     const args = eeContext.expand(step.args);
@@ -72,7 +84,7 @@ export async function executeStep(step, queue, job, eeContext, notificatioHandle
       ...step.options
     });
 
-    let logs = await queue.getJobLogs(job.id,0,0);
+    let logs = await queue.getJobLogs(job.id, 0, 0);
     step.logStart = logs.count;
 
     console.log(`${job.id}.${step.name}: ${executable} ${args.join(" ")}`);
@@ -87,10 +99,9 @@ export async function executeStep(step, queue, job, eeContext, notificatioHandle
       console.log(
         `timeout (${step.timeout / 1000.0}s) waiting for ${step.executable}`
       );
-      try { 
+      try {
         proc.cancel();
-      }
-      catch(e) {
+      } catch (e) {
         console.log(e);
         console.log(proc);
       }
@@ -107,7 +118,7 @@ export async function executeStep(step, queue, job, eeContext, notificatioHandle
       })`
     );
 
-    logs = await queue.getJobLogs(job.id,0,0);
+    logs = await queue.getJobLogs(job.id, 0, 0);
     step.logEnd = logs.count;
 
     if (timeout) {
