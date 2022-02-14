@@ -23,10 +23,10 @@
     "hook-ci": "./src/hook-ci-cli.mjs"
   },
   "scripts": {
-    "pkg": "npm-pkgbuild --verbose -Dversion=0.0.1",
     "test": "npm run test:ava",
     "test:ava": "ava --timeout 2m tests/*.mjs",
-    "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp"
+    "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
+    "pkg": "npm-pkgbuild --verbose -Dversion=0.0.1"
   },
   "dependencies": {
     "@kronos-integration/interceptor-decode-json": "^2.1.59",
@@ -61,9 +61,12 @@
     "c8": "^7.3.0",
     "got": "^12.0.1",
     "mock-repository-provider": "^6.0.1",
-    "npm-pkgbuild": "^7.25.7",
+    "npm-pkgbuild": "^7.25.8",
     "semantic-release": "^19.0.2",
     "x-hub-signature": "^1.2.0"
+  },
+  "peerDependencies": {
+    "mf-hosting": "github:arlac77/mf-hosting"
   },
   "optionalDependencies": {
     "@kronos-integration/service-systemd": "^2.5.3"
@@ -139,8 +142,5 @@
       "arlac77/template-arlac77-github",
       "arlac77/template-kronos-app"
     ]
-  },
-  "peerDependencies": {
-    "mf-hosting": "github:arlac77/mf-hosting"
   }
 }
