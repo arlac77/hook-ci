@@ -23,10 +23,10 @@
     "hook-ci": "./src/hook-ci-cli.mjs"
   },
   "scripts": {
-    "pkg": "npm-pkgbuild --verbose -Dversion=0.0.1",
     "test": "npm run test:ava",
     "test:ava": "ava --timeout 2m tests/*.mjs",
-    "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp"
+    "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
+    "pkg": "npm-pkgbuild --verbose -Dversion=0.0.1"
   },
   "dependencies": {
     "@kronos-integration/interceptor-decode-json": "^2.1.58",
@@ -40,7 +40,9 @@
     "@kronos-integration/service-repositories": "^2.0.95",
     "@kronos-integration/service-swarm": "^1.9.86",
     "bitbucket-repository-provider": "^3.10.15",
+    "bufferutil": "^4.0.5",
     "bull": "^4.0.0",
+    "config-expander": "^12.0.5",
     "execa": "^6.1.0",
     "expression-expander": "^7.0.14",
     "gitea-repository-provider": "^2.1.1",
@@ -49,8 +51,16 @@
     "graphql": "^16.0.1",
     "js-yaml": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
+    "koa": "^2.13.0",
+    "koa-better-router": "^2.1.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-github-hook-handler": "^1.4.7",
+    "koa-graphql": "^0.12.0",
+    "koa-jwt": "^4.0.0",
+    "koa-mount": "^4.0.0",
     "local-repository-provider": "^7.2.0",
     "nbonjour": "^3.6.3",
+    "utf-8-validate": "^5.0.7",
     "ws": "^8.5.0"
   },
   "devDependencies": {
@@ -64,6 +74,9 @@
     "npm-pkgbuild": "^7.25.7",
     "semantic-release": "^19.0.2",
     "x-hub-signature": "^1.2.0"
+  },
+  "peerDependencies": {
+    "mf-hosting": "github:arlac77/mf-hosting"
   },
   "optionalDependencies": {
     "@kronos-integration/service-systemd": "^2.5.3"
@@ -131,6 +144,13 @@
           "publishCmd": "npx npm-pkgbuild"
         }
       ],
+      [
+        "@semantic-release/exec",
+        {
+          "verifyConditionsCmd": "which makepkg",
+          "publishCmd": "npx npm-pkgbuild --pkgver ${nextRelease.version} --npm-dist --npm-modules pkgbuild pacman makepkg"
+        }
+      ],
       "@semantic-release/npm"
     ]
   },
@@ -139,8 +159,5 @@
       "arlac77/template-arlac77-github",
       "arlac77/template-kronos-app"
     ]
-  },
-  "peerDependencies": {
-    "mf-hosting": "github:arlac77/mf-hosting"
   }
 }
