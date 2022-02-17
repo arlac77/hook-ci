@@ -43,7 +43,7 @@
     "bull": "^4.0.0",
     "execa": "^6.1.0",
     "expression-expander": "^7.0.15",
-    "gitea-repository-provider": "^2.1.5",
+    "gitea-repository-provider": "^2.1.6",
     "github-repository-provider": "^7.25.41",
     "globby": "^13.1.1",
     "graphql": "^16.0.1",
