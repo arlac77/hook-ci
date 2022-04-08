@@ -69,7 +69,7 @@
     "mf-hosting": "github:arlac77/mf-hosting"
   },
   "optionalDependencies": {
-    "@kronos-integration/service-systemd": "^2.5.3"
+    "@kronos-integration/service-systemd": "^2.5.4"
   },
   "engines": {
     "node": ">=16.14.2"
