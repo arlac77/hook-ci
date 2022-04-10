@@ -1,5 +1,5 @@
 [Socket]
-ListenStream={{socket}}
+ListenStream={{socket.http}}
 SocketUser=http
 SocketGroup=http
 MaxConnections=4
