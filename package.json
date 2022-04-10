@@ -92,14 +92,8 @@
     "url": "https://github.com/arlac77/hook-ci/issues"
   },
   "homepage": "https://github.com/arlac77/hook-ci#readme",
-  "config": {
-    "base": "/services/ci/api",
-    "socket": "/run/${name}/http/socket"
-  },
   "pkg": {
     "content": {
-      "${sysusers.config.dir}${name}.conf": "pkg/sysusers.conf",
-      "${config.dir}config.json": "config/config.json",
       "${install.dir}": [
         {
           "type": "npm-pack"
@@ -108,19 +102,22 @@
           "type": "node-modules"
         }
       ],
-      "${nginx.sites.dir}${name}.conf": "pkg/nginx.conf",
       "${systemd.unit.dir}": {
         "base": "systemd"
       },
+      "${sysusers.config.dir}${name}.conf": "pkg/sysusers.conf",
+      "${config.dir}config.json": "config/config.json",
+      "${nginx.sites.dir}${name}.conf": "pkg/nginx.conf",
       "${tmpfiles.config.dir}${name}.conf": "pkg/tmpfiles.conf"
     },
     "hooks": "pkg/hooks.sh",
     "backup": "${config.dir}config.json",
     "group": "services",
+    "http.base.path": "/services/ci/api",
     "depends": {
       "nginx-mainline": ">=1.21.4",
       "systemd": ">=250.4"
-    },
+    }
   },
   "release": {
     "plugins": [
