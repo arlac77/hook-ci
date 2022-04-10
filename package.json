@@ -57,7 +57,7 @@
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/release-notes-generator": "^10.0.3",
-    "ava": "^4.1.0",
+    "ava": "^4.2.0",
     "c8": "^7.3.0",
     "got": "^12.0.3",
     "mock-repository-provider": "^6.0.14",
@@ -112,12 +112,13 @@
     },
     "hooks": "pkg/hooks.sh",
     "backup": "${config.dir}config.json",
-    "group": "services",
-    "http.base.path": "/services/ci/api",
+    "groups": "services",
     "depends": {
       "nginx-mainline": ">=1.21.4",
       "systemd": ">=250.4"
-    }
+    },
+    "group": "services",
+    "http.base.path": "/services/ci/api"
   },
   "release": {
     "plugins": [
