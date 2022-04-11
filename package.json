@@ -61,7 +61,7 @@
     "c8": "^7.3.0",
     "got": "^12.0.3",
     "mock-repository-provider": "^6.0.14",
-    "npm-pkgbuild": "^8.3.15",
+    "npm-pkgbuild": "^8.3.16",
     "semantic-release": "^19.0.2",
     "x-hub-signature": "^1.2.0"
   },
@@ -108,7 +108,9 @@
       "${sysusers.config.dir}${name}.conf": "pkg/sysusers.conf",
       "${config.dir}config.json": "config/config.json",
       "${nginx.sites.dir}${name}.conf": "pkg/nginx.conf",
-      "${tmpfiles.config.dir}${name}.conf": "pkg/tmpfiles.conf"
+      "${tmpfiles.config.dir}${name}.conf": "pkg/tmpfiles.conf",
+      "${systemd.config.dir}${name}.service": "pkg/${name}.service",
+      "${systemd.config.dir}${name}.socket": "pkg/${name}.socket"
     },
     "hooks": "pkg/hooks.sh",
     "backup": "${config.dir}config.json",
