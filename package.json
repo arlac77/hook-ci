@@ -60,7 +60,7 @@
     "c8": "^7.3.0",
     "got": "^12.0.4",
     "mock-repository-provider": "^6.0.19",
-    "npm-pkgbuild": "^9.0.4",
+    "npm-pkgbuild": "^10.0.0",
     "semantic-release": "^19.0.2",
     "x-hub-signature": "^1.2.0"
   },
@@ -91,6 +91,50 @@
     "url": "https://github.com/arlac77/hook-ci/issues"
   },
   "homepage": "https://github.com/arlac77/hook-ci#readme",
+  "pkg": {
+    "groups": "services",
+    "hooks": "pkg/hooks.sh",
+    "backup": "${config.dir}config.json",
+    "content": {
+      "${install.dir}": [
+        {
+          "type": "npm-pack"
+        },
+        {
+          "type": "node-modules"
+        }
+      ],
+      "${systemd.unit.dir}${name}.service": "pkg/${name}.service",
+      "${systemd.unit.dir}${name}.socket": "pkg/${name}.socket",
+      "${tmpfiles.config.dir}${name}.conf": "pkg/tmpfiles.conf",
+      "${config.dir}config.json": "config/config.json",
+      "${nginx.sites.dir}${name}.conf": "pkg/nginx.conf"
+    },
+    "depends": {
+      "nginx-mainline": ">=1.21.4",
+      "systemd": ">=250.4"
+    }
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github",
+      [
+        "@semantic-release/exec",
+        {
+          "publishCmd": "npx npm-pkgbuild"
+        }
+      ],
+      "@semantic-release/npm"
+    ]
+  },
+  "template": {
+    "inheritFrom": [
+      "arlac77/template-arlac77-github",
+      "arlac77/template-kronos-app"
+    ]
+  },
   "pkgbuild": {
     "content": {
       "${install.dir}": [
@@ -117,25 +161,5 @@
     },
     "group": "services",
     "http.base.path": "/services/ci/api"
-  },
-  "release": {
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/github",
-      [
-        "@semantic-release/exec",
-        {
-          "publishCmd": "npx npm-pkgbuild"
-        }
-      ],
-      "@semantic-release/npm"
-    ]
-  },
-  "template": {
-    "inheritFrom": [
-      "arlac77/template-arlac77-github",
-      "arlac77/template-kronos-app"
-    ]
   }
 }
