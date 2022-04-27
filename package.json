@@ -91,7 +91,7 @@
     "url": "https://github.com/arlac77/hook-ci/issues"
   },
   "homepage": "https://github.com/arlac77/hook-ci#readme",
-  "pkg": {
+  "pkgbuild": {
     "content": {
       "${install.dir}": [
         {
