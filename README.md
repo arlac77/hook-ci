@@ -2,9 +2,9 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![minified size](https://badgen.net/bundlephobia/min/hook-ci)](https://bundlephobia.com/result?p=hook-ci)
 [![downloads](http://img.shields.io/npm/dm/hook-ci.svg?style=flat-square)](https://npmjs.org/package/hook-ci)
-[![GitHub Issues](https://img.shields.io/github/issues/hook-ci/hook-ci.svg?style=flat-square)](https://github.com/hook-ci/hook-ci/issues)
-[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fhook-ci%2Fhook-ci%2Fbadge\&style=flat)](https://actions-badge.atrox.dev/hook-ci/hook-ci/goto)
-[![Coverage Status](https://coveralls.io/repos/hook-ci/hook-ci/badge.svg)](https://coveralls.io/github/hook-ci/hook-ci)
+[![GitHub Issues](https://img.shields.io/github/issues/arlac77/hook-ci.svg?style=flat-square)](https://github.com/arlac77/hook-ci/issues)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Farlac77%2Fhook-ci%2Fbadge\&style=flat)](https://actions-badge.atrox.dev/arlac77/hook-ci/goto)
+[![Coverage Status](https://coveralls.io/repos/arlac77/hook-ci/badge.svg)](https://coveralls.io/github/arlac77/hook-ci)
 
 # hook-ci
 
