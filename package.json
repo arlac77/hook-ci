@@ -45,7 +45,7 @@
     "gitea-repository-provider": "^2.1.48",
     "github-repository-provider": "^7.26.35",
     "globby": "^13.1.1",
-    "graphql": "^16.0.1",
+    "graphql": "^16.5.0",
     "jsonwebtoken": "^8.5.1",
     "local-repository-provider": "^8.0.8",
     "nbonjour": "^3.6.3",
@@ -64,15 +64,12 @@
     "semantic-release": "^19.0.2",
     "x-hub-signature": "^1.2.0"
   },
-  "peerDependencies": {
-    "mf-hosting": "^1.4.0"
-  },
   "optionalDependencies": {
     "@kronos-integration/service-systemd": "^2.5.4",
     "mf-hosting": "^1.4.0"
   },
   "engines": {
-    "node": ">=16.14.2"
+    "node": ">=16.15.0"
   },
   "os": [
     "linux",
@@ -116,7 +113,7 @@
       "systemd": ">=250.5"
     },
     "group": "services",
-    "http.base.path": "/services/ci/api"
+    "http.path": "/services/ci/api"
   },
   "release": {
     "plugins": [
