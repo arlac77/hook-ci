@@ -35,7 +35,7 @@
     "@kronos-integration/service-authenticator": "^1.6.23",
     "@kronos-integration/service-health": "^5.0.150",
     "@kronos-integration/service-http": "^10.6.111",
-    "@kronos-integration/service-ldap": "^4.0.84",
+    "@kronos-integration/service-ldap": "^4.0.85",
     "@kronos-integration/service-repositories": "^2.0.109",
     "@kronos-integration/service-swarm": "^1.9.86",
     "bitbucket-repository-provider": "^4.1.20",
@@ -59,7 +59,7 @@
     "ava": "^4.2.0",
     "c8": "^7.3.0",
     "got": "^12.0.4",
-    "mock-repository-provider": "^6.0.41",
+    "mock-repository-provider": "^6.0.42",
     "npm-pkgbuild": "^10.7.6",
     "semantic-release": "^19.0.2",
     "x-hub-signature": "^1.2.0"
