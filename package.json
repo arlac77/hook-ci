@@ -108,10 +108,6 @@
     "hooks": "pkg/hooks.sh",
     "backup": "${config.dir}config.json",
     "groups": "services",
-    "depends": {
-      "nginx-mainline": ">=1.21.4",
-      "systemd": ">=251.0"
-    },
     "group": "services",
     "http.path": "/services/ci/api"
   },
