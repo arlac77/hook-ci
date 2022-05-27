@@ -9,8 +9,7 @@
   "keywords": [
     "ci",
     "kronos-integration",
-    "software delivery",
-    "systemd"
+    "software delivery"
   ],
   "contributors": [
     {
@@ -42,7 +41,7 @@
     "bull": "^4.8.0",
     "execa": "^6.1.0",
     "expression-expander": "^7.0.16",
-    "gitea-repository-provider": "^2.1.60",
+    "gitea-repository-provider": "^2.1.61",
     "github-repository-provider": "^7.29.6",
     "globby": "^13.1.1",
     "graphql": "^16.5.0",
@@ -107,8 +106,6 @@
     },
     "hooks": "pkg/hooks.sh",
     "backup": "${config.dir}config.json",
-    "groups": "services",
-    "group": "services",
     "http.path": "/services/ci/api"
   },
   "release": {
