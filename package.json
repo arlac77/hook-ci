@@ -9,7 +9,8 @@
   "keywords": [
     "ci",
     "kronos-integration",
-    "software delivery"
+    "software delivery",
+    "systemd"
   ],
   "contributors": [
     {
@@ -59,7 +60,7 @@
     "c8": "^7.3.0",
     "got": "^12.1.0",
     "mock-repository-provider": "^6.0.47",
-    "npm-pkgbuild": "^10.7.7",
+    "npm-pkgbuild": "^10.7.8",
     "semantic-release": "^19.0.2",
     "x-hub-signature": "^1.2.0"
   },
@@ -106,6 +107,7 @@
     },
     "hooks": "pkg/hooks.sh",
     "backup": "${config.dir}config.json",
+    "groups": "services",
     "http.path": "/services/ci/api"
   },
   "release": {
