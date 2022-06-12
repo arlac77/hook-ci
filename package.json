@@ -69,16 +69,11 @@
     "mf-hosting": "^1.6.3"
   },
   "engines": {
-    "node": ">=16.15.1"
+    "node": ">=18.3.0"
   },
   "os": [
     "linux",
     "darwin"
-  ],
-  "cpu": [
-    "x64",
-    "arm64",
-    "arm"
   ],
   "repository": {
     "type": "git",
@@ -107,7 +102,6 @@
     },
     "hooks": "pkg/hooks.sh",
     "backup": "${config.dir}config.json",
-    "groups": "services",
     "http.path": "/services/ci/api"
   },
   "release": {
