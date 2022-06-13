@@ -75,6 +75,11 @@
     "linux",
     "darwin"
   ],
+  "cpu": [
+    "arm",
+    "arm64",
+    "x64"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/arlac77/hook-ci.git"
@@ -102,6 +107,7 @@
     },
     "hooks": "pkg/hooks.sh",
     "backup": "${config.dir}config.json",
+    "groups": "services",
     "http.path": "/services/ci/api"
   },
   "release": {
