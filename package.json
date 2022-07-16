@@ -107,6 +107,7 @@
     },
     "hooks": "pkg/hooks.sh",
     "backup": "${config.dir}config.json",
+    "groups": "services",
     "http.path": "/services/ci/api"
   },
   "release": {
