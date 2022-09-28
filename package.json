@@ -30,7 +30,7 @@
   "dependencies": {
     "@kronos-integration/interceptor-decode-json": "^2.1.69",
     "@kronos-integration/interceptor-webhook": "^1.1.50",
-    "@kronos-integration/service": "^10.4.32",
+    "@kronos-integration/service": "^10.4.33",
     "@kronos-integration/service-admin": "^3.4.65",
     "@kronos-integration/service-authenticator": "^1.6.41",
     "@kronos-integration/service-health": "^5.0.165",
@@ -41,7 +41,7 @@
     "bitbucket-repository-provider": "^4.4.1",
     "bull": "^4.8.0",
     "execa": "^6.1.0",
-    "expression-expander": "^7.0.20",
+    "expression-expander": "^7.1.0",
     "gitea-repository-provider": "^2.4.1",
     "github-repository-provider": "^7.33.0",
     "globby": "^13.1.2",
@@ -59,7 +59,7 @@
     "ava": "^5.0.0",
     "c8": "^7.3.0",
     "got": "^12.5.0",
-    "mock-repository-provider": "^6.2.1",
+    "mock-repository-provider": "^6.2.3",
     "npm-pkgbuild": "^10.14.14",
     "semantic-release": "^19.0.5",
     "x-hub-signature": "^1.2.0"
