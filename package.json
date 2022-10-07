@@ -59,7 +59,7 @@
     "ava": "^5.0.1",
     "c8": "^7.3.0",
     "got": "^12.5.1",
-    "mock-repository-provider": "^6.2.4",
+    "mock-repository-provider": "^6.2.6",
     "npm-pkgbuild": "^10.15.4",
     "semantic-release": "^19.0.5",
     "x-hub-signature": "^1.2.0"
