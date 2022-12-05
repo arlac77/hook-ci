@@ -42,7 +42,7 @@
     "bull": "^4.8.0",
     "execa": "^6.1.0",
     "expression-expander": "^7.1.2",
-    "gitea-repository-provider": "^2.4.6",
+    "gitea-repository-provider": "^2.4.7",
     "github-repository-provider": "^7.33.7",
     "globby": "^13.1.2",
     "graphql": "^16.6.0",
@@ -59,7 +59,7 @@
     "ava": "^5.1.0",
     "c8": "^7.3.0",
     "got": "^12.5.3",
-    "mock-repository-provider": "^6.2.13",
+    "mock-repository-provider": "^6.2.14",
     "npm-pkgbuild": "^10.15.17",
     "semantic-release": "^19.0.5",
     "x-hub-signature": "^2.1.1"
