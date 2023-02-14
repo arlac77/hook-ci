@@ -49,7 +49,7 @@
     "jsonwebtoken": "^9.0.0",
     "local-repository-provider": "^8.1.11",
     "nbonjour": "^3.6.3",
-    "ws": "^8.12.0",
+    "ws": "^8.12.1",
     "yaml": "^2.0.1"
   },
   "devDependencies": {
