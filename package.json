@@ -103,8 +103,7 @@
       "${tmpfiles.config.dir}${name}.conf": "pkg/tmpfiles.conf",
       "${systemd.unit.dir}${name}.service": "pkg/${name}.service"
     },
-    "hooks": "pkg/hooks.sh",
-    "backup": "${config.dir}config.json",
+    "konsum": true,
     "http.path": "/services/ci/api"
   },
   "release": {
