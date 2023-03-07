@@ -103,8 +103,8 @@
       "${tmpfiles.config.dir}${name}.conf": "pkg/tmpfiles.conf",
       "${systemd.unit.dir}${name}.service": "pkg/${name}.service"
     },
-    "kronos": true,
-    "http.path": "/services/ci/api"
+    "http.path": "/services/ci/api",
+    "kronos": true
   },
   "release": {
     "plugins": [
