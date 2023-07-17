@@ -60,7 +60,7 @@
     "c8": "^8.0.0",
     "got": "^13.0.0",
     "mock-repository-provider": "^6.2.55",
-    "npm-pkgbuild": "^11.8.14",
+    "npm-pkgbuild": "^11.9.1",
     "semantic-release": "^21.0.7",
     "x-hub-signature": "^2.1.1"
   },
@@ -69,7 +69,7 @@
     "mf-hosting": "^1.12.0"
   },
   "engines": {
-    "node": ">=20.3.1"
+    "node": ">=20.4.0"
   },
   "os": [
     "linux",
