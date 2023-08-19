@@ -60,7 +60,7 @@
     "c8": "^8.0.0",
     "got": "^13.0.0",
     "mock-repository-provider": "^6.2.55",
-    "npm-pkgbuild": "^11.10.12",
+    "npm-pkgbuild": "^11.10.13",
     "semantic-release": "^21.0.7",
     "x-hub-signature": "^2.1.1"
   },
