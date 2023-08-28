@@ -53,14 +53,14 @@
     "yaml": "^2.0.1"
   },
   "devDependencies": {
-    "@semantic-release/commit-analyzer": "^10.0.2",
+    "@semantic-release/commit-analyzer": "^10.0.3",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/release-notes-generator": "^11.0.5",
     "ava": "^5.3.1",
     "c8": "^8.0.0",
     "got": "^13.0.0",
     "mock-repository-provider": "^6.2.55",
-    "npm-pkgbuild": "^11.10.15",
+    "npm-pkgbuild": "^12.0.0",
     "semantic-release": "^21.1.1",
     "x-hub-signature": "^2.1.1"
   },
