@@ -61,7 +61,7 @@
     "got": "^13.0.0",
     "mock-repository-provider": "^7.0.1",
     "npm-pkgbuild": "^12.3.1",
-    "semantic-release": "^22.0.5",
+    "semantic-release": "^22.0.6",
     "x-hub-signature": "^2.1.1"
   },
   "optionalDependencies": {
