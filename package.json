@@ -56,11 +56,11 @@
     "@semantic-release/commit-analyzer": "^11.1.0",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/release-notes-generator": "^12.1.0",
-    "ava": "^6.0.0",
+    "ava": "^6.0.1",
     "c8": "^8.0.0",
     "got": "^14.0.0",
     "mock-repository-provider": "^8.0.3",
-    "npm-pkgbuild": "^13.0.7",
+    "npm-pkgbuild": "^13.0.8",
     "semantic-release": "^22.0.10",
     "x-hub-signature": "^2.1.1"
   },
