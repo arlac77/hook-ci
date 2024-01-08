@@ -38,7 +38,7 @@
     "@kronos-integration/service-ldap": "^4.0.127",
     "@kronos-integration/service-repositories": "^2.0.156",
     "@kronos-integration/service-swarm": "^1.9.86",
-    "bitbucket-repository-provider": "^6.0.2",
+    "bitbucket-repository-provider": "^6.0.3",
     "bull": "^4.8.0",
     "execa": "^8.0.1",
     "expression-expander": "^7.1.3",
