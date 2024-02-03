@@ -83,7 +83,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/arlac77/hook-ci"
+    "url": "git+https://github.com/arlac77/hook-ci.git"
   },
   "bugs": {
     "url": "https://github.com/arlac77/hook-ci/issues"
