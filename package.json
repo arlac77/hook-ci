@@ -21,7 +21,7 @@
   ],
   "license": "BSD-2-Clause",
   "bin": {
-    "hook-ci": "./src/hook-ci-cli.mjs"
+    "hook-ci": "src/hook-ci-cli.mjs"
   },
   "scripts": {
     "test": "npm run test:ava",
