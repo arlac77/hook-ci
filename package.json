@@ -42,7 +42,7 @@
     "bitbucket-repository-provider": "^6.0.20",
     "bull": "^4.8.0",
     "execa": "^8.0.1",
-    "expression-expander": "^7.2.2",
+    "expression-expander": "^7.2.3",
     "gitea-repository-provider": "^4.1.1",
     "github-repository-provider": "^9.0.9",
     "globby": "^14.0.1",
