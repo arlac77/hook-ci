@@ -62,7 +62,7 @@
     "got": "^14.2.1",
     "mock-repository-provider": "^8.2.4",
     "npm-pkgbuild": "^15.2.0",
-    "semantic-release": "^23.0.6",
+    "semantic-release": "^23.0.7",
     "x-hub-signature": "^2.1.1"
   },
   "optionalDependencies": {
@@ -70,7 +70,7 @@
     "mf-hosting": "^2.0.5"
   },
   "engines": {
-    "node": ">=20.12.0"
+    "node": ">=20.12.1"
   },
   "os": [
     "linux",
