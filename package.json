@@ -54,7 +54,7 @@
     "yaml": "^2.4.2"
   },
   "devDependencies": {
-    "@semantic-release/commit-analyzer": "^12.0.0",
+    "@semantic-release/commit-analyzer": "^13.0.0",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/github": "^10.0.5",
     "@semantic-release/release-notes-generator": "^13.0.0",
@@ -63,7 +63,7 @@
     "got": "^14.3.0",
     "mock-repository-provider": "^8.2.5",
     "npm-pkgbuild": "^15.3.21",
-    "semantic-release": "^23.1.1",
+    "semantic-release": "^24.0.0",
     "x-hub-signature": "^2.1.1"
   },
   "optionalDependencies": {
