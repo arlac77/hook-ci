@@ -44,14 +44,14 @@
     "execa": "^9.1.0",
     "expression-expander": "^7.2.5",
     "gitea-repository-provider": "^4.2.2",
-    "github-repository-provider": "^9.0.12",
+    "github-repository-provider": "^9.0.13",
     "globby": "^14.0.1",
     "graphql": "^16.6.0",
     "jsonwebtoken": "^9.0.2",
     "local-repository-provider": "^9.0.1",
     "nbonjour": "^3.6.3",
     "ws": "^8.17.0",
-    "yaml": "^2.4.2"
+    "yaml": "^2.4.3"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^13.0.0",
