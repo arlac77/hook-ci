@@ -41,7 +41,7 @@
     "@kronos-integration/service-swarm": "^1.9.86",
     "bitbucket-repository-provider": "^6.0.29",
     "bull": "^4.8.0",
-    "execa": "^9.5.1",
+    "execa": "^9.5.2",
     "expression-expander": "^7.2.5",
     "gitea-repository-provider": "^4.2.5",
     "github-repository-provider": "^9.0.21",
