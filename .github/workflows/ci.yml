@@ -16,13 +16,6 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - 20.15.0
-          - 20.15.1
-          - 20.16.0
-          - 22.11.0
-          - 22.12.0
-          - 22.13.0
-          - 22.13.1
           - 22.14.0
     steps:
       - name: checkout
