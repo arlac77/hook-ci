@@ -51,7 +51,7 @@
     "local-repository-provider": "^9.1.10",
     "nbonjour": "^3.6.3",
     "ws": "^8.18.2",
-    "yaml": "^2.7.1"
+    "yaml": "^2.8.0"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^13.0.0",
