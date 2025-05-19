@@ -39,7 +39,7 @@
     "@kronos-integration/service-ldap": "^4.0.138",
     "@kronos-integration/service-repositories": "^2.0.190",
     "@kronos-integration/service-swarm": "^1.9.86",
-    "bitbucket-repository-provider": "^6.1.10",
+    "bitbucket-repository-provider": "^6.1.11",
     "bull": "^4.8.0",
     "execa": "^9.5.3",
     "expression-expander": "^7.2.7",
@@ -48,7 +48,7 @@
     "globby": "^14.1.0",
     "graphql": "^16.6.0",
     "jsonwebtoken": "^9.0.2",
-    "local-repository-provider": "^9.1.10",
+    "local-repository-provider": "^9.1.11",
     "nbonjour": "^3.6.3",
     "ws": "^8.18.2",
     "yaml": "^2.8.0"
