@@ -44,7 +44,7 @@
     "execa": "^9.6.0",
     "expression-expander": "^7.2.7",
     "gitea-repository-provider": "^4.2.19",
-    "github-repository-provider": "^9.2.15",
+    "github-repository-provider": "^9.2.16",
     "globby": "^14.1.0",
     "graphql": "^16.6.0",
     "jsonwebtoken": "^9.0.2",
