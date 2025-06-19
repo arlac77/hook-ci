@@ -37,7 +37,7 @@
     "@kronos-integration/service-health": "^5.1.6",
     "@kronos-integration/service-http": "^10.9.28",
     "@kronos-integration/service-ldap": "^4.0.138",
-    "@kronos-integration/service-repositories": "^2.0.192",
+    "@kronos-integration/service-repositories": "^2.0.193",
     "@kronos-integration/service-swarm": "^1.9.87",
     "bitbucket-repository-provider": "^6.1.17",
     "bull": "^4.8.0",
