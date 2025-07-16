@@ -38,7 +38,7 @@
     "@kronos-integration/service-http": "^10.9.28",
     "@kronos-integration/service-ldap": "^4.0.138",
     "@kronos-integration/service-repositories": "^2.0.195",
-    "@kronos-integration/service-swarm": "^1.9.88",
+    "@kronos-integration/service-swarm": "^1.9.89",
     "bitbucket-repository-provider": "^6.1.17",
     "bull": "^4.8.0",
     "execa": "^9.6.0",
@@ -67,7 +67,7 @@
     "x-hub-signature": "^2.1.1"
   },
   "optionalDependencies": {
-    "@kronos-integration/service-systemd": "^2.7.3",
+    "@kronos-integration/service-systemd": "^2.8.0",
     "mf-hosting": "^2.8.14"
   },
   "engines": {
