@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@kronos-integration/interceptor-decode-json": "^3.0.1",
-    "@kronos-integration/interceptor-webhook": "^2.0.3",
+    "@kronos-integration/interceptor-webhook": "^2.0.4",
     "@kronos-integration/service": "^12.0.3",
     "@kronos-integration/service-admin": "^3.4.76",
     "@kronos-integration/service-authenticator": "^1.6.69",
@@ -38,7 +38,7 @@
     "@kronos-integration/service-http": "^12.0.0",
     "@kronos-integration/service-ldap": "^4.0.138",
     "@kronos-integration/service-repositories": "^2.0.200",
-    "@kronos-integration/service-swarm": "^1.9.95",
+    "@kronos-integration/service-swarm": "^2.0.0",
     "bitbucket-repository-provider": "^6.1.19",
     "bull": "^4.8.0",
     "execa": "^9.6.0",
