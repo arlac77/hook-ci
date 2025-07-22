@@ -31,11 +31,11 @@
   "dependencies": {
     "@kronos-integration/interceptor-decode-json": "^3.0.6",
     "@kronos-integration/interceptor-webhook": "^2.0.5",
-    "@kronos-integration/service": "^13.1.1",
+    "@kronos-integration/service": "^13.1.2",
     "@kronos-integration/service-admin": "^3.4.79",
     "@kronos-integration/service-authenticator": "^3.0.0",
     "@kronos-integration/service-health": "^7.0.0",
-    "@kronos-integration/service-http": "^13.0.0",
+    "@kronos-integration/service-http": "^13.0.1",
     "@kronos-integration/service-ldap": "^4.0.138",
     "@kronos-integration/service-repositories": "^4.0.1",
     "@kronos-integration/service-swarm": "^3.0.0",
