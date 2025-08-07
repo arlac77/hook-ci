@@ -39,7 +39,7 @@
     "@kronos-integration/service-ldap": "^5.0.6",
     "@kronos-integration/service-repositories": "^4.0.14",
     "@kronos-integration/service-swarm": "^3.0.11",
-    "bitbucket-repository-provider": "^6.2.7",
+    "bitbucket-repository-provider": "^6.2.8",
     "bull": "^4.8.0",
     "execa": "^9.6.0",
     "expression-expander": "^7.2.7",
@@ -51,7 +51,7 @@
     "local-repository-provider": "^9.1.16",
     "nbonjour": "^3.6.3",
     "ws": "^8.18.3",
-    "yaml": "^2.8.0"
+    "yaml": "^2.8.1"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^13.0.0",
@@ -68,7 +68,7 @@
   },
   "optionalDependencies": {
     "@kronos-integration/service-systemd": "^3.0.2",
-    "mf-hosting": "^2.8.14"
+    "mf-hosting": "^2.8.15"
   },
   "engines": {
     "node": ">=22.12.0"
