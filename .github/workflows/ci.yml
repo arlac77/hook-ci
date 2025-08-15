@@ -28,6 +28,7 @@ jobs:
           - 24.2.0
           - 24.3.0
           - 24.5.0
+          - 24.6.0
     steps:
       - name: checkout
         uses: actions/checkout@v5.0.0
