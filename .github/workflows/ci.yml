@@ -22,6 +22,7 @@ jobs:
           - 22.17.0
           - 22.17.1
           - 22.18.0
+          - 22.19.0
           - 24.0.0
           - 24.0.1
           - 24.0.2
@@ -29,6 +30,7 @@ jobs:
           - 24.3.0
           - 24.5.0
           - 24.6.0
+          - 24.7.0
     steps:
       - name: checkout
         uses: actions/checkout@v5.0.0
@@ -78,7 +80,7 @@ jobs:
       - name: prepare node
         uses: actions/setup-node@v4.4.0
         with:
-          node-version: 22.18.0
+          node-version: 22.19.0
           cache: npm
           cache-dependency-path: package-lock.json
       - name: install
