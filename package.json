@@ -31,7 +31,7 @@
   "dependencies": {
     "@kronos-integration/interceptor-decode-json": "^3.0.15",
     "@kronos-integration/interceptor-webhook": "^3.0.14",
-    "@kronos-integration/service": "^13.2.31",
+    "@kronos-integration/service": "^13.2.33",
     "@kronos-integration/service-admin": "^3.4.93",
     "@kronos-integration/service-authenticator": "^3.0.14",
     "@kronos-integration/service-health": "^7.0.35",
@@ -62,7 +62,7 @@
     "c8": "^10.0.0",
     "got": "^14.4.9",
     "mock-repository-provider": "^8.3.32",
-    "npm-pkgbuild": "^18.3.7",
+    "npm-pkgbuild": "^18.3.8",
     "semantic-release": "^24.2.9",
     "x-hub-signature": "^2.1.1"
   },
