@@ -63,7 +63,7 @@
     "got": "^14.4.9",
     "mock-repository-provider": "^8.3.34",
     "npm-pkgbuild": "^18.3.10",
-    "semantic-release": "^24.2.9",
+    "semantic-release": "^25.0.0",
     "x-hub-signature": "^2.1.1"
   },
   "optionalDependencies": {
