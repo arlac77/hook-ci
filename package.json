@@ -31,14 +31,14 @@
   "dependencies": {
     "@kronos-integration/interceptor-decode-json": "^3.0.22",
     "@kronos-integration/interceptor-webhook": "^3.0.33",
-    "@kronos-integration/service": "^13.2.39",
+    "@kronos-integration/service": "^13.2.40",
     "@kronos-integration/service-admin": "^3.4.94",
     "@kronos-integration/service-authenticator": "^3.0.21",
-    "@kronos-integration/service-health": "^7.0.41",
+    "@kronos-integration/service-health": "^7.0.42",
     "@kronos-integration/service-http": "^13.0.42",
     "@kronos-integration/service-ldap": "^5.0.29",
-    "@kronos-integration/service-repositories": "^4.0.47",
-    "@kronos-integration/service-swarm": "^3.0.39",
+    "@kronos-integration/service-repositories": "^4.0.48",
+    "@kronos-integration/service-swarm": "^3.0.40",
     "bitbucket-repository-provider": "^6.3.4",
     "bull": "^4.8.0",
     "execa": "^9.6.0",
@@ -63,7 +63,7 @@
     "got": "^14.6.0",
     "mock-repository-provider": "^8.3.34",
     "npm-pkgbuild": "^18.3.10",
-    "semantic-release": "^25.0.0",
+    "semantic-release": "^25.0.1",
     "x-hub-signature": "^2.1.1"
   },
   "optionalDependencies": {
