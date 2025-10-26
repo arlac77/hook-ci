@@ -43,7 +43,7 @@
     "bull": "^4.8.0",
     "execa": "^9.6.0",
     "expression-expander": "^7.2.7",
-    "gitea-repository-provider": "^4.4.5",
+    "gitea-repository-provider": "^4.4.6",
     "github-repository-provider": "^9.3.6",
     "globby": "^15.0.0",
     "graphql": "^16.6.0",
@@ -68,7 +68,7 @@
   },
   "optionalDependencies": {
     "@kronos-integration/service-systemd": "^3.0.3",
-    "mf-hosting": "^2.9.0"
+    "mf-hosting": "^2.9.1"
   },
   "engines": {
     "node": ">=22.12.0"
