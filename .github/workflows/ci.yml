@@ -38,6 +38,7 @@ jobs:
           - 24.9.0
           - 24.10.0
           - 24.11.0
+          - 24.11.1
     steps:
       - name: checkout
         uses: actions/checkout@v5.0.0
@@ -87,7 +88,7 @@ jobs:
       - name: prepare node
         uses: actions/setup-node@v6.0.0
         with:
-          node-version: 24.11.0
+          node-version: 24.11.1
           cache: npm
           cache-dependency-path: package-lock.json
       - name: install
