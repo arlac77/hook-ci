@@ -45,7 +45,7 @@
     "expression-expander": "^7.2.7",
     "gitea-repository-provider": "^4.4.7",
     "github-repository-provider": "^9.3.9",
-    "globby": "^15.0.0",
+    "globby": "^16.0.0",
     "graphql": "^16.6.0",
     "jsonwebtoken": "^9.0.2",
     "local-repository-provider": "^9.1.17",
@@ -68,7 +68,7 @@
   },
   "optionalDependencies": {
     "@kronos-integration/service-systemd": "^4.0.0",
-    "mf-hosting": "^2.9.2"
+    "mf-hosting": "^2.9.3"
   },
   "engines": {
     "node": ">=22.12.0"
