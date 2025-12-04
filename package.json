@@ -47,7 +47,7 @@
     "github-repository-provider": "^10.0.4",
     "globby": "^16.0.0",
     "graphql": "^16.6.0",
-    "jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "^9.0.3",
     "local-repository-provider": "^10.0.0",
     "nbonjour": "^3.6.3",
     "ws": "^8.18.3",
