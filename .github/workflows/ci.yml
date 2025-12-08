@@ -57,7 +57,6 @@ jobs:
         uses: actions/setup-node@v6.1.0
         with:
           node-version: 24.11.1
-          cache: npm
       - name: install
         run: npm ci
       - name: install dependencies
