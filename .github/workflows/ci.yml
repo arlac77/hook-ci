@@ -58,7 +58,6 @@ jobs:
         with:
           node-version: 24.11.1
           cache: npm
-          cache-dependency-path: package-lock.json
       - name: install
         run: npm ci
       - name: install dependencies
