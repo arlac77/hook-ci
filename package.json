@@ -39,13 +39,13 @@
     "@kronos-integration/service-http": "^14.0.26",
     "@kronos-integration/service-ldap": "^6.0.11",
     "@kronos-integration/service-repositories": "^4.0.61",
-    "@kronos-integration/service-swarm": "^4.0.14",
-    "bitbucket-repository-provider": "^7.0.8",
+    "@kronos-integration/service-swarm": "^4.0.16",
+    "bitbucket-repository-provider": "^7.0.9",
     "bull": "^4.8.0",
     "execa": "^9.6.0",
     "expression-expander": "^7.2.8",
-    "gitea-repository-provider": "^5.0.4",
-    "github-repository-provider": "^10.0.8",
+    "gitea-repository-provider": "^5.0.5",
+    "github-repository-provider": "^10.0.9",
     "globby": "^16.0.0",
     "graphql": "^16.6.0",
     "jsonwebtoken": "^9.0.3",
@@ -69,7 +69,7 @@
   },
   "optionalDependencies": {
     "@kronos-integration/service-systemd": "^4.2.3",
-    "mf-hosting": "^2.9.10"
+    "mf-hosting": "^2.9.11"
   },
   "engines": {
     "node": ">=22.12.0"
