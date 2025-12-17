@@ -69,7 +69,7 @@
   },
   "optionalDependencies": {
     "@kronos-integration/service-systemd": "^5.0.0",
-    "mf-hosting": "^2.9.11"
+    "mf-hosting": "^2.9.12"
   },
   "engines": {
     "node": ">=22.12.0"
