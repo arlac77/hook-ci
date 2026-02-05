@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@kronos-integration/interceptor-decode-json": "^4.0.4",
-    "@kronos-integration/interceptor-webhook": "^4.0.25",
+    "@kronos-integration/interceptor-webhook": "^4.0.26",
     "@kronos-integration/service": "^15.4.19",
     "@kronos-integration/service-admin": "^4.0.13",
     "@kronos-integration/service-authenticator": "^4.1.12",
@@ -40,7 +40,7 @@
     "@kronos-integration/service-ldap": "^6.1.1",
     "@kronos-integration/service-repositories": "^4.0.61",
     "@kronos-integration/service-swarm": "^4.0.36",
-    "bitbucket-repository-provider": "^7.0.20",
+    "bitbucket-repository-provider": "^7.0.21",
     "bull": "^4.8.0",
     "execa": "^9.6.0",
     "expression-expander": "^7.2.8",
@@ -63,13 +63,13 @@
     "c8": "^10.0.0",
     "got": "^14.6.6",
     "mock-repository-provider": "^9.0.16",
-    "npm-pkgbuild": "^20.4.1",
+    "npm-pkgbuild": "^20.4.2",
     "semantic-release": "^25.0.3",
     "x-hub-signature": "^2.1.1"
   },
   "optionalDependencies": {
     "@kronos-integration/service-systemd": "^5.0.0",
-    "mf-hosting": "^2.10.1"
+    "mf-hosting": "^2.10.2"
   },
   "engines": {
     "node": ">=22.12.0"
