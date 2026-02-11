@@ -68,7 +68,7 @@
     "x-hub-signature": "^2.1.1"
   },
   "optionalDependencies": {
-    "@kronos-integration/service-systemd": "^5.0.0",
+    "@kronos-integration/service-systemd": "^5.1.0",
     "mf-hosting": "^3.0.1"
   },
   "engines": {
