@@ -51,8 +51,8 @@
     "jsonwebtoken": "^9.0.3",
     "local-repository-provider": "^10.0.0",
     "nbonjour": "^3.6.3",
-    "ws": "^8.19.0",
-    "yaml": "^2.8.1"
+    "ws": "^8.20.0",
+    "yaml": "^2.8.3"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^13.0.1",
