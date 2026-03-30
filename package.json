@@ -46,7 +46,7 @@
     "expression-expander": "^7.2.8",
     "gitea-repository-provider": "^5.0.7",
     "github-repository-provider": "^10.0.29",
-    "globby": "^16.1.1",
+    "globby": "^16.2.0",
     "graphql": "^16.6.0",
     "jsonwebtoken": "^9.0.3",
     "local-repository-provider": "^10.0.0",
@@ -62,14 +62,14 @@
     "ava": "^7.0.0",
     "c8": "^11.0.0",
     "got": "^14.6.6",
-    "mock-repository-provider": "^9.0.23",
+    "mock-repository-provider": "^9.0.24",
     "npm-pkgbuild": "^20.6.4",
     "semantic-release": "^25.0.3",
     "x-hub-signature": "^2.1.1"
   },
   "optionalDependencies": {
     "@kronos-integration/service-systemd": "^5.1.1",
-    "mf-hosting": "^3.0.6"
+    "mf-hosting": "^3.0.7"
   },
   "engines": {
     "node": ">=22.12.0"
