@@ -5,7 +5,7 @@
     "access": "public",
     "provenance": true
   },
-  "packageManager": "npm@11.10.0",
+  "packageManager": "npm@11.13.0",
   "main": "./src/hook-ci-cli.mjs",
   "description": "simple ci to be triggered by git hooks",
   "keywords": [
