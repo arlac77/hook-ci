@@ -39,7 +39,7 @@
     "@kronos-integration/service-http": "^14.0.33",
     "@kronos-integration/service-ldap": "^6.1.1",
     "@kronos-integration/service-repositories": "^4.0.61",
-    "@kronos-integration/service-swarm": "^4.0.53",
+    "@kronos-integration/service-swarm": "^4.0.54",
     "bitbucket-repository-provider": "^7.0.29",
     "bull": "^4.8.0",
     "execa": "^9.6.0",
@@ -52,7 +52,7 @@
     "local-repository-provider": "^10.0.0",
     "nbonjour": "^3.6.3",
     "ws": "^8.20.0",
-    "yaml": "^2.8.4"
+    "yaml": "^2.9.0"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^13.0.1",
