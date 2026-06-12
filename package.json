@@ -31,8 +31,8 @@
   },
   "dependencies": {
     "@kronos-integration/interceptor-decode-json": "^4.0.20",
-    "@kronos-integration/interceptor-webhook": "^4.0.46",
-    "@kronos-integration/service": "^15.6.3",
+    "@kronos-integration/interceptor-webhook": "^4.0.47",
+    "@kronos-integration/service": "^15.6.4",
     "@kronos-integration/service-admin": "^4.0.13",
     "@kronos-integration/service-authenticator": "^4.1.29",
     "@kronos-integration/service-health": "^8.0.51",
