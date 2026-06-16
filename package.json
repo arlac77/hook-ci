@@ -47,7 +47,7 @@
     "gitea-repository-provider": "^5.0.10",
     "github-repository-provider": "^10.0.37",
     "globby": "^16.2.0",
-    "graphql": "^16.6.0",
+    "graphql": "^17.0.0",
     "jsonwebtoken": "^9.0.3",
     "local-repository-provider": "^10.0.0",
     "nbonjour": "^3.6.3",
