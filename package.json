@@ -31,11 +31,11 @@
   },
   "dependencies": {
     "@kronos-integration/interceptor-decode-json": "^4.0.20",
-    "@kronos-integration/interceptor-webhook": "^4.0.49",
-    "@kronos-integration/service": "^15.6.6",
+    "@kronos-integration/interceptor-webhook": "^4.0.52",
+    "@kronos-integration/service": "^15.6.7",
     "@kronos-integration/service-admin": "^4.0.13",
     "@kronos-integration/service-authenticator": "^4.1.32",
-    "@kronos-integration/service-health": "^8.0.56",
+    "@kronos-integration/service-health": "^8.0.58",
     "@kronos-integration/service-http": "^14.0.33",
     "@kronos-integration/service-ldap": "^6.1.1",
     "@kronos-integration/service-repositories": "^4.0.61",
@@ -45,7 +45,7 @@
     "execa": "^9.6.0",
     "expression-expander": "^7.2.8",
     "gitea-repository-provider": "^5.0.10",
-    "github-repository-provider": "^10.0.37",
+    "github-repository-provider": "^10.0.39",
     "globby": "^16.2.0",
     "graphql": "^17.0.0",
     "jsonwebtoken": "^9.0.3",
@@ -69,7 +69,7 @@
   },
   "optionalDependencies": {
     "@kronos-integration/service-systemd": "^5.1.1",
-    "mf-hosting": "^3.0.11"
+    "mf-hosting": "^3.0.12"
   },
   "engines": {
     "node": ">=22.12.0"
