@@ -46,12 +46,12 @@
     "expression-expander": "^7.2.8",
     "gitea-repository-provider": "^5.0.14",
     "github-repository-provider": "^10.0.46",
-    "globby": "^16.2.1",
+    "globby": "^16.2.2",
     "graphql": "^17.0.0",
     "jsonwebtoken": "^9.0.3",
     "local-repository-provider": "^10.0.0",
     "nbonjour": "^3.6.3",
-    "ws": "^8.21.0",
+    "ws": "^8.21.1",
     "yaml": "^2.9.0"
   },
   "devDependencies": {
