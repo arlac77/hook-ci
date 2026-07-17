@@ -42,7 +42,7 @@
     "@kronos-integration/service-swarm": "^4.0.67",
     "bitbucket-repository-provider": "^7.0.29",
     "bull": "^4.8.0",
-    "execa": "^9.6.0",
+    "execa": "^10.0.0",
     "expression-expander": "^7.2.8",
     "gitea-repository-provider": "^5.0.14",
     "github-repository-provider": "^10.0.46",
@@ -62,14 +62,14 @@
     "ava": "^8.0.1",
     "c8": "^11.0.0",
     "got": "^15.1.0",
-    "mock-repository-provider": "^9.0.37",
+    "mock-repository-provider": "^9.0.38",
     "npm-pkgbuild": "^20.8.2",
     "semantic-release": "^25.0.7",
     "x-hub-signature": "^2.1.1"
   },
   "optionalDependencies": {
     "@kronos-integration/service-systemd": "^5.1.1",
-    "mf-hosting": "^3.0.13"
+    "mf-hosting": "^3.0.14"
   },
   "engines": {
     "node": ">=22.12.0"
