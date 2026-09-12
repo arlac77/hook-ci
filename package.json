@@ -63,13 +63,13 @@
     "c8": "^12.0.0",
     "got": "^16.0.0",
     "mock-repository-provider": "^9.0.43",
-    "npm-pkgbuild": "^22.1.4",
+    "npm-pkgbuild": "^22.1.6",
     "semantic-release": "^25.0.9",
     "x-hub-signature": "^2.1.1"
   },
   "optionalDependencies": {
     "@kronos-integration/service-systemd": "^5.1.1",
-    "mf-hosting": "^3.1.1"
+    "mf-hosting": "^3.1.2"
   },
   "engines": {
     "node": ">=22.12.0"
